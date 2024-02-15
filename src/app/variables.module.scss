@@ -1,0 +1,21 @@
+/* adaptive */
+$mobile: 767.98px;
+$tablet: 768px;
+$desktop: 1440px;
+
+$mobileWithoutPx: 767.98;
+$tabletWithoutPx: 768;
+$desktopWithoutPx: 1440;
+
+
+
+
+:export {
+    mobile: $mobile;
+    tablet: $tablet;
+    desktop: $desktop;
+    mobileWithoutPx: $mobileWithoutPx;
+    tabletWithoutPx: $tabletWithoutPx;
+    desktopWithoutPx: $desktopWithoutPx;
+
+}
