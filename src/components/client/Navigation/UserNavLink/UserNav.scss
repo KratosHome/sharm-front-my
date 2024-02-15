@@ -1,0 +1,96 @@
+@import '@/app/variables.module.scss';
+
+.user-nav__list {
+    display: flex;
+
+    gap: 8px;
+
+    &--open {
+        display: flex;
+        flex-direction: column;
+
+        margin-top: 24px;
+
+        border-bottom: 1px solid var(--stoke);
+    }
+
+    @media screen and (min-width: $desktop) {
+        justify-content: flex-end;
+        gap: 20px;
+    }
+}
+
+.user-nav__item {
+    border: none;
+    background-color: transparent;
+
+    height: 20px;
+    width: 20px;
+
+    cursor: pointer;
+
+
+    &>a,
+    &--open>a {
+        &>svg {
+            stroke: var(--svg-hover-pagintaion);
+        }
+
+        &:hover,
+        &:focus {
+            color: var(--stoke);
+
+            &>svg {
+                stroke: var(--stoke);
+            }
+        }
+
+    }
+
+    &--open {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        text-transform: uppercase;
+
+        padding: 16px 20px;
+
+        border-top: 1px solid var(--stoke);
+
+        &>a {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            &>svg {
+                height: 20px;
+            }
+        }
+    }
+
+    @media screen and (min-width: $desktop) {
+        height: 28px;
+        width: 28px;
+    }
+
+}
+
+.phone-btn {
+    font-family: Roboto;
+    font-size: 12px;
+    line-height: 1.5;
+    text-decoration: underline;
+
+    color: inherit;
+    background-color: inherit;
+
+    border: none;
+
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+        color: var(--stoke);
+    }
+}
