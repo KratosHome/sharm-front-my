@@ -5,6 +5,8 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { gsap, Power3 } from "gsap";
 import { useGSAP } from "@gsap/react";
 import "./banner.scss"
+import Draggable from 'gsap/Draggable';
+gsap.registerPlugin(Draggable);
 
 type BannerItem = {
     id: number;
@@ -21,13 +23,97 @@ type BannerItem = {
   interface BannerProps {
     data: BannerData;
   }
-const Banner: FC<BannerProps> = ({ data }) => {
+
+
+  const Banner: FC<BannerProps> = ({ data }) => {
     let imageList = useRef<HTMLUListElement | null>(null);
     let dotsContainer = useRef<HTMLDivElement | null>(null);
   
-    const [active, setActive] = useState<number>(0);
-    
+    const [offset, setOffset] = useState<number>(0);
+    const [autoPlayEnabled, setAutoPlayEnabled] = useState(true);
+
+ 
+    useEffect(() => {
+      let timeoutId: NodeJS.Timeout;
   
+      const autoPlay = () => {
+        if (autoPlayEnabled) {
+          setOffset((prevOffset) => (prevOffset + 1) % data.length);
+        }
+      };
+  
+      timeoutId = setTimeout(autoPlay, 2500);
+  
+      return () => {
+        clearTimeout(timeoutId);
+      };
+    }, [offset, data.length, autoPlayEnabled]);
+  
+    const handleMouseEnter = () => {
+      setAutoPlayEnabled(false);
+    };
+  
+    const handleMouseLeave = () => {
+      setAutoPlayEnabled(true);
+    };
+  
+    useEffect(() => {
+      const shift = imageList.current?.getBoundingClientRect().width || 0;
+  
+      Array.from(imageList.current?.children || []).forEach((image, index) => {
+        gsap.to(image as HTMLElement, {
+          x: -(shift * offset),
+          ease: Power3.easeOut,
+          duration: 1,
+        });
+      });
+    }, [offset]);
+  
+ 
+  
+    const handleArrowClick = (direction: 'next' | 'prev') => {
+      setAutoPlayEnabled(false);
+      setOffset((prevOffset) => {
+        return (prevOffset + (direction === 'next' ? 1 : -1) + data.length) % data.length;
+      });
+    };
+  
+    const handleDotClick = (index: number) => {
+      setAutoPlayEnabled(false);
+      setOffset(index);
+    };
+  
+    const goToPage = () => {
+      console.log("GO TO PAGE FROM BANNER");
+    };
+
+    useEffect(() => {
+      let startX = 0;
+      const draggableInstance = Draggable.create(imageList.current, {
+        type: 'x', 
+        bounds: '.gallery', 
+        edgeResistance: 0.65, 
+        throwProps: true, 
+        onDragStart: function (e) {
+          startX = e.x;
+          console.log('Dragging started');
+        },
+        onDragEnd: function (e) {
+          const dragDistance = e.x - startX;
+          if (dragDistance > 50) {
+            handleArrowClick('prev');
+          } else if (dragDistance < -50) {
+            handleArrowClick('next');
+          }
+        },
+      });
+  
+      return () => {
+        draggableInstance[0].kill();
+      };
+    }, []);
+
+
     useEffect(() => {
 
       gsap.to('.cover .left', {
@@ -72,42 +158,16 @@ const Banner: FC<BannerProps> = ({ data }) => {
       });
 
 
-}, [active])
+}, [offset])
   
  
-        useEffect(() => {
-          const shift = imageList.current?.getBoundingClientRect().width || 0;
-          
-          Array.from(imageList.current?.children || []).forEach((image, index) => {
-            gsap.to(image as HTMLElement, {
-              x: -(shift * active),
-              ease: Power3.easeOut,
-              duration: 1,
-            });
-          });
-        }, [active]);
-    const goToPage = () =>{
-    console.log("GO TO PAGE FROM BANNER");
-    }
-    const updateActive = (newActive: number) => {
-      const clampedActive = Math.max(0, Math.min(newActive, data.length - 1));
-      setActive(clampedActive);
-    };
-  
-    const handleDotClick = (index: number) => {
-      updateActive(index);
-    };
-  
-    const handleArrowClick = (direction: 'next' | 'prev') => {
-      const newActive = direction === 'next' ? active + 1 : active - 1;
-      updateActive(newActive);
-    };    return (
-      <div className="wrapper">
+      return (
+      <div className="wrapper" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <div className="gallery">
         <div className="image">
           <ul ref={imageList}>
             {data.map((item, idx) => (
-              <li className={active === idx ? 'active' : ''} key={idx}>
+              <li className={offset === idx ? 'active' : ''} key={idx}>
                 <img src={item.image} alt={item.title} />
                 <div className="overlay">
                 <span className="phrase">{item.phrase}</span>
@@ -120,10 +180,10 @@ const Banner: FC<BannerProps> = ({ data }) => {
             ))}
           </ul>
           <div className="controls">
-            <button onClick={() => handleArrowClick('prev')} disabled={active === 0}>
+            <button onClick={() => handleArrowClick('prev')} disabled={offset === 0}>
             <img src="left-arrow.svg" alt="Left" />
           </button>
-          <button onClick={() => handleArrowClick('next')} disabled={active === data.length - 1}>
+          <button onClick={() => handleArrowClick('next')} disabled={offset === data.length - 1}>
             <img src="right-arrow.svg" alt="Right" />
           </button>
           </div>
@@ -136,7 +196,7 @@ const Banner: FC<BannerProps> = ({ data }) => {
         {data.map((_, index) => (
           <div
             key={index}
-            className={`dot ${index === active ? 'active' : ''}`}
+            className={`dot ${index === offset ? 'active' : ''}`}
             onClick={() => handleDotClick(index)}
           />
         ))}
