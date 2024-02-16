@@ -86,20 +86,19 @@ type BannerItem = {
     const goToPage = () => {
       console.log("GO TO PAGE FROM BANNER");
     };
-
     useEffect(() => {
       let startX = 0;
       const draggableInstance = Draggable.create(imageList.current, {
-        type: 'x', 
-        bounds: '.gallery', 
-        edgeResistance: 0.65, 
-        throwProps: true, 
+        type: 'x',
+        bounds: '.gallery',
+        edgeResistance: 0.65,
+        throwProps: true,
         onDragStart: function (e) {
-          startX = e.x;
+          startX = e.clientX || e.touches[0].clientX; 
           console.log('Dragging started');
         },
         onDragEnd: function (e) {
-          const dragDistance = e.x - startX;
+          const dragDistance = e.clientX - startX || e.touches[0].clientX - startX;
           if (dragDistance > 50) {
             handleArrowClick('prev');
           } else if (dragDistance < -50) {
@@ -107,11 +106,12 @@ type BannerItem = {
           }
         },
       });
-  
+    
       return () => {
         draggableInstance[0].kill();
       };
     }, []);
+    
 
 
     useEffect(() => {
