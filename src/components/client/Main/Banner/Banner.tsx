@@ -6,19 +6,11 @@ import { gsap, Power3 } from "gsap";
 import { useGSAP } from "@gsap/react";
 import "./banner.scss"
 import Draggable from 'gsap/Draggable';
+import MyBtn from '@/components/UI/MyBtn/MyBtn';
+import { BannerItem } from '@/mokData/bannerData';
 gsap.registerPlugin(Draggable);
 
-type BannerItem = {
-    id: number;
-    title: string;
-    phrase: string;
-    additionalPhrase: string;
-    description: string;
-    image: string;
-    infoPath: string;
-  };
-  
-  type BannerData = BannerItem[];
+type BannerData = BannerItem[];
   
   interface BannerProps {
     data: BannerData;
@@ -60,7 +52,7 @@ type BannerItem = {
     useEffect(() => {
       const shift = imageList.current?.getBoundingClientRect().width || 0;
   
-      Array.from(imageList.current?.children || []).forEach((image, index) => {
+      Array.from(imageList.current?.children || []).forEach((image, _) => {
         gsap.to(image as HTMLElement, {
           x: -(shift * offset),
           ease: Power3.easeOut,
@@ -83,14 +75,14 @@ type BannerItem = {
       setOffset(index);
     };
   
-    const goToPage = () => {
-      console.log("GO TO PAGE FROM BANNER");
+    const goToPage = (path: string) => {
+      console.log("GO TO PAGE FROM BANNER", path);
     };
     useEffect(() => {
       let startX = 0;
       const draggableInstance = Draggable.create(imageList.current, {
         type: 'x',
-        bounds: '.gallery',
+        bounds: '.banner-gallery',
         edgeResistance: 0.65,
         throwProps: true,
         onDragStart: function (e) {
@@ -116,28 +108,28 @@ type BannerItem = {
 
     useEffect(() => {
 
-      gsap.to('.cover .left', {
+      gsap.to('.banner-cover .banner-left', {
         y: '-100%',
         ease: Power3.easeOut,
         duration: 1,
         delay: 0.5,
       });
   
-      gsap.to('.cover .right', {
+      gsap.to('.banner-cover .banner-right', {
         x: '100%',
         ease: Power3.easeOut,
         duration: 1,
         delay: 0.7
       });
   
-      gsap.from('.image', {
+      gsap.from('.banner-image', {
         scale: 1,
         ease: Power3.easeOut,
         duration: 1,
         delay: 1,
       });
   
-      gsap.to('.cover', {
+      gsap.to('.banner-cover', {
         css: {
           display: 'none',
         },
@@ -145,7 +137,7 @@ type BannerItem = {
         delay: 2.2,
       });
 
-      gsap.fromTo('.overlay', {
+      gsap.fromTo('.banner-overlay', {
         y: '-100%',
         ease: Power3.easeOut,
         duration: 1,
@@ -162,24 +154,26 @@ type BannerItem = {
   
  
       return (
-      <div className="wrapper" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-      <div className="gallery">
-        <div className="image">
+      <div className="banner" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+      <div className="banner-gallery">
+        <div className="banner-image">
           <ul ref={imageList}>
             {data.map((item, idx) => (
               <li className={offset === idx ? 'active' : ''} key={idx}>
                 <img src={item.image} alt={item.title} />
-                <div className="overlay">
-                <span className="phrase">{item.phrase}</span>
-                <span className="additionalPhrase">{item.additionalPhrase}</span>
-                <button className="buttonGoToPage" onClick={goToPage} type="button" title='goTo'>
-                  ПЕРЕГЛЯНУТИ
-                </button>
+                <div className="banner-overlay">
+                  <div className="banner-phrase-block">
+                  <span className="banner-phrase">{item.phrase}</span>
+                <span className="banner-additionalPhrase">{item.additionalPhrase}</span>
+                  </div>
+                  <div className="banner-button">
+                <MyBtn text="ПЕРЕГЛЯНУТИ" color="primary" click={goToPage(item.infoPath)}  />
+                </div>
               </div>
               </li>
             ))}
           </ul>
-          <div className="controls">
+          <div className="banner-controls">
             <button onClick={() => handleArrowClick('prev')} disabled={offset === 0}>
             <img src="left-arrow.svg" alt="Left" />
           </button>
@@ -188,15 +182,15 @@ type BannerItem = {
           </button>
           </div>
         </div>
-        <div className="cover">
-        <div className="left"></div>
-        <div className="right"></div>
+        <div className="banner-cover">
+        <div className="banner-left"></div>
+        <div className="banner-right"></div>
       </div>
-      <div className="dots" ref={dotsContainer}>
+      <div className="banner-dots" ref={dotsContainer}>
         {data.map((_, index) => (
           <div
             key={index}
-            className={`dot ${index === offset ? 'active' : ''}`}
+            className={`banner-dot ${index === offset ? 'active' : ''}`}
             onClick={() => handleDotClick(index)}
           />
         ))}
