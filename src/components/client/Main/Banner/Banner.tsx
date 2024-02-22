@@ -8,7 +8,7 @@ import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import { BannerItem } from "@/mokData/bannerData";
 import { Arrow } from "@/components/general/svg/Arrow";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
+import Image from "next/legacy/image";
 gsap.registerPlugin(Draggable);
 
 type BannerData = BannerItem[];
@@ -80,7 +80,7 @@ const Banner: FC<BannerProps> = ({ data }) => {
     let startX = 0;
     const draggableInstance = Draggable.create(imageList.current, {
       type: "x",
-      bounds: ".container-banner-gallery",
+      bounds: ".banner-gallery",
       edgeResistance: 0.65,
       throwProps: true,
       onDragStart: function (e) {
@@ -103,28 +103,28 @@ const Banner: FC<BannerProps> = ({ data }) => {
   }, []);
 
   useEffect(() => {
-    gsap.to(".container-banner-cover .container-banner-left", {
+    gsap.to(".banner-cover .banner-left", {
       y: "-100%",
       ease: Power3.easeOut,
       duration: 1,
       delay: 0.5,
     });
 
-    gsap.to(".container-banner-cover .container-banner-right", {
+    gsap.to(".banner-cover .banner-right", {
       x: "100%",
       ease: Power3.easeOut,
       duration: 1,
       delay: 0.7,
     });
 
-    gsap.from(".container-banner-image", {
+    gsap.from(".banner-image", {
       scale: 1,
       ease: Power3.easeOut,
       duration: 1,
       delay: 1,
     });
 
-    gsap.to(".container-banner-cover", {
+    gsap.to(".banner-cover", {
       css: {
         display: "none",
       },
@@ -133,7 +133,7 @@ const Banner: FC<BannerProps> = ({ data }) => {
     });
 
     gsap.fromTo(
-      ".container-banner-overlay",
+      ".banner-overlay",
       {
         y: "-100%",
         ease: Power3.easeOut,
@@ -154,65 +154,61 @@ const Banner: FC<BannerProps> = ({ data }) => {
       className="container-banner"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}>
-      <div className="container-banner-gallery">
-        <div className="container-banner-image">
+      <div className="banner-gallery">
+        <div className="banner-image">
           <ul ref={imageList}>
             {data.map((item, idx) => (
               <li className={offset === idx ? "active" : ""} key={idx}>
-                <button
-                  className="container-banner-controls-prev"
-                  type="button"
-                  name="arrow-control"
-                  title="arrow-control"
-                  onClick={() => handleArrowClick("prev")}>
-                  <Arrow className="container-banner-controls-prevArrow" />
-                </button>
-                <Image
+                <img
+                  className="banner-slide"
                   src={item.image}
                   alt={item.title}
-                  width={1300}
-                  height={560}
                 />
-                <div className="container-banner-overlay">
-                  <div className="container-banner-phrase-block">
-                    <span className="container-banner-phrase">
-                      {item.phrase}
-                    </span>
-                    <span className="container-banner-additionalPhrase">
+                <div className=" banner-overlay">
+                  <div className="banner-phrase-block">
+                    <span className="banner-phrase">{item.phrase}</span>
+                    <span className="banner-additionalPhrase">
                       {item.additionalPhrase}
                     </span>
                   </div>
-                  <div className="container-banner-button">
+                  <div className="banner-button">
                     <MyBtn
+                      width="330"
                       text="ПЕРЕГЛЯНУТИ"
                       color="primary"
                       click={() => router.push(`/${item.infoPath}`)}
                     />
                   </div>
                 </div>
-                <button
-                  className="container-banner-controls-next"
-                  type="button"
-                  name="arrow-control"
-                  title="arrow-control"
-                  onClick={() => handleArrowClick("next")}>
-                  <Arrow className="container-banner-controls-nextArrow" />
-                </button>
               </li>
             ))}
           </ul>
+          <button
+            className="banner-controls-prev"
+            type="button"
+            name="arrow-control"
+            title="arrow-control"
+            onClick={() => handleArrowClick("prev")}>
+            <Arrow className="banner-controls-prevArrow" />
+          </button>
+          <button
+            className="banner-controls-next"
+            type="button"
+            name="arrow-control"
+            title="arrow-control"
+            onClick={() => handleArrowClick("next")}>
+            <Arrow className="banner-controls-nextArrow" />
+          </button>
         </div>
-        <div className="container-banner-cover">
-          <div className="container-banner-left"></div>
-          <div className="container-banner-right"></div>
+        <div className="banner-cover">
+          <div className="banner-left"></div>
+          <div className="banner-right"></div>
         </div>
-        <div className="container-banner-dots" ref={dotsContainer}>
+        <div className="banner-dots" ref={dotsContainer}>
           {data.map((_, index) => (
             <div
               key={index}
-              className={`container-banner-dot ${
-                index === offset ? "active" : ""
-              }`}
+              className={`banner-dot ${index === offset ? "active" : ""}`}
               onClick={() => handleDotClick(index)}
             />
           ))}

@@ -4,7 +4,6 @@
   padding: 10px;
   height: 41px;
   transition: background-color, text-shadow 0.3s ease;
-
 }
 
 .my-btn-primary {
@@ -35,4 +34,23 @@
     background-color: var(--success-green-hover);
     text-shadow: 0 0 5px black;
   }
+}
+
+.my-btn-300 {
+  width: 300px;
+}
+.my-btn-310 {
+  width: 310px;
+}
+.my-btn-330 {
+  width: 330px;
+}
+.my-btn-490 {
+  width: 490px;
+}
+.my-btn-147 {
+  width: 147px;
+}
+.my-btn-220 {
+  width: 220px;
 }

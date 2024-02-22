@@ -5,41 +5,84 @@
   position: relative;
   margin: 0 auto;
   margin-bottom: 60px; //має бути gap
-  height: 442px;
-  width: 393px;
   padding: 0;
+  height: 442px;
+
   @media (min-width: 768px) {
     height: 570px;
     width: 1300px;
   }
 
-  .container-banner-gallery {
+  .banner-gallery {
     position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 21px;
-    flex-grow: 1;
     height: 100%;
-    width: 100%;
-    height: 442px;
-    width: 393px;
     @media (min-width: 768px) {
       gap: 24px;
-      height: 570px;
-      width: 1300px;
+      height: 100%;
+      width: 100%;
     }
 
-    .container-banner-image {
+    .banner-image {
       flex: 1;
       overflow: hidden;
       position: relative;
-      max-height: 415px;
       object-fit: cover;
 
       @media (min-width: 768px) {
         max-height: 530px;
       }
+
+      .banner-controls-next {
+        position: absolute;
+        top: 229px;
+        right: 0;
+        display: none;
+        z-index: 2;
+
+        @media (min-width: 768px) {
+          display: flex;
+          cursor: pointer;
+          border: none;
+          outline: none;
+          background: inherit;
+          padding: 24px;
+        }
+        .banner-controls-nextArrow {
+          stroke-opacity: 0.6;
+          stroke-width: 25%;
+          transform: rotate(-90deg);
+          width: 24px;
+          height: 24px;
+        }
+      }
+      .banner-controls-prev {
+        position: absolute;
+        top: 229px;
+        left: 0;
+        display: none;
+        z-index: 2;
+
+        @media (min-width: 768px) {
+          display: flex;
+          border: none;
+          cursor: pointer;
+          padding: 24px;
+          outline: none;
+          background: inherit;
+        }
+        .banner-controls-prevArrow {
+          stroke-opacity: 0.6;
+          stroke-width: 25%;
+          transform: rotate(90deg);
+          width: 24px;
+          height: 24px;
+        }
+      }
+
       ul {
         display: flex;
         list-style: none;
@@ -50,65 +93,27 @@
       li {
         flex: 0 0 100%;
         height: 100%;
-        width: auto;
         display: flex;
         align-items: center;
         justify-content: center;
         position: relative;
+        overflow: hidden;
+        object-position: center;
+        object-fit: cover;
+        object-fit: scale-down;
 
         img {
-          width: 100%;
-          height: auto;
+          width: 200%;
+          object-position: center;
+
+          height: 415px;
           display: flex;
-        }
-        .container-banner-controls-next {
-          position: absolute;
-          top: 47%;
-          right: 0;
-          display: none;
-          z-index: 2;
-
           @media (min-width: 768px) {
-            display: flex;
-            cursor: pointer;
-            border: none;
-            outline: none;
-            background: inherit;
-            padding: 25px;
-          }
-          .container-banner-controls-nextArrow {
-            stroke-opacity: 0.6;
-            stroke-width: 25%;
-            transform: rotate(-90deg);
-            width: 24px;
-            height: 24px;
-          }
-        }
-        .container-banner-controls-prev {
-          position: absolute;
-          top: 47%;
-          left: 0;
-          display: none;
-          z-index: 2;
-
-          @media (min-width: 768px) {
-            display: flex;
-            border: none;
-            cursor: pointer;
-            padding: 25px;
-            outline: none;
-            background: inherit;
-          }
-          .container-banner-controls-prevArrow {
-            stroke-opacity: 0.6;
-            stroke-width: 25%;
-            transform: rotate(90deg);
-            width: 24px;
-            height: 24px;
+            height: 530px;
           }
         }
 
-        .container-banner-overlay {
+        .banner-overlay {
           position: absolute;
           top: 0;
           left: 0;
@@ -129,7 +134,7 @@
             gap: 40px;
           }
 
-          .container-banner-phrase-block {
+          .banner-phrase-block {
             width: 218px;
             display: flex;
             flex-direction: column;
@@ -142,7 +147,7 @@
               width: 496px;
               gap: 12px;
             }
-            .container-banner-phrase {
+            .banner-phrase {
               color: var(--primary-red);
               text-transform: uppercase;
               font-family: "Roboto", sans-serif;
@@ -157,7 +162,7 @@
               }
             }
 
-            .container-banner-additionalPhrase {
+            .banner-additionalPhrase {
               color: var(--svg-hover-pagintaion);
               font-family: "Roboto", sans-serif;
               font-size: 24px;
@@ -170,17 +175,18 @@
               }
             }
           }
-          .container-banner-button {
+          .banner-button {
             display: none;
-
+            min-width: 330px !important;
             @media (min-width: 768px) {
               display: block;
+              min-width: 330px !important;
             }
           }
         }
       }
     }
-    .container-banner-cover {
+    .banner-cover {
       position: absolute;
       top: 0;
       left: 0;
@@ -190,15 +196,15 @@
       grid-template-columns: 2fr 3fr;
       z-index: 100;
 
-      .container-banner-left,
-      .container-banner-right {
+      .banner-left,
+      .banner-right {
         background: var(--text-color-light);
       }
     }
   }
 }
 
-.container-banner-dots {
+.banner-dots {
   display: flex;
   width: 54px;
   justify-content: space-between;
@@ -206,7 +212,7 @@
   @media (min-width: 768px) {
     width: 198px;
   }
-  .container-banner-dot {
+  .banner-dot {
     width: 6px;
     height: 6px;
     border-radius: 50%;
