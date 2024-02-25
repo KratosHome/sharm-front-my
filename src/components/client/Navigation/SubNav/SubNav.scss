@@ -1,0 +1,44 @@
+.sub-nav__list {
+    display: grid;
+    gap: 0.25rem;
+
+    padding-top: 4px;
+    padding-left: 50px;
+
+    @media screen and (min-width: 768px) {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        transform: translateY(100%);
+
+        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        gap: 1rem;
+
+        padding: 10px 0;
+        background-color: var(--text-color-light);
+
+        border-top: 1px solid var(--placeholder);
+
+
+    }
+
+    .sub-nav__item {
+        font-weight: 400;
+
+        &>a:hover,
+        &>a:focus {
+            color: var(--stoke);
+        }
+
+        @media screen and (min-width: 768px) {
+            &>a {
+                display: inline-block;
+
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+    }
+}

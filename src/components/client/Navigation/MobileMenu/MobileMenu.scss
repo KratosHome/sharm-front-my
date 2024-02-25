@@ -1,0 +1,51 @@
+.mobile-menu__container {
+    &.hidden {
+        display: none;
+    }
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+
+    overflow-y: auto;
+    transform: translateY(100%);
+    max-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+    padding: 20px 0;
+
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+
+    color: var(--svg-hover-pagintaion);
+    background-color: #ffffff;
+    border-top: 1px solid var(--stoke);
+
+
+    .extra-menu__list {
+        padding: 0 16px;
+
+    }
+
+    .extra-menu__item>a {
+        text-transform: uppercase;
+
+        margin-bottom: 6px;
+
+        &:hover,
+        &:focus {
+            color: var(--stoke);
+        }
+    }
+
+    .promotional {
+        color: var(--primary-red);
+    }
+}

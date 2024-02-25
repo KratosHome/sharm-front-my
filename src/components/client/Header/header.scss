@@ -8,11 +8,28 @@
   flex-direction: column;
   background: white;
 
-
-  .top-bar-header {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+  @media screen and (min-width: 768px) {
+    padding: 0 70px;
   }
 
+  .top-bar-header {
+    @media screen and (min-width: 768px) {
+      display: flex;
+      flex-direction: row;
+
+      width: 100%;
+    }
+  }
+
+
+  &>* {
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    li {
+      list-style: none;
+    }
+  }
 }
