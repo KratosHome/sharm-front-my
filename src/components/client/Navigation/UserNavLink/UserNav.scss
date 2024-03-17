@@ -33,17 +33,19 @@
             &>svg {
                 height: 20px;
                 width: 20px;
-                stroke: var(--svg-hover-pagintaion);
+                stroke: var(--text-color);
+
+                transition: stroke 0.5s ease-out;
             }
 
             &:hover,
             &:focus {
-                color: var(--stoke);
+                // color: var(--stoke);
 
                 &>svg {
                     height: 20px;
                     width: 20px;
-                    stroke: var(--stoke);
+                    stroke: var(--primary-red);
                 }
             }
 
@@ -61,6 +63,8 @@
             border-top: 1px solid var(--stoke);
 
             &>a {
+                background-color: var(--text-color);
+
                 display: flex;
                 align-items: center;
                 gap: 8px;
@@ -97,4 +101,6 @@
             }
         }
     }
+
+
 }

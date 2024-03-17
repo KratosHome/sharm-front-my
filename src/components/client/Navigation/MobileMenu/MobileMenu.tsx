@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
@@ -12,15 +11,17 @@ import LocaleMenu from "../LocaleMenu/LocaleMenu";
 import { extraMenuLink } from "@/mokData/navLinksData";
 
 import "./MobileMenu.scss";
+import { ActiveLink } from "@/components/UI/ActiveLink/ActivLink";
+import ThemeSwitcher from "@/components/general/ThemeSwitcher/ThemeSwitcher";
 
 const MenuAnimationVariants = {
   open: {
     clipPath: `circle(150% at 0 0)`,
-    duration: 0.8,
+    duration: 0.5,
     ease: "power2.inOut",
   },
   closed: {
-    clipPath: "circle(0px at 0 0)",
+    clipPath: "circle(0% at 0 0)",
     duration: 0.5,
     ease: "power2.inOut",
   },
@@ -31,32 +32,47 @@ const AnimationVariants = {
     y: 0,
     opacity: 1,
     ease: "power4.out",
-    duration: 1,
+    duration: 0.6,
     stagger: 0.1,
   },
   closed: {
     y: 50,
     opacity: 0,
     ease: "power4.out",
-    duration: 1,
+    duration: 0.6,
     stagger: 0.2,
   },
 };
 
-const MobileMenu = () => {
+const MobileMenu = ({
+  isOpen,
+  closeMenu,
+}: {
+  isOpen: boolean;
+  closeMenu: () => void;
+}) => {
   const menuRef = useRef<HTMLDivElement | null>(null);
 
-  useGSAP(() => {
-    gsap.fromTo(
-      menuRef.current,
-      MenuAnimationVariants.closed,
-      MenuAnimationVariants.open
-    );
+  useGSAP(
+    () => {
+      if (isOpen) {
+        gsap
+          .timeline()
+          .set(menuRef.current, { display: "initial" })
+          .to(menuRef.current, MenuAnimationVariants.open);
 
-    const elements =
-      menuRef?.current?.querySelectorAll(".mobile-menu__item") || null;
-    gsap.fromTo(elements, AnimationVariants.closed, AnimationVariants.open);
-  });
+        const elements =
+          menuRef?.current?.querySelectorAll(".mobile-menu__item") || null;
+        gsap.fromTo(elements, AnimationVariants.closed, AnimationVariants.open);
+      } else {
+        gsap
+          .timeline()
+          .to(menuRef.current, MenuAnimationVariants.closed)
+          .set(menuRef.current, { display: "none" });
+      }
+    },
+    { dependencies: [isOpen] }
+  );
 
   return (
     <div ref={menuRef} className={`mobile-menu__container mob-menu`}>
@@ -69,15 +85,21 @@ const MobileMenu = () => {
               className={`extra-menu__item ${
                 menu?.isPromotional ? "promotional" : ""
               } mobile-menu__item`}
+              onClick={closeMenu}
             >
-              <Link href={menu.path}>{menu.title}</Link>
+              <ActiveLink rout={menu.path}>{menu.title}</ActiveLink>
             </li>
           ))}
         </ul>
         <NavBar isMobileMenuOpen={true} />
       </div>
-      <UserNavLink isMobileMenuOpen={true} />
-      <LocaleMenu />
+      <UserNavLink isMobileMenuOpen={true} closeMenu={closeMenu} />
+      <div
+        style={{ display: "flex", alignItems: "center", paddingLeft: "16px" }}
+      >
+        <ThemeSwitcher />
+        <LocaleMenu />
+      </div>
     </div>
   );
 };

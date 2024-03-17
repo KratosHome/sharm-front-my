@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 import MobileMenu from "../../Navigation/MobileMenu/MobileMenu";
@@ -13,6 +14,7 @@ import LogoSvg from "@/components/svg/LogoSvg";
 import "./MainHeader.scss";
 
 const MainHeader = () => {
+  const pathname = usePathname();
   const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   const menuToggle = () => {
@@ -26,10 +28,10 @@ const MainHeader = () => {
         <button type="button" className="burger-menu-btn" onClick={menuToggle}>
           {isOpenMenu ? <CloseSvg /> : <BurgerMenuSvg />}
         </button>
-        {isOpenMenu && <MobileMenu />}
+        <MobileMenu isOpen={isOpenMenu} closeMenu={menuToggle} />
       </div>
 
-      <Link href="/" className="logo--header">
+      <Link href={pathname.substring(1, 4)} className="logo--header">
         <LogoSvg />
       </Link>
       {!isOpenMenu && <UserNavLink />}

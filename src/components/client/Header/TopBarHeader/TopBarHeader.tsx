@@ -7,6 +7,8 @@ import PhoneSvg from "@/components/svg/PhoneSvg";
 import { topBarLinks } from "@/mokData/navLinksData";
 
 import "./TopBarHeader.scss";
+import { ActiveLink } from "@/components/UI/ActiveLink/ActivLink";
+import ThemeSwitcher from "@/components/general/ThemeSwitcher/ThemeSwitcher";
 
 const TopBarHeader = () => {
   return (
@@ -28,11 +30,19 @@ const TopBarHeader = () => {
               menu?.isPromotional ? "promotional" : ""
             }`}
           >
-            <Link href={menu.path}>{menu.title}</Link>
+            <ActiveLink rout={menu.path}>{menu.title}</ActiveLink>
           </li>
         ))}
       </ul>
-      <LocaleMenu />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <ThemeSwitcher />
+        <LocaleMenu />
+      </div>
     </div>
   );
 };

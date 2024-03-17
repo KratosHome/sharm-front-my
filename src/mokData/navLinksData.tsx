@@ -8,11 +8,12 @@ import UserSvg from "@/components/svg/UserSvg";
 export const navLink = [
   {
     title: "Люкс",
-    path: "/",
+    path: "#",
     child: [
-      { title: "Шампунь", path: "#", child: [] },
+      { title: "Шампунь", path: "?pad=dwd", child: [] },
       { title: "Бальзам для волосся", path: "#", child: [] },
     ],
+    isLuxe: true,
   },
   {
     title: "Бренди",
@@ -128,6 +129,11 @@ export const userNav = [
   {
     title: "Пошук",
     icon: <SearchSvg />,
+    path: "#",
+  },
+  {
+    title: "Мій список бажань",
+    icon: <HeartSvg />,
     path: "#",
   },
   {

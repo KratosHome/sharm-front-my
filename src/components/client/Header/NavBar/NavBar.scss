@@ -8,14 +8,13 @@
     padding: 0 16px;
 
     @media screen and (min-width: 768px) {
-        position: relative;
 
         display: flex;
         justify-content: space-between;
         flex-wrap: wrap;
 
-        color: var(--svg-hover-pagintaion);
-        padding: 30px 0;
+        color: var(--text-color);
+        padding: 15px 0;
     }
 
     .nav-bar__item--main {
@@ -24,9 +23,22 @@
 
         text-transform: uppercase;
 
-        &:hover,
-        &.focused {
-            background: linear-gradient(to bottom, transparent 50%, rgba(229, 100, 102, 0.5) 50%);
+        &>a {
+            background-image: linear-gradient(to bottom, transparent 50%, rgba(229, 100, 102, 0.5) 50%);
+            background-repeat: no-repeat;
+            background-size: 0%;
+            background-position: left;
+            transition: background-size 0.5s ease-out;
+        }
+
+        &>* svg {
+            transition: fill 0.5s ease-out;
+        }
+
+        &:hover {
+            &>a {
+                background-size: 100%;
+            }
 
             &>* svg {
                 fill: var(--primary-red);
@@ -35,26 +47,58 @@
 
         @media screen and (min-width: 768px) {
             display: inline-block;
-            background: none;
-            color: var(--svg-hover-pagintaion);
+            color: var(--text-color);
 
             text-transform: initial;
 
-            padding: 10px 12px;
+            &>a {
+                display: inline-block;
+                padding: 10px 12px;
+            }
 
-            &.active {
-                display: inline-flex;
+            &.luxe {
+                background-image: none;
 
-                gap: 6px;
+                &>a {
+                    font-size: 16px;
+                    font-weight: 600;
 
-                color: var(--primary-red);
-                text-transform: uppercase;
+                    display: inline-flex;
 
-                padding-left: 6px;
-                padding-right: 6px;
+                    gap: 6px;
 
+                    color: var(--primary-red);
+                    text-transform: uppercase;
+
+                    padding-left: 6px;
+                    padding-right: 6px;
+                    padding: 10px 12px;
+
+                    transition: color 0.5s ease-out, background-color 0.5s ease-out;
+
+                    &:hover,
+                    &:focus {
+                        color: var(--text-color-light);
+                        background-color: var(--primary-red);
+                    }
+                }
+
+                cursor: pointer;
+            }
+
+            &.focused {
+                &>a {
+                    background-size: 100%;
+                }
+
+                &.luxe>a {
+                    color: var(--text-color-light);
+                    background-color: var(--primary-red);
+                }
             }
         }
+
+
     }
 
     .sub-menu__btn {
@@ -70,9 +114,17 @@
 
         cursor: pointer;
 
+        &>svg {
+            transition: transform 0.5s ease-out;
+        }
+
         &--open {
-            text-align: start;
-            transform: rotate(180deg);
+
+            &>svg {
+                text-align: start;
+                transform: rotate(180deg);
+                fill: var(--primary-red);
+            }
         }
     }
 

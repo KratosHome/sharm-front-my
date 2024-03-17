@@ -3,12 +3,14 @@ import Link from "next/link";
 import { userNav, userNavOpen } from "@/mokData/navLinksData";
 
 import "./UserNav.scss";
+import { ActiveLink } from "@/components/UI/ActiveLink/ActivLink";
 
 interface UserNavProps {
   isMobileMenuOpen?: boolean;
+  closeMenu?: () => void;
 }
 
-const UserNav = ({ isMobileMenuOpen }: UserNavProps) => {
+const UserNav = ({ isMobileMenuOpen, closeMenu }: UserNavProps) => {
   return (
     <ul
       className={isMobileMenuOpen ? "user-nav__list--open" : "user-nav__list"}
@@ -18,11 +20,12 @@ const UserNav = ({ isMobileMenuOpen }: UserNavProps) => {
             <li
               key={menu.title}
               className="user-nav__item--open  mobile-menu__item"
+              onClick={closeMenu}
             >
-              <Link href={menu.path}>
+              <ActiveLink rout={menu.path}>
                 {menu.icon}
                 {menu.title}
-              </Link>
+              </ActiveLink>
               {menu.path.startsWith("tel:") && (
                 <button type="button" className="phone-btn">
                   Замовити дзвінок
@@ -36,7 +39,7 @@ const UserNav = ({ isMobileMenuOpen }: UserNavProps) => {
                 key={menu.title}
                 className={`user-nav__item ${
                   menu.title === "Пошук" && "mobile-only"
-                }`}
+                } ${menu.title === "Мій список бажань" && "desktop-only"}`}
               >
                 <Link href={menu.path}>{menu.icon}</Link>
               </li>

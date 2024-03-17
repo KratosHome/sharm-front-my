@@ -7,30 +7,27 @@
 
     @media screen and (min-width: 768px) {
         position: absolute;
-        bottom: 0;
+        bottom: 1px;
         left: 0;
         right: 0;
 
         transform: translateY(100%);
 
-        grid-template-columns: repeat(4, minmax(200px, 1fr));
-        gap: 1rem;
+        grid-template-columns: repeat(4, minmax(166px, 1fr));
 
-        padding: 10px 0;
+        padding: 10px 70px;
         background-color: var(--text-color-light);
 
         border-top: 1px solid var(--placeholder);
-
-
     }
 
     .sub-nav__item {
         font-weight: 400;
 
-        &>a:hover,
-        &>a:focus {
-            color: var(--stoke);
+        &>a {
+            background-color: var(--text-color);
         }
+
 
         @media screen and (min-width: 768px) {
             &>a {

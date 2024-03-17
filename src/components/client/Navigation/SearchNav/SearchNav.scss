@@ -21,7 +21,7 @@
     &__input {
         width: 100%;
         border: none;
-        border-bottom: 1px solid var(--svg-colot-pagination);
+        border-bottom: 1px solid var(--border-buttom-pagintaion);
 
         font-family: Roboto;
         font-size: 14px;
@@ -29,8 +29,8 @@
 
         padding: 10px 20px 10px 43px;
 
-        background-color: var(--svg-colot-pagination);
-        color: var(--svg-hover-pagintaion);
+        background-color: var(--border-buttom-pagintaion);
+        color: var(--text-color);
 
         &::placeholder {
             color: var(--placeholder);
@@ -40,7 +40,7 @@
             outline: none;
 
             +.search__icon>svg {
-                stroke: var(--svg-hover-pagintaion);
+                stroke: var(--text-color);
             }
         }
 

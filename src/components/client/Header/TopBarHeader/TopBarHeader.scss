@@ -7,6 +7,21 @@
 
 
     .top-bar__phone {
+        // .active-link {
+        //         background-color: var(--text-color);
+        //         background-image: linear-gradient(to right, #E56466 50%, transparent 50%);
+        //         background-size: 200% 100%;
+        //         background-position: right;
+
+        //         -webkit-background-clip: text;
+        //         -webkit-text-fill-color: transparent;
+
+        //         transition: background-position 0.5s ease-out;
+
+        //         &:hover {
+        //             background-position: left;
+        //         }
+        //     }
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -26,12 +41,29 @@
 
             height: 22px;
 
-            &:hover,
-            &:focus {
-                color: var(--stoke);
+            background-color: var(--placeholder);
+            background-image: linear-gradient(to right, var(--primary-red-hover) 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right;
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+
+            transition: background-position 0.5s ease-out;
+
+            &>svg {
+                height: 22px;
+                width: 22px;
+
+                stroke: var(--placeholder);
+                transition: stroke 0.5s ease-out;
+            }
+
+            &:hover {
+                background-position: left;
 
                 &>svg {
-                    stroke: var(--stoke);
+                    stroke: var(--primary-red-hover);
                 }
             }
         }
@@ -39,9 +71,13 @@
         &>.phone-btn {
             color: var(--svg-hover-pagintaion);
 
+            cursor: pointer;
+
+            transition: color 0.5s ease-out;
+
             &:hover,
             &:focus {
-                color: var(--stoke);
+                color: var(--primary-red-hover);
             }
         }
 
@@ -61,17 +97,13 @@
         font-size: 14px;
         line-height: 1.5;
 
-        &>a:hover,
-        &>a:focus {
-            color: var(--stoke);
+        &>a {
+            background-color: var(--placeholder);
+            background-image: linear-gradient(to right, var(--primary-red-hover) 50%, transparent 50%);
+        }
+
+        &.promotional>a {
+            background-color: var(--primary-red);
         }
     }
-
-
-
-    .promotional {
-        color: var(--primary-red);
-    }
-
-
 }

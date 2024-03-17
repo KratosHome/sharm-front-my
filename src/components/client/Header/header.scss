@@ -4,9 +4,11 @@
   right: 0;
   top: 0;
   z-index: 10000;
+
+
   display: flex;
   flex-direction: column;
-  background: white;
+  background-color: white;
 
   @media screen and (min-width: 768px) {
     padding: 0 70px;
@@ -31,5 +33,17 @@
     li {
       list-style: none;
     }
+  }
+
+  .sticky-header {
+    // display: none;
+    // max-height: 0;
+    // overflow: hidden;
+    // transition: ease 0.4s;
+
+    // &--scrolled {
+    //   max-height: 100%;
+    //   overflow: visible;
+    // }
   }
 }
