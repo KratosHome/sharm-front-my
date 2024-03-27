@@ -1,0 +1,50 @@
+.locale-menu {
+    display: flex;
+    gap: 16px;
+
+    padding: 12px 16px;
+
+    @media screen and (min-width: 768px) {
+        gap: 8px;
+        padding: 12px 0px 8px;
+    }
+
+    &__btn {
+        font-family: Roboto;
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.5;
+        text-transform: uppercase;
+
+        width: 60px;
+        height: 40px;
+
+        color: inherit;
+        background-color: transparent;
+
+        border-radius: 4px;
+        border: 1px solid var(--svg-hover-pagintaion);
+
+        cursor: pointer;
+
+        &:hover {
+            color: var(--stoke);
+            border: 1px solid var(--stoke);
+            stroke: var(--stoke)
+        }
+
+        @media screen and (min-width: 768px) {
+            font-size: 14px;
+
+            width: 40px;
+            height: 42px;
+
+            border: none;
+
+            &:hover {
+                color: var(--stoke);
+                border: none;
+            }
+        }
+    }
+}
