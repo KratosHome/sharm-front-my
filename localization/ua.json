@@ -1,5 +1,14 @@
 {
   "Index": {
     "title": "привіт світ"
+  },
+  "Menu": {
+    "confirmation_message": "Ви впевнені?",
+    "required_field_error": "Це поле обов'язкове до заповнення",
+    "input_value_repeat_error": "Це значення вже використовується",
+
+    "create_menu": "Створити меню",
+    "create_category": "Створити категорію",
+    "nothing_here": "Тут ще нічого немає."
   }
 }

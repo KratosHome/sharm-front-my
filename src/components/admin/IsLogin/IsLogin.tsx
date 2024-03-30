@@ -11,7 +11,6 @@ const IsLogin: React.FC<IsLoginProps> = ({children}) => {
     const cookieStore = cookies()
     let role = cookieStore.get("logIn")
 
-    // admin, consultant, manager,
     return (
         <div>
             {role?.value === "true" ?

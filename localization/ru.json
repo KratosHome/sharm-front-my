@@ -1,0 +1,14 @@
+{
+  "Index": {
+    "title": "привет мир"
+  },
+  "Menu": {
+    "confirmation_message": "Вы уверенны?",
+    "required_field_error": "Это поле обязательно для заполнения",
+    "input_value_repeat_error": "Это значение уже используется",
+
+    "create_menu": "Создать меню",
+    "create_category": "Создать категорию",
+    "nothing_here": "Здесь еще ничего нет."
+  }
+}

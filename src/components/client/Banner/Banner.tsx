@@ -1,15 +1,14 @@
 "use client";
 import React, {FC, useEffect, useRef, useState} from "react";
-import "./Banner.scss";
+import "./banner.scss";
 import {gsap, Power3} from "gsap";
 import {useGSAP} from "@gsap/react";
 import Draggable from "gsap/Draggable";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import {BannerItem} from "@/mokData/bannerData";
 import {Arrow} from "@/components/general/svg/Arrow";
-import {useRouter} from "next/navigation";
-import Image from "next/legacy/image";
 import Link from "next/link";
+import Image from "next/image";
 
 gsap.registerPlugin(Draggable);
 
@@ -20,7 +19,6 @@ interface BannerProps {
 }
 
 const Banner: FC<BannerProps> = ({data}) => {
-    const router = useRouter();
     let imageList = useRef<HTMLUListElement | null>(null);
     let dotsContainer = useRef<HTMLDivElement | null>(null);
 
@@ -41,7 +39,9 @@ const Banner: FC<BannerProps> = ({data}) => {
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [offset, data.length, autoPlayEnabled]);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [offset, autoPlayEnabled]);
 
     const handleMouseEnter = () => {
         setAutoPlayEnabled(false);
@@ -61,7 +61,7 @@ const Banner: FC<BannerProps> = ({data}) => {
                 duration: 1,
             });
         });
-    }, [offset]);
+    }, {dependencies: [offset]});
 
     const handleArrowClick = (direction: "next" | "prev") => {
         setAutoPlayEnabled(false);
@@ -72,7 +72,6 @@ const Banner: FC<BannerProps> = ({data}) => {
             );
         });
     };
-
     const handleDotClick = (index: number) => {
         setAutoPlayEnabled(false);
         setOffset(index);
@@ -115,23 +114,17 @@ const Banner: FC<BannerProps> = ({data}) => {
             delay: 0.7,
         });
 
-        gsap.from(".banner-image", {
-            scale: 1,
-            ease: Power3.easeOut,
-            duration: 1,
-            delay: 1,
-        });
-
         gsap.to(".banner-cover", {
-            css: {
-                display: "none",
-            },
-            duration: 0,
-            delay: 2.2,
+            display: "none",
+            duration: 1,
+            delay: 0.7,
         });
+    })
+
+    useGSAP(() => {
 
         gsap.fromTo(
-            ".banner-overlay",
+            ".banner-button",
             {
                 y: "-100%",
                 ease: Power3.easeOut,
@@ -145,24 +138,26 @@ const Banner: FC<BannerProps> = ({data}) => {
                 delay: 0.3,
             }
         );
-    }, {dependencies: offset});
+    }, {dependencies: [offset]});
 
     return (
         <div className="container-banner" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <div className="banner-gallery">
                 <div className="banner-image">
                     <ul ref={imageList}>
-                        {data.map((item, idx) => (
-                            <li className={offset === idx ? "active" : ""} key={idx}>
+                        {data.map((item) => (
+                            <li key={item.id}>
                                 <Link href={item.link}>
-                                    <img
-                                        className="banner-slide"
-                                        src={item.image}
-                                        alt={item.title}
-                                    />
+                                    <div className="wrapper-img-banner">
+                                        <Image
+                                            src={item.image}
+                                            alt={item.title}
+                                            fill={true}
+                                        />
+                                    </div>
                                     {
                                         item.bottom &&
-                                        <div className="banner-overlay"
+                                        <div className="banner-button"
                                              style={{
                                                  top: `${item.top}%`,
                                                  left: `${item.left}%`,
@@ -199,11 +194,10 @@ const Banner: FC<BannerProps> = ({data}) => {
                     <div className="banner-right"></div>
                 </div>
                 <div className="banner-dots" ref={dotsContainer}>
-                    {data.map((_, index) => (
-                        <div
-                            key={index}
-                            className={`banner-dot ${index === offset ? "active" : ""}`}
-                            onClick={() => handleDotClick(index)}
+                    {data.map((item, index) => (
+                        <div key={item.id}
+                             className={`banner-dot ${index === offset ? "active" : ""}`}
+                             onClick={() => handleDotClick(index)}
                         />
                     ))}
                 </div>
