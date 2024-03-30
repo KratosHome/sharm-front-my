@@ -1,6 +1,6 @@
 "use client";
-import React, { FC, useEffect, useState } from "react";
-import "./MenuItem.scss";
+import React, { FC, useState } from "react";
+import "./CategoryItem.scss";
 import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import { deleteAction } from "@/actions/deleteAction";
@@ -10,18 +10,25 @@ import MyModal from "@/components/UI/MyModal/MyModal";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useLocale, useTranslations } from "next-intl";
 
-interface MenuItemProps {
+interface CategoryItemProps {
   parentId: string;
-  menu: any;
+  category: any;
   setVisible?: (visible: boolean) => void;
 }
 
 type FormData = {
   name_input: string;
-  url_input: string;
+  descr_input: string;
+  mTitle_input: string;
+  mKey_input: string;
+  mDescr_input: string;
 };
 
-const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
+const CategoryItem: FC<CategoryItemProps> = ({
+  parentId,
+  category,
+  setVisible,
+}) => {
   const router = useRouter();
   const locale = useLocale();
   const [confirmationModalVisible, setConfirmationModalVisible] =
@@ -30,34 +37,36 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
     "submit"
   );
   const t = useTranslations("Menu");
-  if (!setVisible) {
-    return null;
-  }
   const {
     handleSubmit,
     register,
     formState: { errors, isValid },
     watch,
   } = useForm<FormData>();
-
+  if (!setVisible) {
+    return null;
+  }
   const deleteHandler = () => {
-    deleteAction("menu", menu.id).then((_) => router.refresh());
+    deleteAction("categories", category.id).then((_) => router.refresh());
     setVisible(false);
     router.refresh();
   };
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    const updatedMenu = {
-      icons: menu.icons,
+    const updatedCategory = {
+      metaImages: category.metaImages,
       parentId: parentId,
       translations: [
         {
           name: data.name_input,
-          url: data.url_input,
+          description: data.descr_input,
+          metaTitle: data.mTitle_input,
+          metaKeywords: data.mKey_input,
+          metaDescription: data.mDescr_input,
         },
       ],
     };
-    postAction("menu", updatedMenu, locale, menu.id)
+    postAction("categories", updatedCategory, locale, category.id)
       .then(() => {
         router.refresh();
       })
@@ -87,7 +96,14 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
       setConfirmationModalVisible(true);
     }
   };
-  const watchedInputs = watch(["name_input", "url_input"]);
+
+  const watchedInputs = watch([
+    "name_input",
+    "descr_input",
+    "mTitle_input",
+    "mKey_input",
+    "mDescr_input",
+  ]);
 
   const isInputValueRepeated = (inputValue: string, _: keyof FormData) => {
     return (
@@ -97,11 +113,11 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   };
 
   return (
-    <div className="container-menu-item">
+    <div className="container-category-item">
       <form onSubmit={handleSubmit(handleError)}>
         <MyInput
           type="text"
-          placeholder={menu?.translations[0].name}
+          placeholder={category && category.translations[0].name}
           {...register("name_input", {
             required: t("required_field_error"),
             validate: (value) =>
@@ -114,16 +130,55 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
         )}
         <MyInput
           type="text"
-          placeholder={menu?.translations[0].url}
-          {...register("url_input", {
+          placeholder={category && category.translations[0].description}
+          {...register("descr_input", {
             required: t("required_field_error"),
             validate: (value) =>
-              !isInputValueRepeated(value, "url_input") ||
+              !isInputValueRepeated(value, "descr_input") ||
               t("input_value_repeat_error"),
           })}
         />
-        {errors.url_input && (
-          <p className="error-message">{errors.url_input.message}</p>
+        {errors.descr_input && (
+          <p className="error-message">{errors.descr_input.message}</p>
+        )}
+        <MyInput
+          type="text"
+          placeholder={category && category.translations[0].metaTitle}
+          {...register("mTitle_input", {
+            required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "mTitle_input") ||
+              t("input_value_repeat_error"),
+          })}
+        />
+        {errors.mTitle_input && (
+          <p className="error-message">{errors.mTitle_input.message}</p>
+        )}
+        <MyInput
+          type="text"
+          placeholder={category && category.translations[0].metaKeywords}
+          {...register("mDescr_input", {
+            required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "mDescr_input") ||
+              t("input_value_repeat_error"),
+          })}
+        />
+        {errors.mDescr_input && (
+          <p className="error-message">{errors.mDescr_input.message}</p>
+        )}
+        <MyInput
+          type="text"
+          placeholder={category && category.translations[0].metaDescription}
+          {...register("mKey_input", {
+            required: t("required_field_error"),
+            validate: (value) =>
+              !isInputValueRepeated(value, "mKey_input") ||
+              t("input_value_repeat_error"),
+          })}
+        />
+        {errors.mKey_input && (
+          <p className="error-message">{errors.mKey_input.message}</p>
         )}
         <MyBtn text="submit" color="primary" type="submit" />
         <MyBtn
@@ -156,4 +211,4 @@ const MenuItem: FC<MenuItemProps> = ({ parentId, menu, setVisible }) => {
   );
 };
 
-export default MenuItem;
+export default CategoryItem;

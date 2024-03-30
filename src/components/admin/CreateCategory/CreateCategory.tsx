@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import "./CreateMenu.scss";
+import React, { FC, FormEvent } from "react";
+import "./CreateCategory.scss";
 import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import { Line } from "@/components/UI/Line/Line";
@@ -7,9 +7,8 @@ import { postAction } from "@/actions/postAction";
 import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useTranslations } from "next-intl";
-import { InputField } from "../CreateCategory/CreateCategory";
 
-interface CreateMenuProps {
+interface CreateCategoryProps {
   parentId: string | null;
   setVisible: (visible: boolean) => void;
 }
@@ -17,7 +16,19 @@ interface CreateMenuProps {
 type FormData = {
   [key: string]: string;
 };
-const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
+interface Placeholder {
+  ua: string;
+  ru: string;
+  en: string;
+}
+
+export interface InputField {
+  name: string;
+  placeholder: Placeholder;
+  languages: string[];
+}
+
+const CreateCategory: FC<CreateCategoryProps> = ({ parentId, setVisible }) => {
   const router = useRouter();
   const t = useTranslations("Menu");
   const {
@@ -34,8 +45,23 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
       languages: ["ua", "ru", "en"],
     },
     {
-      name: "url",
-      placeholder: { ua: "посилання", ru: "ссылка", en: "link" },
+      name: "descr",
+      placeholder: { ua: "опис", ru: "описание", en: "description" },
+      languages: ["ua", "ru", "en"],
+    },
+    {
+      name: "mTitle",
+      placeholder: { ua: "заголовок", ru: "заголовок", en: "title" },
+      languages: ["ua", "ru", "en"],
+    },
+    {
+      name: "mKey",
+      placeholder: { ua: "ключ", ru: "ключ", en: "key" },
+      languages: ["ua", "ru", "en"],
+    },
+    {
+      name: "mDescr",
+      placeholder: { ua: "опис", ru: "описание", en: "description" },
       languages: ["ua", "ru", "en"],
     },
   ];
@@ -45,27 +71,27 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
     for (const lang of ["ua", "ru", "en"]) {
       translations.push({
         name: data[`name_${lang}`],
-        url: data[`url_${lang}`],
+        description: data[`descr_${lang}`],
+        metaTitle: data[`mTitle_${lang}`],
+        metaKeywords: data[`mKey_${lang}`],
+        metaDescription: data[`mDescr_${lang}`],
         lang: lang,
       });
     }
     const requestData = {
       parentId: parentId,
-      icons: "1",
+      metaImages: "145",
       translations: translations,
     };
-    postAction("menu", requestData)
+    postAction("categories", requestData)
       .then(() => {
-        console.log("CreateMenu postAction then block");
-        setVisible(false);
-
         router.refresh();
+        setVisible(false);
       })
       .catch((error) => {
         console.error("Error submitting form:", error);
       });
   };
-
   const watchedInputsArrey: string[] = [];
   for (const field of inputFields) {
     for (const lang of field.languages) {
@@ -79,14 +105,16 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
         .length > 1
     );
   };
+
   const handleError = () => {
     if (isValid) {
       handleSubmit(onSubmit)();
     }
     return;
   };
+
   return (
-    <div className="container-create-menu">
+    <div className="container-create-category">
       <form onSubmit={handleSubmit(handleError)}>
         {inputFields.map((field, index) => (
           <div key={index}>
@@ -117,5 +145,4 @@ const CreateMenu: FC<CreateMenuProps> = ({ parentId, setVisible }) => {
     </div>
   );
 };
-
-export default CreateMenu;
+export default CreateCategory;
