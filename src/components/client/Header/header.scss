@@ -9,6 +9,7 @@
   display: flex;
   flex-direction: column;
   background-color: white;
+  height: fit-content;
 
   @media screen and (min-width: 768px) {
     padding: 0 70px;
@@ -36,7 +37,7 @@
   }
 
   .sticky-header {
-    // display: none;
+    display: none;
     // max-height: 0;
     // overflow: hidden;
     // transition: ease 0.4s;
@@ -45,5 +46,30 @@
     //   max-height: 100%;
     //   overflow: visible;
     // }
+
+
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    &>.logo--header {
+      &>svg {
+        height: 32px;
+      }
+    }
+
+    &>.user-nav__list {
+      gap: 6px
+    }
+
+    &>.nav-bar__list {
+      padding: 6px 0;
+
+      &>.nav-bar__item>.sub-nav__list {
+        width: 100vw;
+        left: -70px;
+      }
+    }
   }
 }

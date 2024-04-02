@@ -1,9 +1,6 @@
 "use client";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import React, { useState } from "react";
-
-import { cleanPathname } from "@/utils/cleanPathname";
 
 import SubNav from "../../Navigation/SubNav/SubNav";
 
@@ -18,7 +15,7 @@ const NavBar = ({ isMobileMenuOpen = false }) => {
     [key: number]: boolean;
   }>({});
 
-  const subMenuToggle = (index: number) => {
+  const subMenuToggle = (index?: number) => {
     const newSubMenuState: {
       [key: number]: boolean;
     } = {};
@@ -27,14 +24,17 @@ const NavBar = ({ isMobileMenuOpen = false }) => {
       newSubMenuState[i] = false;
     }
 
-    newSubMenuState[index] = true;
+    if (typeof index !== "undefined") {
+      newSubMenuState[index] = true;
+    }
+
     setIsOpenSubMenu(newSubMenuState);
   };
 
   return (
     <ul
       className={`nav-bar__list ${isMobileMenuOpen ? "open" : "desktop-only"}`}
-      onMouseLeave={() => !isMobileMenuOpen && setIsOpenSubMenu({})}
+      onMouseLeave={() => !isMobileMenuOpen && subMenuToggle()}
     >
       {navLink.map((menu, index) => {
         return (

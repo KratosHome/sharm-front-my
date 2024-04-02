@@ -94,6 +94,51 @@
                 &.luxe>a {
                     color: var(--text-color-light);
                     background-color: var(--primary-red);
+
+                    //borders
+                    position: relative;
+                    overflow: hidden;
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid transparent;
+                        border-radius: inherit;
+                        animation: pulse 5s infinite;
+                    }
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid transparent;
+                        border-radius: inherit;
+                        animation: pulse 5s infinite;
+                    }
+
+                    @keyframes pulse {
+                        0% {
+                            border-color: #ff0000;
+
+                        }
+
+                        50% {
+                            border-color: var(--light-red);
+                        }
+
+                        100% {
+                            border-color: #ff0000;
+                        }
+                    }
+
                 }
             }
         }
