@@ -44,7 +44,7 @@ const Header = () => {
           header.current,
           {
             height: Number(headerWidth) >= 768 ? 0 : 62,
-            overflow: "hidden",
+            overflow: Number(headerWidth) >= 768 ? "hidden" : "visible",
           },
           "header"
         )
