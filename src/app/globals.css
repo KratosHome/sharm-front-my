@@ -11,7 +11,7 @@ a {
 
 :root {
   --index: calc(1vw + 1vh);
-  background-color: #ffffff;
+  --background-color: #ffffff;
   --background-color-dark: #cfcfd5;
   --text-color: #363636;
   --svg-img: brightness(0);
