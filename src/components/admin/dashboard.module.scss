@@ -1,0 +1,15 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+}
+
+.menu {
+  width: 180px;
+  background-color: lightgrey;
+  padding: 20px;
+}
+
+.content {
+  flex: 4;
+  padding: 20px;
+}

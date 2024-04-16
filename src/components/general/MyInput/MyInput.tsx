@@ -18,10 +18,12 @@ interface MyInputProps extends InputHTMLAttributes<HTMLInputElement> {
   isPhone?: boolean;
   error?: string | any;
   register?: any;
+  defaultValue?: any;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   name?: string;
 }
 
+// eslint-disable-next-line react/display-name
 const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
   (
     {
@@ -34,10 +36,12 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
       register,
       onChange,
       name,
+      
       ...props
     },
     ref
   ) => {
+    MyInput.displayName = "MyInput";
     const errorRef = useRef<HTMLDivElement>(null);
     const inputId = `input-${placeholder?.replace(/\s+/g, "-").toLowerCase()}`;
 
@@ -81,7 +85,8 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
     }, [error]);
 
     return (
-      <div className="container-my-input">
+      <div className={`container-my-input ${type === 'checkbox' && 'checkbox-style'}`}>
+
         {label ? (
           <label htmlFor={inputId}>
             {label}
@@ -90,8 +95,9 @@ const MyInput: FC<MyInputProps> = forwardRef<HTMLInputElement, MyInputProps>(
         ) : null}
         <input
           ref={ref}
+          defaultValue={props.defaultValue || ""}
           value={isPhone ? input : undefined}
-          onChange={isPhone ? handleInput : undefined}
+          onChange={isPhone ? handleInput : onChange || undefined}
           onFocus={isPhone ? handleFocus : undefined}
           id={inputId}
           name={name}

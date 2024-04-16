@@ -1,10 +1,10 @@
 import { cookies } from "next/headers";
 
-export const getAction = async (url: string, page?: string, limit?: string) => {
+export const getAction = async (url: string, page?: string, limit?: string, params?: string) => {
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const token = cookies().get("token");
 
-  return fetch(`${baseURL}/api/${url}?page=${page}&limit=${limit}`, {
+  return fetch(`${baseURL}/api/${url}?page=${page}&limit=${limit}&${params}`, {
     method: "GET",
     headers: {
       Authorization: `Bearer ${token?.value}`,
@@ -16,7 +16,7 @@ export const getAction = async (url: string, page?: string, limit?: string) => {
       return response.json();
     })
     .then((data) => {
-      console.log("Server response:", data);
+      // console.log("Server response:", data);
       return data;
     })
     .catch((error) => {
