@@ -102,7 +102,7 @@ const SingleProductComponent: FC = () => {
     console.log('Submitted Data:', data);
     sendRequest(apiEndpoint, method, data)
       .then(response => {
-        if (response.data.ok) {
+        if (response.data) {
           router.push('products');
       } else {
         throw new Error(`Failed to ${productData ? 'update' : 'create'} product`);

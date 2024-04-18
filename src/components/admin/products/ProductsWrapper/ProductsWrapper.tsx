@@ -34,15 +34,8 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
     return <p>Немає продуктів для відображення.</p>;
   }
 
-  // Add router
   const editProduct = (id: string) => {
     router.push(`products/${id}`);
-  //   console.log(id)
-  //   sendRequest(`products/${locale}/${id}`, 'GET')
-  //     .then((res) => {
-  //       setOpenModal(!openModal);
-  //       console.log(res.data)
-  //     })
   }
 
   const columns = [
@@ -92,7 +85,6 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
       id: 'edit',
       headerName: 'Edit',
       width: 120,
-      // Open edit product page route
       render: (item: any) => <MyBtn text={"Edit"} color={"attention"} click={() => editProduct(item.id)}/>,
     },
     {
