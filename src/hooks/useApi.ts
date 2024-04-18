@@ -11,7 +11,7 @@ export const useApi = <T = any>() => {
     const baseURL = process.env.NEXT_PUBLIC_API_URL;
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const sendRequest = (endpoint: string, method: 'GET' | 'POST' | 'DELETE', data?: any): Promise<ApiResponse<T>> => {
+    const sendRequest = (endpoint: string, method: 'GET' | 'POST' | 'DELETE' | 'PATCH', data?: any): Promise<ApiResponse<T>> => {
         setLoading(true);
         setError(null);
         const url = `${baseURL}/api/${endpoint}`;

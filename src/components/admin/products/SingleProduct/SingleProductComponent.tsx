@@ -1,14 +1,16 @@
 'use client';
-import React from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
+import { useLocale } from "next-intl";
 import MyInput from '@/components/general/MyInput/MyInput';
 import MyBtn from '@/components/UI/MyBtn/MyBtn';
 import { useApi } from '@/hooks/useApi';
 
-import styles from './CreateProductComponent.module.scss';
+import styles from './SingleProductComponent.module.scss';
 
 interface ProductState {
+  id?: string;
   isLux: boolean;
   img: string;
   url: string;
@@ -37,22 +39,50 @@ interface Translation {
   metaDescription: string;
 }
 
+interface ApiResponse<T> {
+  ok: boolean; 
+  data?: T;
+  error?: string;
+}
+
+const defaultProduct: ProductState = {
+  isLux: false,
+  img: '',
+  url: '',
+  items: [],
+  translations: [],
+}
+
 const Translation = { lang: 'en', title: '', subTitle: '', description: '', shortDescription: '', metaTitle: '', metaKeywords: '', metaDescription: '' };
 
 const Item = { name: '', sku: '', prise: '', oldPrise: '', count: '', color: '', img: '' };
 
-const CreateProductComponent: React.FC = () => {
+const SingleProductComponent: FC = () => {
   const router = useRouter();
+  const locale = useLocale();
   const { sendRequest } = useApi();
-  const { control, register, handleSubmit, watch, formState: { errors } } = useForm<ProductState>({
-    defaultValues: {
-      isLux: false,
-      img: '',
-      url: '',
-      items: [],
-      translations: [],
-    }
+  const [productData, setProductData] = useState<ProductState | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<ProductState>({
+    defaultValues: productData || defaultProduct,
   });
+
+  useEffect(() => {
+    if (router.isReady) {
+      const productId = router.query.productId as string;
+      if (productId) {
+        sendRequest(`products/${locale}/${productId}`, 'GET')
+          .then(response => {
+              setProductData(response.data);
+              reset(response.data);
+          })
+          .catch(err => {
+            console.error('Error fetching product data:', err);
+            setError(err.message || 'Failed to fetch product data');
+          });
+      }
+    }
+  }, [router.isReady, router.query.productId, locale, sendRequest, reset]);
 
   const { fields: itemFields, append: appendItem } = useFieldArray<any>({
     control,
@@ -65,17 +95,27 @@ const CreateProductComponent: React.FC = () => {
   });
 
   const onSubmit = (data: any) => {
+    const apiEndpoint = productData ? `products/${locale}/${productData.id}` : 'products';
+    const method = productData ? 'PATCH' : 'POST';
+
+
     console.log('Submitted Data:', data);
-    sendRequest('products', 'POST', data)
+    sendRequest(apiEndpoint, method, data)
       .then(response => {
-        if (response.data) {
+        if (response.data.ok) {
           router.push('products');
-        }
-      });
+      } else {
+        throw new Error(`Failed to ${productData ? 'update' : 'create'} product`);
+      }
+    })
+    .catch(err => {
+      setError(err.message);
+    });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      {error && <div className={styles.error}>{error}</div>}
       <section className={styles.section}>
         <h3 className={styles.title}>Main fields</h3>
         <MyInput type="checkbox" label="Luxury" {...register('isLux')} />
@@ -101,7 +141,10 @@ const CreateProductComponent: React.FC = () => {
             <MyInput type="text" label="Meta Description" {...register(`translations.${index}.metaDescription`)} />
           </div>
         ))}
-        <MyBtn text="Add translation" color="primary" click={() => appendTranslation(Translation)} type="button" />
+        { !productData && 
+          <MyBtn text="Add translation" color="primary" click={() => appendTranslation(Translation)} type="button" />
+        }
+        
       </section>
 
       <section className={styles.section}>
@@ -117,12 +160,14 @@ const CreateProductComponent: React.FC = () => {
             <MyInput type="text" label="Image" {...register(`items.${index}.img`)} />
           </div>
         ))}
-        <MyBtn text="Add product" color="primary" click={() => appendItem(Item)} type="button" />
+        { !productData && 
+          <MyBtn text="Add product" color="primary" click={() => appendItem(Item)} type="button" />
+        }
       </section>
 
-      <MyBtn text="Create product" color="primary" type="submit" />
+      <MyBtn text={productData ? "Update Product" : "Create Product"} color="primary" type="submit" />
     </form>
   );
 };
 
-export default CreateProductComponent;
+export default SingleProductComponent;

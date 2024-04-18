@@ -1,11 +1,12 @@
 "use client";
-import React, {FC, useState } from "react";
-import DataTable from "@/components/UI/DataTable/DataTable";
-import MyBtn from "@/components/UI/MyBtn/MyBtn";
+import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { useApi } from "@/hooks/useApi";
 import Link from 'next/link';
 import Image from "next/image";
+import { useApi } from "@/hooks/useApi";
+import DataTable from "@/components/UI/DataTable/DataTable";
+import MyBtn from "@/components/UI/MyBtn/MyBtn";
+
 
 import "./ProductsWrapper.scss";
 
@@ -21,17 +22,27 @@ interface ProductsWrapperProps {
 }
 
 const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
-  console.log(products)
   const router = useRouter();
   const {sendRequest, loading, error} = useApi();
 
-  const deleteProduct = (id: number) => {
+  const deleteProduct = (id: string) => {
     sendRequest(`products/${id}`, 'DELETE', null)
       .then((res) => router.refresh())
   }
 
   if (!products || products?.length === 0) {
     return <p>Немає продуктів для відображення.</p>;
+  }
+
+  // Add router
+  const editProduct = (id: string) => {
+    router.push(`products/${id}`);
+  //   console.log(id)
+  //   sendRequest(`products/${locale}/${id}`, 'GET')
+  //     .then((res) => {
+  //       setOpenModal(!openModal);
+  //       console.log(res.data)
+  //     })
   }
 
   const columns = [
@@ -78,10 +89,11 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
       render: (item: any) => item.saleCount.toString(),
     },
     {
-      id: 'view',
-      headerName: 'View',
+      id: 'edit',
+      headerName: 'Edit',
       width: 120,
-      render: () => <button className="view-product-btn" type="button">View</button>,
+      // Open edit product page route
+      render: (item: any) => <MyBtn text={"Edit"} color={"attention"} click={() => editProduct(item.id)}/>,
     },
     {
       id: 'delete',
@@ -90,6 +102,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
       render: (item: any) => <MyBtn text={"Delete"} color={"attention"} click={() => deleteProduct(item.id)}/>,
     },
   ];
+
 
   return (
     <>

@@ -1,7 +1,6 @@
 import React from "react";
 import ProductsWrapper from "@/components/admin/products/ProductsWrapper/ProductsWrapper";
 import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
-import { productsMock } from '@/mokData/productData'
 import {getAction} from "@/actions/getAction";
 import { useLocale } from "next-intl";
 
