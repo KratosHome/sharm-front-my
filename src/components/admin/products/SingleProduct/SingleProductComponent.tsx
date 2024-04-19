@@ -1,5 +1,5 @@
 'use client';
-import React, { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
