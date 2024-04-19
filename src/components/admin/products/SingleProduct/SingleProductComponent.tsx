@@ -77,7 +77,6 @@ const SingleProductComponent: FC<SingleProductComponentProps> = ({ productId }) 
     const fetchData = async () => {
       try {
         const response = await sendRequest(`products/${locale}/${productId}`, 'GET');
-        console.log(response.data);
         setProductData(response.data);
         reset(response.data);
       } catch (err) {
@@ -102,17 +101,15 @@ const SingleProductComponent: FC<SingleProductComponentProps> = ({ productId }) 
   });
 
   const onSubmit = (data: any) => {
-    const apiEndpoint = productData ? `products/${locale}/${productData.id}` : 'products';
-    const method = productData ? 'PATCH' : 'POST';
+    const apiEndpoint = productId ? `products/${locale}/${productId}` : 'products';
+    const method = productId ? 'PATCH' : 'POST';
 
-
-    console.log('Submitted Data:', data);
     sendRequest(apiEndpoint, method, data)
       .then(response => {
         if (response.data) {
-          router.push('products');
+          router.push(`/${locale}/admin/products`);
       } else {
-        throw new Error(`Failed to ${productData ? 'update' : 'create'} product`);
+        throw new Error(`Failed to ${productId ? 'update' : 'create'} product`);
       }
     })
     .catch(err => {
