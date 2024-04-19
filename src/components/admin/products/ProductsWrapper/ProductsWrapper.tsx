@@ -35,7 +35,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
   }
 
   const editProduct = (id: string) => {
-    router.push(`products/${id}`);
+    router.push(`products/update/${id}`);
   }
 
   const columns = [
@@ -101,7 +101,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
       <div className="products-container">
         <div className="products-title">
           <div className="product-create">
-            <Link href={"create-product"}>
+            <Link href={"products/new-product"}>
               <button className="create-product-btn" type="button">Create product</button>    
             </Link>
           </div>

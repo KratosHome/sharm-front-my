@@ -1,7 +1,7 @@
 'use client';
-import { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useLocale } from "next-intl";
 import MyInput from '@/components/general/MyInput/MyInput';
 import MyBtn from '@/components/UI/MyBtn/MyBtn';
@@ -53,11 +53,15 @@ const defaultProduct: ProductState = {
   translations: [],
 }
 
+interface SingleProductComponentProps {
+  productId?: string;
+}
+
 const Translation = { lang: 'en', title: '', subTitle: '', description: '', shortDescription: '', metaTitle: '', metaKeywords: '', metaDescription: '' };
 
 const Item = { name: '', sku: '', prise: '', oldPrise: '', count: '', color: '', img: '' };
 
-const SingleProductComponent: FC = () => {
+const SingleProductComponent: FC<SingleProductComponentProps> = ({ productId }) => {
   const router = useRouter();
   const locale = useLocale();
   const { sendRequest } = useApi();
@@ -68,21 +72,24 @@ const SingleProductComponent: FC = () => {
   });
 
   useEffect(() => {
-    if (router.isReady) {
-      const productId = router.query.productId as string;
-      if (productId) {
-        sendRequest(`products/${locale}/${productId}`, 'GET')
-          .then(response => {
-              setProductData(response.data);
-              reset(response.data);
-          })
-          .catch(err => {
-            console.error('Error fetching product data:', err);
-            setError(err.message || 'Failed to fetch product data');
-          });
+    if (!productId) return;
+  
+    const fetchData = async () => {
+      try {
+        const response = await sendRequest(`products/${locale}/${productId}`, 'GET');
+        console.log(response.data);
+        setProductData(response.data);
+        reset(response.data);
+      } catch (err) {
+        console.error('Error fetching product data:', err);
+        setError('Failed to fetch product data');
       }
-    }
-  }, [router.isReady, router.query.productId, locale, sendRequest, reset]);
+    };
+  
+    fetchData();
+    // adding reset hook in this case leads to an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId, locale]);
 
   const { fields: itemFields, append: appendItem } = useFieldArray<any>({
     control,
@@ -121,17 +128,19 @@ const SingleProductComponent: FC = () => {
         <MyInput type="checkbox" label="Luxury" {...register('isLux')} />
         <MyInput type="text" label="Image" {...register('img')} />
         <MyInput type="text" label="URL" {...register('url')} />
-      </section>
+      </section> 
 
       <section className={styles.section}>
         <h3 className={styles.title}>Translations</h3>
         {translationFields.map((field, index) => (
           <div className={styles.formTranslations} key={field.id}>
-            <select className={styles.selectTranslation} {...register(`translations.${index}.lang`)}>
-              <option value="en">EN</option>
-              <option value="ua">UA</option>
-              <option value="ru">RU</option>
-            </select>
+            { !productData && 
+              <select className={styles.selectTranslation} {...register(`translations.${index}.lang`)}>
+                <option value="en">EN</option>
+                <option value="ua">UA</option>
+                <option value="ru">RU</option>
+              </select>
+            }
             <MyInput type="text" label="Title" {...register(`translations.${index}.title`)} />
             <MyInput type="text" label="Subtitle" {...register(`translations.${index}.subTitle`)} />
             <MyInput type="text" label="Description" {...register(`translations.${index}.description`)} />

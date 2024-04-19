@@ -1,10 +1,10 @@
 import SingleProductComponent from '@/components/admin/products/SingleProduct/SingleProductComponent';
 
 
-const SingleProductPage = () => {
+const SingleProductPage = async ({params:{ id }}: any) => {
   return (
     <>
-      <SingleProductComponent />
+      <SingleProductComponent productId={id}/>
     </>
   )
 }
