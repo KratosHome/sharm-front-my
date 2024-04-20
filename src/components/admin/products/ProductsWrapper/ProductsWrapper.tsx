@@ -1,5 +1,5 @@
 "use client";
-import { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import Image from "next/image";
@@ -9,6 +9,8 @@ import MyBtn from "@/components/UI/MyBtn/MyBtn";
 
 
 import "./ProductsWrapper.scss";
+import { useLocale } from "next-intl";
+import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
 
 interface Product {
   id: number;
@@ -18,24 +20,47 @@ interface Product {
 }
 
 interface ProductsWrapperProps {
-  products: any;
+  page: any;
 }
 
-const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
+const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
   const router = useRouter();
+  const locale = useLocale();
   const {sendRequest, loading, error} = useApi();
+  const [ products, setProducts ] = useState<Product[]>([]);
+  const [ totalPages, setTotalPages ] = useState(0);
 
-  const deleteProduct = (id: string) => {
-    sendRequest(`products/${id}`, 'DELETE', null)
-      .then((res) => router.refresh())
-  }
+  const limit = "10";
+  const isLux = true;
+  const sort = "desc";
+  const sortOrder = "createdAt";
+  const additionalParams = `?page=${ page }&limit=${ limit }&isLux=${ isLux }&sort=${ sort }&sortOrder=${ sortOrder }`;
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const allProducts = await sendRequest(`products/${ locale }/${ additionalParams }`, 'GET');
+      setProducts(allProducts.data.data);
+      setTotalPages(allProducts.data.totalPages || 0);
+    };
+
+    fetchProducts();
+  }, [ locale ]);
+
+  const deleteProduct = async (id: string) => {
+    try {
+      await sendRequest(`products/${ id }`, 'DELETE');
+      router.refresh();
+    } catch (err) {
+      console.error('Error deleting product:', err);
+    }
+  };
 
   if (!products || products?.length === 0) {
     return <p>Немає продуктів для відображення.</p>;
   }
 
   const editProduct = (id: string) => {
-    router.push(`products/update/${id}`);
+    router.push(`products/update/${ id }`);
   }
 
   const columns = [
@@ -49,7 +74,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
       id: 'image',
       headerName: 'Image',
       width: 100,
-      render: (item: any) => <Image src={item.img} alt="Product" />,
+      render: (item: any) => <Image src={ item.img } alt="Product"/>,
     },
     {
       id: 'name',
@@ -85,39 +110,42 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ products }) => {
       id: 'edit',
       headerName: 'Edit',
       width: 120,
-      render: (item: any) => <MyBtn text={"Edit"} color={"attention"} click={() => editProduct(item.id)}/>,
+      render: (item: any) => <MyBtn text={ "Edit" } color={ "attention" } click={ () => editProduct(item.id) }/>,
     },
     {
       id: 'delete',
       headerName: 'Delete',
       width: 120,
-      render: (item: any) => <MyBtn text={"Delete"} color={"attention"} click={() => deleteProduct(item.id)}/>,
+      render: (item: any) => <MyBtn text={ "Delete" } color={ "attention" } click={ () => deleteProduct(item.id) }/>,
     },
   ];
-
 
   return (
     <>
       <div className="products-container">
         <div className="products-title">
           <div className="product-create">
-            <Link href={"products/new-product"}>
-              <button className="create-product-btn" type="button">Create product</button>    
+            <Link href={ "products/new-product" }>
+              <button className="create-product-btn" type="button">Create product</button>
             </Link>
           </div>
         </div>
 
-        <div className="products-wrapper"> 
+        <div className="products-wrapper">
           <DataTable
-            initialSelectedOptions={columns}
-            columns={columns}
-            data={products?.data || []}
+            initialSelectedOptions={ columns }
+            columns={ columns }
+            data={ products || [] }
           />
         </div>
       </div>
+
+      <PaginationControl
+        totalPages={ totalPages }
+      />
     </>
 
   );
 };
-        
+
 export default ProductsWrapper;
