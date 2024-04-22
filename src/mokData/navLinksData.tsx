@@ -20,6 +20,20 @@ export const navLink = [
     path: "#",
     child: [
       { title: "Бальзам для волосся", path: "#", child: [] },
+      { title: "Шампунь", path: "#", child: [
+        { title: "Бальзам для волосся", path: "#", child: [] },
+        { title: "Шампунь", path: "#", child: [] },
+        { title: "Мус для стайлінгу", path: "#", child: [] },] 
+      },
+      { title: "Мус для стайлінгу", path: "#", child: [] },
+      { title: "Бальзам для волосся", path: "#", child: [] },
+      { title: "Шампунь", path: "#", child: [
+        { title: "Бальзам для волосся", path: "#", child: [] },
+        { title: "Шампунь", path: "#", child: [] },
+        { title: "Мус для стайлінгу", path: "#", child: [] },] 
+      },
+      { title: "Мус для стайлінгу", path: "#", child: [] },
+      { title: "Бальзам для волосся", path: "#", child: [] },
       { title: "Шампунь", path: "#", child: [] },
       { title: "Мус для стайлінгу", path: "#", child: [] },
     ],
@@ -31,15 +45,27 @@ export const navLink = [
       { title: "Спрей для волосся", path: "#", child: [] },
       { title: "Шампунь", path: "#", child: [] },
       { title: "Мус для стайлінгу", path: "#", child: [] },
+      { title: "Бальзам для волосся", path: "#", child: [] },
+      { title: "Шампунь", path: "#", child: [] },
+      { title: "Мус для стайлінгу", path: "#", child: [] },
+      { title: "Бальзам для волосся", path: "#", child: [] },
+      { title: "Шампунь", path: "#", child: [] },
+      { title: "Мус для стайлінгу", path: "#", child: [] },
     ],
   },
   {
     title: "Макіяж",
     path: "#",
     child: [
-      { title: "Бальзам для волосся", path: "#", child: [] },
-      { title: "Шампунь", path: "#", child: [] },
-      { title: "Мус для стайлінгу", path: "#", child: [] },
+      // { title: "Бальзам для волосся", path: "#", child: [] },
+      // { title: "Шампунь", path: "#", child: [] },
+      // { title: "Мус для стайлінгу", path: "#", child: [] },
+      // { title: "Бальзам для волосся", path: "#", child: [] },
+      // { title: "Шампунь", path: "#", child: [] },
+      // { title: "Мус для стайлінгу", path: "#", child: [] },
+      // { title: "Бальзам для волосся", path: "#", child: [] },
+      // { title: "Шампунь", path: "#", child: [] },
+      // { title: "Мус для стайлінгу", path: "#", child: [] },
     ],
   },
   {
@@ -47,6 +73,9 @@ export const navLink = [
     path: "#",
     child: [
       { title: "Спрей для волосся", path: "#", child: [] },
+      { title: "Шампунь", path: "#", child: [] },
+      { title: "Мус для стайлінгу", path: "#", child: [] },
+      { title: "Бальзам для волосся", path: "#", child: [] },
       { title: "Шампунь", path: "#", child: [] },
       { title: "Мус для стайлінгу", path: "#", child: [] },
     ],
@@ -74,6 +103,11 @@ export const navLink = [
     child: [
       { title: "Шампунь", path: "#", child: [] },
       { title: "Бальзам для волосся", path: "#", child: [] },
+      { title: "Шампунь", path: "#", child: [
+        { title: "Бальзам для волосся", path: "#", child: [] },
+        { title: "Шампунь", path: "#", child: [] },
+        { title: "Мус для стайлінгу", path: "#", child: [] },] 
+      },
     ],
   },
 ];
@@ -151,7 +185,7 @@ export const userNav = [
 export const localizationList = [
   {
     title: "UA",
-    name: "uk",
+    name: "ua",
   },
   {
     title: "EN",

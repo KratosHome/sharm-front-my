@@ -2,6 +2,7 @@
     &.open {
         display: grid;
     }
+    position: relative;
 
     gap: 6px;
 
@@ -16,7 +17,7 @@
         color: var(--text-color);
         padding: 15px 0;
     }
-
+    
     .nav-bar__item--main {
         display: grid;
         grid-template-columns: auto 1fr;

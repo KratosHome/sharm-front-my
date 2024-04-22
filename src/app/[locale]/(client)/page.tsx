@@ -12,8 +12,8 @@ export default function Home() {
     <main className="main-container">
       <Banner data={bannerData} />
       <PopularCategories categories={mockCategories} />
-      <FAQ />
       <Testimonials data={testimonialsData} />
+      <FAQ />
       <Footer />
     </main>
   );

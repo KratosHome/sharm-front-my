@@ -1,5 +1,5 @@
 .sub-nav__list {
-    display: grid;
+    display: none;
     gap: 0.25rem;
 
     padding-top: 4px;
@@ -16,14 +16,16 @@
         grid-template-columns: repeat(4, minmax(166px, 1fr));
 
         padding: 10px 70px;
-        background-color: var(--text-color-light);
+        background-color: var(--background-color);
 
         border-top: 1px solid var(--placeholder);
     }
 
     .sub-nav__item {
         font-weight: 400;
-
+        @media screen and (min-width: 1024px) {
+            font-size: 12px;
+        }
         &>a {
             background-color: var(--text-color);
         }

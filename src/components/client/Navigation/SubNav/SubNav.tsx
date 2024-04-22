@@ -26,8 +26,8 @@ const AnimationVariants = {
     y: 0,
     opacity: 1,
     ease: "power4.out",
-    duration: 1,
-    stagger: 0.2,
+    // duration: 1,
+    stagger: 0.15,
   },
   closed: {
     y: 20,
@@ -42,12 +42,13 @@ const SubNavAnimationVariants = {
   open: {
     y: "99%",
     opacity: 1,
-    ease: "power1.out",
-    duration: 1,
+    ease: "power3.out",
+    duration: 0.7,
   },
   closed: {
     opacity: 0,
-    ease: "power1.out",
+    ease: "power3.out",
+    delay: 1,
     duration: 1,
   },
   openMobile: {
@@ -72,7 +73,7 @@ const SubNav = ({
 
   useGSAP(
     () => {
-      if (isOpen) {
+      if (isOpen && navLink.length > 0) {
         gsap
           .timeline()
           .set(subNavRef.current, { display: "grid" })
@@ -119,7 +120,7 @@ const SubNav = ({
     },
     { dependencies: [isOpen] }
   );
-
+ if(!isOpen) return
   return (
     <ul ref={subNavRef} className={`sub-nav__list`}>
       {navLink.map((menu, index) => (

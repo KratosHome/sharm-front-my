@@ -1,12 +1,13 @@
 .container-banner {
   height: 310px;
-  margin: 10px auto;
+  margin:  57px auto 64px;
   position: relative;
 
   @media (min-width: 768px) {
     height: 570px;
     max-width: 1300px;
     width: 100%;
+    margin: 24px auto 60px;
   }
 
   .banner-gallery {
@@ -101,6 +102,7 @@
       display: grid;
       grid-template-columns: 2fr 3fr;
       z-index: 2;
+      overflow: hidden;
 
       .banner-left,
       .banner-right {

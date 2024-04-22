@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 import { cleanPathname } from "@/utils/cleanPathname";
 
@@ -9,43 +9,37 @@ import SinkingShipSvg from "@/components/svg/SinkingShipSvg";
 import { localizationList } from "@/mokData/navLinksData";
 
 import "./LocaleMenu.scss";
+import { useLocale } from "next-intl";
 
 const LocaleMenu = () => {
   const pathname = usePathname();
+  const {push} = useRouter();
+  const locale = useLocale();
+  const {name, title} = localizationList.filter(item => item.name === locale)[0];
 
-  const switchLocale = (locale: string) => {
+  const switchLocale = () => {
+    const localeLen = localizationList.length;
+    const currentLocaleIndex = localizationList.findIndex((loc: { name: string; }) => loc.name === locale);
+    
+    const newLocale = currentLocaleIndex + 1 < localeLen ? localizationList[currentLocaleIndex+1].name : localizationList[0].name
+
     const currentPath = cleanPathname(pathname);
-    const newPath = `/${locale}${currentPath}`;
-    window.history.replaceState(null, "", newPath);
+    const newPath = `/${newLocale}${currentPath}`;
+    
+    push(newPath);
   };
 
   return (
     <ul className="locale-menu mobile-menu__item">
-      {localizationList.map((locale) => {
-        return (
-          !pathname.includes(locale.name) && (
-            <li key={locale.name}>
-              {locale.name !== "ru" ? (
-                <button
-                  type="button"
-                  className="locale-menu__btn"
-                  onClick={() => switchLocale(locale.name)}
-                >
-                  {locale.title}
-                </button>
-              ) : (
-                <button
-                  type="button"
-                  onClick={() => switchLocale(locale.name)}
-                  className="locale-menu__btn"
-                >
-                  <SinkingShipSvg />
-                </button>
-              )}
-            </li>
-          )
-        );
-      })}
+      <li >
+        <button
+          type="button"
+          className="locale-menu__btn"
+          onClick={() => switchLocale()}
+        >
+          { name !== "ru" ? title : <SinkingShipSvg />}
+        </button>
+      </li>
     </ul>
   );
 };
