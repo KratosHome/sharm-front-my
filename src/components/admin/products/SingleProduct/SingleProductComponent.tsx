@@ -1,14 +1,16 @@
 'use client';
-import React from 'react';
+import { FC, useState, useEffect } from 'react';
 import { useForm, useFieldArray } from 'react-hook-form';
 import { useRouter } from "next/navigation";
+import { useLocale } from "next-intl";
 import MyInput from '@/components/general/MyInput/MyInput';
 import MyBtn from '@/components/UI/MyBtn/MyBtn';
 import { useApi } from '@/hooks/useApi';
 
-import styles from './CreateProductComponent.module.scss';
+import styles from './SingleProductComponent.module.scss';
 
 interface ProductState {
+  id?: string;
   isLux: boolean;
   img: string;
   url: string;
@@ -37,22 +39,56 @@ interface Translation {
   metaDescription: string;
 }
 
+interface ApiResponse<T> {
+  ok: boolean; 
+  data?: T;
+  error?: string;
+}
+
+const defaultProduct: ProductState = {
+  isLux: false,
+  img: '',
+  url: '',
+  items: [],
+  translations: [],
+}
+
+interface SingleProductComponentProps {
+  productId?: string;
+}
+
 const Translation = { lang: 'en', title: '', subTitle: '', description: '', shortDescription: '', metaTitle: '', metaKeywords: '', metaDescription: '' };
 
 const Item = { name: '', sku: '', prise: '', oldPrise: '', count: '', color: '', img: '' };
 
-const CreateProductComponent: React.FC = () => {
+const SingleProductComponent: FC<SingleProductComponentProps> = ({ productId }) => {
   const router = useRouter();
+  const locale = useLocale();
   const { sendRequest } = useApi();
-  const { control, register, handleSubmit, watch, formState: { errors } } = useForm<ProductState>({
-    defaultValues: {
-      isLux: false,
-      img: '',
-      url: '',
-      items: [],
-      translations: [],
-    }
+  const [productData, setProductData] = useState<ProductState | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const { control, register, handleSubmit, reset, formState: { errors } } = useForm<ProductState>({
+    defaultValues: productData || defaultProduct,
   });
+
+  useEffect(() => {
+    if (!productId) return;
+  
+    const fetchData = async () => {
+      try {
+        const response = await sendRequest(`products/${locale}/${productId}`, 'GET');
+        setProductData(response.data);
+        reset(response.data);
+      } catch (err) {
+        console.error('Error fetching product data:', err);
+        setError('Failed to fetch product data');
+      }
+    };
+  
+    fetchData();
+    // adding reset hook in this case leads to an infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [productId, locale]);
 
   const { fields: itemFields, append: appendItem } = useFieldArray<any>({
     control,
@@ -65,33 +101,43 @@ const CreateProductComponent: React.FC = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log('Submitted Data:', data);
-    sendRequest('products', 'POST', data)
+    const apiEndpoint = productId ? `products/${locale}/${productId}` : 'products';
+    const method = productId ? 'PATCH' : 'POST';
+
+    sendRequest(apiEndpoint, method, data)
       .then(response => {
         if (response.data) {
-          router.push('products');
-        }
-      });
+          router.push(`/${locale}/admin/products`);
+      } else {
+        throw new Error(`Failed to ${productId ? 'update' : 'create'} product`);
+      }
+    })
+    .catch(err => {
+      setError(err.message);
+    });
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles.form}>
+      {error && <div className={styles.error}>{error}</div>}
       <section className={styles.section}>
         <h3 className={styles.title}>Main fields</h3>
         <MyInput type="checkbox" label="Luxury" {...register('isLux')} />
         <MyInput type="text" label="Image" {...register('img')} />
         <MyInput type="text" label="URL" {...register('url')} />
-      </section>
+      </section> 
 
       <section className={styles.section}>
         <h3 className={styles.title}>Translations</h3>
         {translationFields.map((field, index) => (
           <div className={styles.formTranslations} key={field.id}>
-            <select className={styles.selectTranslation} {...register(`translations.${index}.lang`)}>
-              <option value="en">EN</option>
-              <option value="ua">UA</option>
-              <option value="ru">RU</option>
-            </select>
+            { !productData && 
+              <select className={styles.selectTranslation} {...register(`translations.${index}.lang`)}>
+                <option value="en">EN</option>
+                <option value="ua">UA</option>
+                <option value="ru">RU</option>
+              </select>
+            }
             <MyInput type="text" label="Title" {...register(`translations.${index}.title`)} />
             <MyInput type="text" label="Subtitle" {...register(`translations.${index}.subTitle`)} />
             <MyInput type="text" label="Description" {...register(`translations.${index}.description`)} />
@@ -101,7 +147,10 @@ const CreateProductComponent: React.FC = () => {
             <MyInput type="text" label="Meta Description" {...register(`translations.${index}.metaDescription`)} />
           </div>
         ))}
-        <MyBtn text="Add translation" color="primary" click={() => appendTranslation(Translation)} type="button" />
+        { !productData && 
+          <MyBtn text="Add translation" color="primary" click={() => appendTranslation(Translation)} type="button" />
+        }
+        
       </section>
 
       <section className={styles.section}>
@@ -117,12 +166,14 @@ const CreateProductComponent: React.FC = () => {
             <MyInput type="text" label="Image" {...register(`items.${index}.img`)} />
           </div>
         ))}
-        <MyBtn text="Add product" color="primary" click={() => appendItem(Item)} type="button" />
+        { !productData && 
+          <MyBtn text="Add product" color="primary" click={() => appendItem(Item)} type="button" />
+        }
       </section>
 
-      <MyBtn text="Create product" color="primary" type="submit" />
+      <MyBtn text={productData ? "Update Product" : "Create Product"} color="primary" type="submit" />
     </form>
   );
 };
 
-export default CreateProductComponent;
+export default SingleProductComponent;
