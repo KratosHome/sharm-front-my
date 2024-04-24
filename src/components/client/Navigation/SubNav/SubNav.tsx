@@ -120,7 +120,7 @@ const SubNav = ({
     },
     { dependencies: [isOpen] }
   );
- if(!isOpen) return
+
   return (
     <ul ref={subNavRef} className={`sub-nav__list`}>
       {navLink.map((menu, index) => (
