@@ -57,12 +57,14 @@ a {
   }
 
 .main-container {
-    padding-left: 20px;
-    padding-right: 20px;
+    max-width: 1440px;
+    width: 100%;
+    padding-inline: 70px;
+    margin: 0 auto;
 }
 
 a {
-    color: var(--color-text);
+    color: var(--text-color);
 }
 
 button {

@@ -1,0 +1,181 @@
+.nav-bar__list {
+    &.open {
+        display: grid;
+    }
+    position: relative;
+
+    gap: 6px;
+
+    padding: 0 16px;
+
+    @media screen and (min-width: 768px) {
+
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+
+        color: var(--text-color);
+        padding: 15px 0;
+    }
+    
+    .nav-bar__item--main {
+        display: grid;
+        grid-template-columns: auto 1fr;
+
+        text-transform: uppercase;
+
+        &>a {
+            background-image: linear-gradient(to bottom, transparent 50%, rgba(229, 100, 102, 0.5) 50%);
+            background-repeat: no-repeat;
+            background-size: 0%;
+            background-position: left;
+            transition: background-size 0.5s ease-out;
+        }
+
+        &>* svg {
+            transition: fill 0.5s ease-out;
+        }
+
+        &:hover {
+            &>a {
+                background-size: 100%;
+            }
+
+            &>* svg {
+                fill: var(--primary-red);
+            }
+        }
+
+        @media screen and (min-width: 768px) {
+            display: inline-block;
+            color: var(--text-color);
+
+            text-transform: initial;
+
+            &>a {
+                display: inline-block;
+                padding: 10px 12px;
+            }
+
+            &.luxe {
+                background-image: none;
+
+                &>a {
+                    font-size: 16px;
+                    font-weight: 600;
+
+                    display: inline-flex;
+
+                    gap: 6px;
+
+                    color: var(--primary-red);
+                    text-transform: uppercase;
+
+                    padding-left: 6px;
+                    padding-right: 6px;
+                    padding: 10px 12px;
+
+                    transition: color 0.5s ease-out, background-color 0.5s ease-out;
+
+                    &:hover,
+                    &:focus {
+                        color: var(--text-color-light);
+                        background-color: var(--primary-red);
+                    }
+                }
+
+                cursor: pointer;
+            }
+
+            &.focused {
+                &>a {
+                    background-size: 100%;
+                }
+
+                &.luxe>a {
+                    color: var(--text-color-light);
+                    background-color: var(--primary-red);
+
+                    //borders
+                    position: relative;
+                    overflow: hidden;
+
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid transparent;
+                        border-radius: inherit;
+                        animation: pulse 5s infinite;
+                    }
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: 0;
+                        right: 0;
+                        width: 100%;
+                        height: 100%;
+                        border: 2px solid transparent;
+                        border-radius: inherit;
+                        animation: pulse 5s infinite;
+                    }
+
+                    @keyframes pulse {
+                        0% {
+                            border-color: #ff0000;
+
+                        }
+
+                        50% {
+                            border-color: var(--light-red);
+                        }
+
+                        100% {
+                            border-color: #ff0000;
+                        }
+                    }
+
+                }
+            }
+        }
+
+
+    }
+
+    .sub-menu__btn {
+        background-color: transparent;
+        border: none;
+
+        text-align: end;
+        width: 100%;
+        height: 18px;
+
+        fill: var(--stroke);
+
+
+        cursor: pointer;
+
+        &>svg {
+            transition: transform 0.5s ease-out;
+        }
+
+        &--open {
+
+            &>svg {
+                text-align: start;
+                transform: rotate(180deg);
+                fill: var(--primary-red);
+            }
+        }
+    }
+
+
+    &.hidden {
+        display: none;
+    }
+}

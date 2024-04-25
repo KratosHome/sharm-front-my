@@ -1,0 +1,43 @@
+.sub-nav__list {
+    display: none;
+    gap: 0.25rem;
+
+    padding-top: 4px;
+    padding-left: 50px;
+
+    @media screen and (min-width: 768px) {
+        position: absolute;
+        bottom: 1px;
+        left: 0;
+        right: 0;
+
+        transform: translateY(100%);
+
+        grid-template-columns: repeat(4, minmax(166px, 1fr));
+
+        padding: 10px 70px;
+        background-color: var(--background-color);
+
+        border-top: 1px solid var(--placeholder);
+    }
+
+    .sub-nav__item {
+        font-weight: 400;
+        @media screen and (min-width: 1024px) {
+            font-size: 12px;
+        }
+        &>a {
+            background-color: var(--text-color);
+        }
+
+
+        @media screen and (min-width: 768px) {
+            &>a {
+                display: inline-block;
+
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+    }
+}
