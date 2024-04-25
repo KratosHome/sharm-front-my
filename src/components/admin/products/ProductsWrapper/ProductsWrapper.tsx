@@ -11,7 +11,6 @@ import SpinnerFullScreen2 from "@/components/UI/Spinner/SpinnerFullScreen2";
 import "./ProductsWrapper.scss";
 import { useLocale } from "next-intl";
 import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
-import styles from "@/components/admin/products/SingleProduct/SingleProductComponent.module.scss";
 
 interface Product {
   id: number;
