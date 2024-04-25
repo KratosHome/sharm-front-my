@@ -43,10 +43,12 @@
     align-items: center;
     text-align: center;
     font-size: 12px;
-    line-height: 150%;
+    // line-height: 150%;
     font-weight: 600;
     text-transform: uppercase;
-
+    &>span:first-child {
+      color: var(--text-color);
+    }
     @media (min-width: 768px) {
       font-size: 14px;
       flex-direction: row;
@@ -61,6 +63,7 @@
     font-size: 12px;
     font-weight: 400;
     overflow: hidden;
+    color: var(--text-color);
 
     @media (min-width: 768px) {
       font-size: 14px;

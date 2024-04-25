@@ -1,0 +1,116 @@
+.user-nav__list {
+    display: flex;
+
+    gap: 8px;
+
+    &--open {
+        display: flex;
+        flex-direction: column;
+
+        margin-top: 24px;
+
+        border-bottom: 1px solid var(--stoke);
+    }
+
+    @media screen and (min-width:768px) {
+        justify-content: flex-end;
+        gap: 20px;
+    }
+
+    .user-nav__item,
+    &--open>.user-nav__item {
+        border: none;
+        background-color: transparent;
+
+        height: 20px;
+        width: 20px;
+
+        cursor: pointer;
+
+
+        &>a,
+        &--open>a {
+            &>svg {
+                height: 20px;
+                width: 20px;
+                stroke: var(--text-color);
+
+                transition: stroke 0.5s ease-out;
+            }
+
+            &:hover,
+            &:focus {
+                // color: var(--stoke);
+
+                &>svg {
+                    height: 20px;
+                    width: 20px;
+                    stroke: var(--primary-red);
+                }
+            }
+
+        }
+
+        &--open {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            text-transform: uppercase;
+
+            padding: 16px 20px;
+
+            border-top: 1px solid var(--stoke);
+
+            &>a {
+                background-color: var(--text-color);
+
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                &>svg {
+
+                    height: 20px;
+                }
+            }
+        }
+
+        @media screen and (min-width:768px) {
+
+            &>a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 8px;
+
+                height: 100%;
+            }
+
+            height: 28px;
+            width: 28px;
+        }
+
+
+        .phone-btn {
+            font-family: Roboto;
+            font-size: 12px;
+            line-height: 1.5;
+            text-decoration: underline;
+
+            color: inherit;
+            background-color: inherit;
+
+            border: none;
+
+            cursor: pointer;
+
+            &:hover,
+            &:focus {
+                color: var(--stoke);
+            }
+        }
+    }
+
+
+}

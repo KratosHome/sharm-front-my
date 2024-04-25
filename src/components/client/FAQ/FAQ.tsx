@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import "./FAQ.scss";
 import { gsap } from "gsap";
 import { faqSectionData } from "@/mokData/faqSection";
@@ -10,31 +10,45 @@ const Faq = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    let tl = gsap.timeline({
-      autoAlpha: 0,
-      scrollTrigger: {
-        trigger: sectionRef.current,
-        start: "top center+=200",
-        end: "bottom+=150 center-=100",
-        toggleActions: "play reverse play reverse",
-        // markers: true,
-      },
-    });
+     const getMaxHeight = () => { 
+      const p = gsap.utils.toArray('.container-accordion > h6 > span');
+      const hArr = p.map((item) => (item as HTMLElement).getBoundingClientRect().height);
+      return Math.max(...hArr)
+    };
+    const mm = gsap.matchMedia();
+    mm.add("(min-width: 768px)", () => {
+      
+      gsap.set('.container-accordion>h6>span', {height: () => getMaxHeight() });
+      
+      gsap.timeline({
+        scrollTrigger: {
+          // id: "FAQ",
+          trigger: sectionRef.current,
+          start: "top-=100 80%",
+          end: "bottom-=200 25%",
+          toggleActions: "play reset play reset",
+          // markers: true,
+        }}
+      )
+      .to(sectionRef.current, {
+        autoAlpha: 1,
+        ease: "power2.out",
+        duration: 2
+      })
+      .to('.container-accordion', {
+        x: 0,
+        stagger: 0.2,
+        ease: "circ.out",
+      }, "-=2");
 
-    tl.to(sectionRef.current, {
-      id: "faqSection",
-      duration: 0.3,
-      autoAlpha: 1,
-      ease: "none",
-    }).to(`button`, {
-      x: 0,
-      stagger: 0.2,
     });
-  });
+      
+   
+  }, {scope: sectionRef});
 
   return (
     <section className="container-main-faq" ref={sectionRef}>
-      <h5 className="title-main-faq">FAQ</h5>
+      <h5 className="title-main-faq">Інтернет магазин косметики та парфумерії Sharm Beauty</h5>
       <ul className="wrapper-list-faq">
         <li>
           <Accordion
