@@ -146,7 +146,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
           </div>
 
           <div className="product-create">
-            <Link href="products/new-product">
+            <Link href={ "products/new-product" }>
               <button className="create-product-btn" type="button">Create product</button>
             </Link>
           </div>
