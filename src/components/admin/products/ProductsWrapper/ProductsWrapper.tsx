@@ -31,27 +31,27 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
   const [ products, setProducts ] = useState<Product[]>([]);
   const [ totalPages, setTotalPages ] = useState(0);
   const [ dataFetched, setDataFetched ] = useState(false);
-  const [isLux, setIsLux] = useState('');
+  const [ isLux, setIsLux ] = useState('');
 
   const limit = "10";
   const sort = "desc";
   const sortOrder = "createdAt";
 
   useEffect(() => {
-    let urlParams = `?page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}`;
+    let urlParams = `?page=${ page }&limit=${ limit }&sort=${ sort }&sortOrder=${ sortOrder }`;
     if (isLux !== '') {
-      urlParams += `&isLux=${isLux}`;
+      urlParams += `&isLux=${ isLux }`;
     }
 
     const fetchProducts = async () => {
-      const allProducts = await sendRequest(`products/${locale}/${urlParams}`, 'GET');
+      const allProducts = await sendRequest(`products/${ locale }/${ urlParams }`, 'GET');
       setProducts(allProducts.data.data);
       setTotalPages(allProducts.data.totalPages || 0);
       setDataFetched(true);
     };
 
     fetchProducts();
-  }, [locale, isLux]);
+  }, [ locale, isLux ]);
 
   const deleteProduct = async (id: string) => {
     try {
@@ -138,7 +138,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
       <div className="products-container">
         <div className="products-title">
           <div className="product-select">
-            <select className="product-selectLuxury" value={isLux} onChange={handleSelectChange}>
+            <select className="product-selectLuxury" value={ isLux } onChange={ handleSelectChange }>
               <option value="" selected>All products</option>
               <option value="true">Luxury</option>
               <option value="false">Not luxury</option>
