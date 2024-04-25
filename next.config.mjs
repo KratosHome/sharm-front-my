@@ -6,7 +6,13 @@ const withNextIntl = createNextIntlPlugin();
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['ksuu-store.fra1.digitaloceanspaces.com'],
+    remotePatterns: [
+      {
+          protocol: 'https',
+          hostname: 'ksuu-store.fra1.digitaloceanspaces.com',
+          port: '',
+      },
+    ]
   },
 };
 

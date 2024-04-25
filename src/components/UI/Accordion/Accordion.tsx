@@ -30,8 +30,9 @@ const Accordion: FC<AccordionProps> = ({ title, style, children }) => {
     gsap.to(answerRef.current, {
       duration: 0.5,
       height: !open ? "auto" : "0px",
+      marginTop: !open ? "16px" : "0px",
       opacity: !open ? 1 : 0,
-      onComplete: () => ScrollTrigger.refresh(),
+      onComplete: () => {ScrollTrigger.refresh()},
     });
   });
 

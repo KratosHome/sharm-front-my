@@ -9,13 +9,13 @@
   padding-right: 0;
 
   @media (min-width: 768px) {
-    padding: 92px 20px;
+    padding: 92px 0px;
   }
   @media (min-width: 1172px) {
-    padding: 92px 20px;
+    padding: 92px 0px;
   }
   @media (min-width: 1440px) {
-    padding: 92px 70px;
+    padding: 92px 0px;
   }
 
   .title-testimonials {
@@ -23,7 +23,7 @@
     font-weight: 600;
     line-height: 130%; //33.8px;
     text-align: left;
-    color: var(--svg-hover-pagintaion);
+    color: var(--text-color);
     padding: 10px 0;
     margin: 0 auto 0 0;
   }
