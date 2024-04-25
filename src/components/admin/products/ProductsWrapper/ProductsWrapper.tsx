@@ -6,11 +6,12 @@ import Image from "next/image";
 import { useApi } from "@/hooks/useApi";
 import DataTable from "@/components/UI/DataTable/DataTable";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
-
+import SpinnerFullScreen2 from "@/components/UI/Spinner/SpinnerFullScreen2";
 
 import "./ProductsWrapper.scss";
 import { useLocale } from "next-intl";
 import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
+import styles from "@/components/admin/products/SingleProduct/SingleProductComponent.module.scss";
 
 interface Product {
   id: number;
@@ -29,22 +30,28 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
   const {sendRequest, loading, error} = useApi();
   const [ products, setProducts ] = useState<Product[]>([]);
   const [ totalPages, setTotalPages ] = useState(0);
+  const [ dataFetched, setDataFetched ] = useState(false);
+  const [isLux, setIsLux] = useState('');
 
   const limit = "10";
-  const isLux = true;
   const sort = "desc";
   const sortOrder = "createdAt";
-  const additionalParams = `?page=${ page }&limit=${ limit }&isLux=${ isLux }&sort=${ sort }&sortOrder=${ sortOrder }`;
 
   useEffect(() => {
+    let urlParams = `?page=${page}&limit=${limit}&sort=${sort}&sortOrder=${sortOrder}`;
+    if (isLux !== '') {
+      urlParams += `&isLux=${isLux}`;
+    }
+
     const fetchProducts = async () => {
-      const allProducts = await sendRequest(`products/${ locale }/${ additionalParams }`, 'GET');
+      const allProducts = await sendRequest(`products/${locale}/${urlParams}`, 'GET');
       setProducts(allProducts.data.data);
       setTotalPages(allProducts.data.totalPages || 0);
+      setDataFetched(true);
     };
 
     fetchProducts();
-  }, [ locale ]);
+  }, [locale, isLux]);
 
   const deleteProduct = async (id: string) => {
     try {
@@ -55,13 +62,15 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
     }
   };
 
-  if (!products || products?.length === 0) {
-    return <p>Немає продуктів для відображення.</p>;
-  }
-
   const editProduct = (id: string) => {
     router.push(`products/update/${ id }`);
   }
+
+  const handleSelectChange = (event: any) => {
+    event.preventDefault();
+    const value = event.target.value;
+    setIsLux(value);
+  };
 
   const columns = [
     {
@@ -120,29 +129,43 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
     },
   ];
 
+  if (loading) {
+    return <SpinnerFullScreen2/>;
+  }
+
   return (
     <>
       <div className="products-container">
         <div className="products-title">
+          <div className="product-select">
+            <select className="product-selectLuxury" value={isLux} onChange={handleSelectChange}>
+              <option value="" selected>All products</option>
+              <option value="true">Luxury</option>
+              <option value="false">Not luxury</option>
+            </select>
+          </div>
+
           <div className="product-create">
-            <Link href={ "products/new-product" }>
+            <Link href="products/new-product">
               <button className="create-product-btn" type="button">Create product</button>
             </Link>
           </div>
         </div>
-
         <div className="products-wrapper">
-          <DataTable
-            initialSelectedOptions={ columns }
-            columns={ columns }
-            data={ products || [] }
-          />
+          { dataFetched && products.length === 0 ? (
+            <p>Немає продуктів для відображення.</p>
+          ) : (
+            <>
+              <DataTable
+                initialSelectedOptions={ columns }
+                columns={ columns }
+                data={ products }
+              />
+              <PaginationControl totalPages={ totalPages }/>
+            </>
+          ) }
         </div>
       </div>
-
-      <PaginationControl
-        totalPages={ totalPages }
-      />
     </>
 
   );
