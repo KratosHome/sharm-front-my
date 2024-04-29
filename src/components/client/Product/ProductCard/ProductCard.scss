@@ -1,0 +1,103 @@
+.product-card {
+    flex-shrink: 0;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    position: relative;
+    row-gap: 20px;
+    height: 100%;
+    border-radius: 4px;
+    max-width: 47.49%;
+    &-favorites {
+        position: absolute;
+        top: 15px;
+        right: 16px;
+        width: 20px;
+        height: 20px;
+        z-index: 10;
+        svg {
+            width: 24px;
+            height: 24px;
+            fill: transparent;
+            transition: all 0.2s; 
+            stroke: var(--placeholder);
+            path {
+                stroke-width: 1;
+            }
+            &:hover {
+                fill: var(--primary-red-hover);
+                stroke: var(--primary-red-hover);
+                cursor: pointer;
+            }
+        }
+    };
+
+    &-img {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 0.75;
+        overflow: hidden;
+        & > img {
+            object-fit: cover;
+        }
+    };
+    
+    &-content {
+        width: 100%;
+        line-height: 1.5;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        row-gap: 20px;
+        &-top {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 1fr;
+            align-items: stretch;
+            justify-content: flex-start;
+        };
+        &-middle {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        };
+        &-bottom {
+            display: none;
+        }
+    }
+    &-title {
+        text-transform: uppercase;
+        font-weight: 600;
+        min-height: 63px;
+    }
+    &-subtitle {
+        min-height: 63px;
+    }
+    &-rating {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        &  a:hover {
+            text-decoration: underline;
+        }
+    }
+    &-price {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+    &-oldprice {
+        padding-left: 12px;
+        color: var(--placeholder);
+        text-decoration:line-through;
+    }
+    
+}
+@media screen and (min-width: 768px) {
+    .product-card {
+        max-width: 240px;
+    }
+}

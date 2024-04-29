@@ -18,5 +18,13 @@
     "change": "Изменить",
     "create": "Создать",
     "yes": "Да"
+  },
+  "UI": {
+    "add_to_cart": "В корзину",
+    "recently_viewed": "Недавно просмотренные",
+    "promotional_offers": "Акционные предложения",
+    "new_arrivals": "Новые поступления",
+    "complete_your_look": "Дополните свой образ",
+    "you_recently_viewed": "Вы недавно просматривали"
   }
 }

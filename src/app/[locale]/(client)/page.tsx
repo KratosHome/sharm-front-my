@@ -1,17 +1,26 @@
+import Banner from "@/components/client/Banner/Banner";
+import PopularCategories from "@/components/client/PopularCategories/PopularCategories";
+import ProductSlider from "@/components/client/ProductSlider/ProductSlider";
+import Testimonials from "@/components/client/Testimonials/Testimonials";
 import FAQ from "@/components/client/FAQ/FAQ";
 import { Footer } from "@/components/client/Footer/Footer";
-import PopularCategories from "@/components/client/PopularCategories/PopularCategories";
-import { mockCategories } from "@/mokData/mockPopularCategories";
-import Banner from "@/components/client/Banner/Banner";
+
 import { bannerData } from "@/mokData/bannerData";
-import Testimonials from "@/components/client/Testimonials/Testimonials";
+import { mockCategories } from "@/mokData/mockPopularCategories";
+import {products} from '@/mokData/sliderProducts.js';
 import { testimonialsData } from "@/mokData/testimonialsData";
 
-export default function Home() {
+const getProductForSlider = async () => {
+  return new Promise<IProduct[]>(resolve => setTimeout(() => resolve(products), 1000))
+}
+
+export default async function Home() {
+  const data = await getProductForSlider();
   return (
     <main className="main-container">
       <Banner data={bannerData} />
       <PopularCategories categories={mockCategories} />
+      <ProductSlider title={'new_arrivals'} data={data} />
       <Testimonials data={testimonialsData} />
       <FAQ />
       <Footer />

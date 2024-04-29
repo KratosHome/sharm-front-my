@@ -18,5 +18,13 @@
     "change": "Змінити",
     "create": "Створити",
     "yes": "так"
+  },
+  "UI": {
+    "add_to_cart": "До кошику",
+    "recently_viewed": "Нещодавно переглянуті",
+    "promotional_offers": "Акційні пропозиції",
+    "new_arrivals": "Нові надходження",
+    "complete_your_look": "Доповніть свій образ",
+    "you_recently_viewed": "Ви нещодавно переглядали"
   }
 }
