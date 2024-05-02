@@ -5,6 +5,8 @@ import {User} from "@/server/users/userSchema";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
 import {AdapterUser} from "@auth/core/adapters";
+import {MongoDBAdapter} from "@auth/mongodb-adapter";
+import clientPromise from "@/server/auth/db";
 
 const login = async (credentials: any) => {
     try {
@@ -28,7 +30,8 @@ export const {
     signIn,
     signOut,
 } = NextAuth({
-    secret: process.env.NEXTAUTH_SECRET,
+    adapter: MongoDBAdapter(clientPromise),
+    secret: process.env.NEXT_AUTH_SECRET,
     providers: [
         GitHub({
             clientId: process.env.GITHUB_ID,

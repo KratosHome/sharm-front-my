@@ -15,6 +15,6 @@ export const connectToDb = async () => {
         const db = await mongoose.connect(`${process.env.NEXT_MONGO_DB}`);
         connection.isConnected = db.connections[0].readyState;
     } catch (error) {
-        console.log('error2312', error);
+        console.log('error connectToDb', error);
     }
 };
