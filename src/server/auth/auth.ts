@@ -7,6 +7,7 @@ import bcrypt from "bcryptjs";
 import {AdapterUser} from "@auth/core/adapters";
 import {MongoDBAdapter} from "@auth/mongodb-adapter";
 import clientPromise from "@/server/auth/db";
+import Google from "next-auth/providers/google"
 
 const login = async (credentials: any) => {
     try {
@@ -37,6 +38,7 @@ export const {
             clientId: process.env.GITHUB_ID,
             clientSecret: process.env.GITHUB_SECRET,
         }),
+        Google,
         CredentialsProvider({
             async authorize(credentials) {
                 try {

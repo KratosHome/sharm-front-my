@@ -1,6 +1,6 @@
 import createMiddleware from "next-intl/middleware";
 import {NextRequest} from "next/server";
-export { auth as middleware } from "./server/auth/auth";
+// export { auth as middleware } from "./server/auth/auth";
 
 const protectedRoutes = ["/admin1"]
 
