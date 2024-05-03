@@ -1,3 +1,4 @@
+//Product card
 interface IProduct {
     id:string;
     isLux: boolean;

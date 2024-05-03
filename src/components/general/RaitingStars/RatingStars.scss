@@ -1,19 +1,21 @@
 .star-rating {
   display: flex;
-  font-size: 12px;
   justify-content: space-between;
-  @media (min-width: 768px) {
-    font-size: 14px;
-  }
 }
 
 .back-stars {
   display: flex;
   position: relative;
-  font-size: 12px;
+  & > svg{
+    width: 12px;
+    height: 12px;
+  }
   overflow: hidden;
   @media (min-width: 768px) {
-    font-size: 14px;
+    & > svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 }
 
@@ -23,12 +25,18 @@
   top: 0;
 }
 .front-stars {
-  font-size: 12px;
+  & > svg{
+    width: 12px;
+    height: 12px;
+  }
   display: inline-flex;
   flex-wrap: nowrap;
   overflow: hidden;
   transition: all 0.5s;
   @media (min-width: 768px) {
-    font-size: 14px;
+    & > svg {
+      width: 14px;
+      height: 14px;
+    }
   }
 }

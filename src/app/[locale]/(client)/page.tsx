@@ -20,7 +20,7 @@ export default async function Home() {
     <main className="main-container">
       <Banner data={bannerData} />
       <PopularCategories categories={mockCategories} />
-      <ProductSlider title={'new_arrivals'} data={data} />
+      <ProductSlider title={'new_arrivals'} data={data} type='long-img' />
       <Testimonials data={testimonialsData} />
       <FAQ />
       <Footer />

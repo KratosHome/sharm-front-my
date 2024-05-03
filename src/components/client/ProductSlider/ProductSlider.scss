@@ -2,17 +2,28 @@
   padding-top: 54px;
   display: flex;
   flex-direction: column;
-  gap: 56px;
-  overflow: hidden;
+  flex-grow: 1;
+  gap: 30px;
+  &.square {
+    gap: 38px;
+  }
+  &-wrapper {
+    // width: 100%;
+    display: flex;
+    overflow-x: clip;
+  }
 
   &-container {
-    width: 100%;
+    padding: 6px;
     display: flex;
-    gap: 18px;
+    --slides-gap: 18px;
+    gap: var(--slides-gap);
 
-    &>* {
-      // width: calc((100% - 18px) / 2);
-      flex: 0 0 calc((100% - 18px) / 2);
+    & > * {
+      //cannot use '100%' - parent is too wide, 
+      //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+      // -12px - padding-inline
+      width: calc((100vw - 12px - var(--slides-gap) - var(--main-container-inline-padding) * 2) / 2);
     }
   }
 
@@ -33,7 +44,7 @@
 
   &-navigation {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     width: 90px;
 
@@ -56,37 +67,100 @@
       }
       cursor: unset;
     }
+    .slider-dots {
+      display: flex;
+      width: 54px;
+      justify-content: space-between;
+      align-items: center;
+      
+  
+      .slider-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--text-color-light);
+        border: 0.5px solid var(--nav-dot);
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+       
+        &.active {
+          background-color: var(--text-color);
+          border-color: var(--text-color);
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px){
+  .product-slider-navigation {
+    .slider-dots {
+      width: 100%;
+      .slider-dot {
+        width: 8px;
+        height: 8px;
+        border: 0.5px solid var(--placeholder);
+        margin: 0 5px;
+      }
+    }
   }
 }
 
 @media (min-width: 768px) {
   .product-slider{
     padding-top: 89px;
+    &-navigation {
+      justify-content: space-between;
+    }
     &-container {
-      gap: 5.77%;
+      --slides-gap: 30px;
 
-      &>* {
-        // width: calc((100% - 2*5.77%) / 3);
-        flex: 0 0 calc((100% - 2*5.77%) / 3);
+      & > * {
+        //cannot use '100%' - parent is too wide, 
+        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+        // -12px - padding-inline
+        width: calc((100vw - 17px - 12px - var(--slides-gap) * 2 - var(--main-container-inline-padding) * 2) / 3);
       }
     }
   }
 }
 
 @media (min-width: 1024px) {
-  .product-slider-container {
-    &>* {
-      // width: calc((100% - 3* 5.77%) / 4);
-      flex: 0 0 calc((100% - 3* 5.77%) / 4);
+  .product-slider {
+    gap: 56px;
+    &.square {
+      gap: 36px;
     }
-  }
+    &-container {
+      & > * {
+        //cannot use '100%' - parent is too wide, 
+        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+        // -12px - padding-inline
+        width: calc((100vw - 17px - 12px - var(--slides-gap) * 3 - var(--main-container-inline-padding) * 2) / 4);
+      }
+    }
+}
 }
 
 @media (min-width: 1200px) {
   .product-slider-container {
-    &>* {
-      // width: calc((100% - 4*5.77%) / 5);
-      flex: 0 0 calc((100% - 4*5.77%) / 5);
+    --slides-gap: 40px;
+
+    & > * {
+      //cannot use '100%' - parent is too wide, 
+      //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+      // -12px - padding-inline
+      width: calc((100vw - 17px - 12px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
+    }
+  }
+}
+@media (min-width: 1440px) {
+  .product-slider-container {
+    & > * {
+      //cannot use '100%' - parent is too wide, 
+      //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+      // -12px - padding-inline
+      width: calc((1440px - 17px - 12px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
     }
   }
 }
