@@ -2,16 +2,13 @@ import React from 'react';
 import Image from "next/image";
 import logOut from "./logOut.svg"
 import {cookies} from "next/headers";
+import {signOut} from "@/server/auth/auth";
 
 const LogOut = () => {
 
     async function createInvoice() {
         'use server'
-        cookies().delete('logIn')
-        cookies().delete('id')
-        cookies().delete('email')
-        cookies().delete('role')
-        cookies().delete('token')
+        await signOut()
     }
 
     return (
