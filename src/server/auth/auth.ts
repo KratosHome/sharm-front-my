@@ -4,9 +4,6 @@ import {connectToDb} from "@/server/connectToDb";
 import {User} from "@/server/users/userSchema";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
-import {AdapterUser} from "@auth/core/adapters";
-import {MongoDBAdapter} from "@auth/mongodb-adapter";
-import clientPromise from "@/server/auth/db";
 import Google from "next-auth/providers/google"
 
 const login = async (credentials: any) => {
@@ -63,9 +60,12 @@ export const {
                     img: session.user.image,
                 });
                 await newUser.save();
-                return newUser;
+                session.user = newUser;
+            } else {
+                session.user = userDb;
             }
-            return {user: userDb}
+
+            return session;
         },
 
         async jwt({token, user, account}) {

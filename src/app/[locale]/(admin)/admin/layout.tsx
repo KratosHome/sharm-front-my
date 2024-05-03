@@ -22,6 +22,7 @@ export default function RootLayout(
     children: ReactNode;
     params: { locale: string };
 }>) {
+
     return (
       <IsLogin>
         <section className={styles.container}>
