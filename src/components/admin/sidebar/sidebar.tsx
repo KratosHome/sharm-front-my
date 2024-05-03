@@ -32,32 +32,31 @@ const Sidebar = () => {
     {path: '/reviews', icon: reviews, title: 'Reviews', visible: false},
   ]
 
-  return (
-    <div className={styles.container}>
-      <div className={styles.user}>
-        <div className={styles.userDetail}>
-            <span className={styles.username}>John Dow</span>
-            <span className={styles.userRole}>{role?.value}</span>
+    return (
+        <div className={styles.container}>
+            <div className={styles.user}>
+                <div className={styles.userDetail}>
+                    <span className={styles.username}>John Dow</span>
+                    <span className={styles.userRole}>{role?.value}</span>
+                </div>
+                <div className={styles.userLogout}>
+                    <LogOut/>
+                </div>
+            </div>
+            <ul className={styles.list}>
+                {menuItems.map((item) => (
+                    <>
+                        {
+                            item.visible &&
+                            <li key={item.title} className={styles.link}>
+                                <MenuLink item={item}/>
+                            </li>
+                        }
+                    </>
+                ))}
+            </ul>
         </div>
-        <div className={styles.userLogout}>
-            <LogOut/>
-        </div>
-      </div>
-      <ul className={styles.list}>
-
-        {menuItems.map((item) => (
-          <>
-            { 
-              item.visible && 
-                <li key={item.title} className={styles.link}>
-                  <MenuLink item={item}/>
-                </li>
-            }
-          </>
-        ))}
-      </ul>
-    </div>
-  );
+    );
 };
 
 export default Sidebar;
