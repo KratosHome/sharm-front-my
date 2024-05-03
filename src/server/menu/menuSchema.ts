@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const menuSchema = new mongoose.Schema(
     {
         title: {
@@ -8,7 +7,7 @@ const menuSchema = new mongoose.Schema(
             required: true,
             unique: true,
             min: 3,
-            max: 50,
+            max: 250,
         },
         icon: {
             type: String,
@@ -17,13 +16,10 @@ const menuSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
-        menuId: {
-            type: [String],
-        },
         categoriesId: {
-            type: [String],
+            type: String,
         },
-        resetPasswordToken: String,
+        children: [{type: mongoose.Schema.Types.ObjectId, ref: 'Menu'}]
     },
     {timestamps: true}
 );

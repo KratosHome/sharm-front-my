@@ -1,7 +1,5 @@
 import "./login.scss";
-import {cookies} from "next/headers";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
-import axios from "axios";
 import {loginAction} from "@/server/auth/login.server";
 
 function LoginPage() {
