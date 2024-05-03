@@ -4,27 +4,6 @@ import {User} from "@/server/users/userSchema";
 import {revalidatePath, unstable_noStore as noStore} from "next/cache";
 import bcrypt from "bcryptjs";
 
-export const createUsers = async (session: any) => {
-    "use server"
-    try {
-        await connectToDb();
-
-        const user = await User.findOne({email: session.user.email.toLowerCase()});
-        if (!user) {
-            const newUser = new User({
-                username: session.user.name,
-                email: session.user.email.toLowerCase(),
-                img: session.user.image,
-            });
-
-            await newUser.save();
-        }
-    } catch (err) {
-        console.log(err);
-        throw new Error("Failed to fetch user!");
-    }
-};
-
 
 export const getUsers = async (page: number = 1, limit: number = 10) => {
     noStore(); // прибирання кешування

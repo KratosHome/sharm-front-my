@@ -12,10 +12,14 @@ const userSchema = new mongoose.Schema(
         },
         surname: {
             type: String,
-            required: true,
-            unique: true,
+            required: false,
+            unique: false,
             min: 3,
             max: 250,
+        },
+        emailVerified: {
+            type: Boolean,
+            default: false,
         },
         email: {
             type: String,
@@ -27,14 +31,15 @@ const userSchema = new mongoose.Schema(
             type: String,
         },
         img: {
+            required: true,
             type: String,
         },
         roles: {
+            required: true,
             type: [String],
             enum: ['user', 'admin', 'manager', "consultant"],
             default: ['user']
         },
-
         resetPasswordToken: String,
     },
     {timestamps: true}

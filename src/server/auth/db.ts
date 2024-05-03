@@ -1,5 +1,6 @@
 // This approach is taken from https://github.com/vercel/next.js/tree/canary/examples/with-mongodb
-import { MongoClient, ServerApiVersion } from "mongodb"
+import {MongoClient, ServerApiVersion} from "mongodb"
+import {User} from "../users/userSchema";
 
 if (!process.env.NEXT_MONGO_DB) {
     throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')

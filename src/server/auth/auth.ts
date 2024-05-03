@@ -31,13 +31,11 @@ export const {
     signIn,
     signOut,
 } = NextAuth({
-    adapter: MongoDBAdapter(clientPromise),
-    secret: process.env.NEXT_AUTH_SECRET,
+    theme: {
+        logo: "/logo.png",
+    },
     providers: [
-        GitHub({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: process.env.GITHUB_SECRET,
-        }),
+        GitHub,
         Google,
         CredentialsProvider({
             async authorize(credentials) {
@@ -54,9 +52,22 @@ export const {
             return true;
         },
         async session({session, token, user}) {
-            session.user = token.user as AdapterUser;
-            return session;
+            await connectToDb();
+            const userEmail = session.user.email.toLowerCase();
+            const userDb = await User.findOne({email: userEmail});
+
+            if (!userDb) {
+                const newUser = new User({
+                    name: session.user.name,
+                    email: userEmail,
+                    img: session.user.image,
+                });
+                await newUser.save();
+                return newUser;
+            }
+            return {user: userDb}
         },
+
         async jwt({token, user, account}) {
             if (user) {
                 token.user = user;
