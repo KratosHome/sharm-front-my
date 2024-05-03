@@ -11,8 +11,12 @@ const Navbar = () => {
   const pathname = usePathname();
 
   const goBack = () => {
+    if (pathname.includes('new-product')) {
+      sessionStorage.setItem('isBackButton', 'true');
+    }
+
     router.back();
-  };
+  }
 
   const showBackButton = pathname !== '/en/admin';
 
@@ -31,5 +35,6 @@ const Navbar = () => {
     </div>
   )
 }
+
 
 export default Navbar;

@@ -26,7 +26,7 @@ const Sidebar = () => {
     {path: '/orders', icon: orders, title: 'Orders', visible: false},
     {path: '/menu', icon: menu, title: 'Menu', visible: true},
     {path: '/categories', icon: categories, title: 'Categories', visible: true},
-    {path: '/products', icon: products, title: 'Products', visible: true},
+    {path: '/products?page=1&limit=10&sort=desc&sortOrder=createdAt&isLux=true', icon: products, title: 'Products', visible: true},
     {path: '/pages', icon: pages, title: 'Pages', visible: false},
     {path: '/settings', icon: settings, title: 'Settings', visible: true},
     {path: '/reviews', icon: reviews, title: 'Reviews', visible: false},
