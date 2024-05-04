@@ -1,16 +1,12 @@
-"use client";
-import React, { FC, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from "next/image";
-import { useApi } from "@/hooks/useApi";
-import DataTable from "@/components/UI/DataTable/DataTable";
-import MyBtn from "@/components/UI/MyBtn/MyBtn";
-import SpinnerFullScreen2 from "@/components/UI/Spinner/SpinnerFullScreen2";
+import Image from 'next/image';
+import DataTable from '@/components/UI/DataTable/DataTable';
+import MyBtn from '@/components/UI/MyBtn/MyBtn';
 
-import "./ProductsWrapper.scss";
-import { useLocale } from "next-intl";
-import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
+import './ProductsWrapper.scss';
 
 interface Product {
   id: number;
@@ -20,63 +16,40 @@ interface Product {
 }
 
 interface ProductsWrapperProps {
-  page: any;
+  data: any;
 }
 
-const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
+const ProductsWrapper: FC<ProductsWrapperProps> = ({ data }) => {
   const router = useRouter();
-  const locale = useLocale();
-  const {sendRequest, loading, error} = useApi();
-  const [ products, setProducts ] = useState<Product[]>([]);
-  const [ totalPages, setTotalPages ] = useState(0);
-  const [ dataFetched, setDataFetched ] = useState(false);
+  // const { sendRequest, loading, error } = useApi();
   const [ isLux, setIsLux ] = useState('');
 
-  const limit = "10";
-  const sort = "desc";
-  const sortOrder = "createdAt";
-
-  useEffect(() => {
-    let urlParams = `?page=${ page }&limit=${ limit }&sort=${ sort }&sortOrder=${ sortOrder }`;
-    if (isLux !== '') {
-      urlParams += `&isLux=${ isLux }`;
-    }
-
-    const fetchProducts = async () => {
-      const allProducts = await sendRequest(`products/${ locale }/${ urlParams }`, 'GET');
-      setProducts(allProducts.data.data);
-      setTotalPages(allProducts.data.totalPages || 0);
-      setDataFetched(true);
-    };
-
-    fetchProducts();
-  }, [ locale, isLux ]);
-
-  const deleteProduct = async (id: string) => {
-    try {
-      await sendRequest(`products/${ id }`, 'DELETE');
-      router.refresh();
-    } catch (err) {
-      console.error('Error deleting product:', err);
-    }
+  const deleteProduct = (id: string) => {
+    console.log(id);
   };
 
-  const editProduct = (id: string) => {
+  const editProduct = useCallback((id: string) => {
     router.push(`products/update/${ id }`);
-  }
+  }, [ router ]);
 
   const handleSelectChange = (event: any) => {
     event.preventDefault();
     const value = event.target.value;
     setIsLux(value);
+
+    const newUrl = new URL(window.location.href);
+    const searchParams = newUrl.searchParams;
+    value ? searchParams.set('isLux', value) : searchParams.delete('isLux');
+
+    router.push(`${ newUrl.pathname }?${ searchParams.toString() }`)
   };
 
-  const columns = [
+  const columns = useMemo(() => [
     {
       id: 'skus',
       headerName: 'SKU',
       width: 85,
-      render: (item: any) => item.items[0]?.sku || "-",
+      render: (item: any) => item.items[0]?.sku || '-',
     },
     {
       id: 'image',
@@ -88,19 +61,19 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
       id: 'name',
       headerName: 'Name',
       width: 120,
-      render: (item: any) => item.translations[0]?.title || "No name",
+      render: (item: any) => item.translations[0]?.title || 'No name',
     },
     {
       id: 'price',
       headerName: 'Price',
       width: 85,
-      render: (item: any) => item.items[0]?.prise || "0",
+      render: (item: any) => item.items[0]?.prise || '0',
     },
     {
       id: 'old price',
       headerName: 'Old price',
       width: 85,
-      render: (item: any) => item.items[0]?.oldPrise || "0",
+      render: (item: any) => item.items[0]?.oldPrise || '0',
     },
     {
       id: 'visited',
@@ -118,19 +91,19 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
       id: 'edit',
       headerName: 'Edit',
       width: 120,
-      render: (item: any) => <MyBtn text={ "Edit" } color={ "attention" } click={ () => editProduct(item.id) }/>,
+      render: (item: any) => <MyBtn text={ 'Edit' } color={ 'attention' } click={ () => editProduct(item.id) }/>,
     },
     {
       id: 'delete',
       headerName: 'Delete',
       width: 120,
-      render: (item: any) => <MyBtn text={ "Delete" } color={ "attention" } click={ () => deleteProduct(item.id) }/>,
+      render: (item: any) => <MyBtn text={ 'Delete' } color={ 'attention' } click={ () => deleteProduct(item.id) }/>,
     },
-  ];
+  ], []);
 
-  if (loading) {
-    return <SpinnerFullScreen2/>;
-  }
+  // if (loading) {
+  //   return <SpinnerFullScreen2/>;
+  // }
 
   return (
     <>
@@ -145,28 +118,26 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
           </div>
 
           <div className="product-create">
-            <Link href={ "products/new-product" }>
+            <Link href={ 'products/new-product' }>
               <button className="create-product-btn" type="button">Create product</button>
             </Link>
           </div>
         </div>
         <div className="products-wrapper">
-          { dataFetched && products.length === 0 ? (
+          { data.data.length === 0 ? (
             <p>Немає продуктів для відображення.</p>
           ) : (
             <>
               <DataTable
                 initialSelectedOptions={ columns }
                 columns={ columns }
-                data={ products }
+                data={ data.data || [] }
               />
-              <PaginationControl totalPages={ totalPages }/>
             </>
           ) }
         </div>
       </div>
     </>
-
   );
 };
 
