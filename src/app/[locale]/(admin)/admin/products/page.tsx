@@ -3,6 +3,7 @@ import { getAction } from '@/actions/getAction';
 import { useLocale } from 'next-intl';
 
 import PaginationControl from '@/components/UI/PaginationControl/PaginationControl';
+import { revalidatePath } from 'next/cache';
 
 interface Product {
   id: number;
@@ -11,7 +12,6 @@ interface Product {
   price: string;
 }
 
-export const dynamic = 'force-dynamic'
 export default async function Products(
   { searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }
 ) {
@@ -25,7 +25,7 @@ export default async function Products(
   const limit = searchParams['limit'] ?? '10';
   const sort = searchParams['sort'] ?? 'desc';
   const sortOrder = searchParams['sortOrder'] ?? 'createdAt';
-  const isLux = searchParams['isLux'] ?? 'true';
+  const isLux = searchParams['isLux'] ?? '';
   const locale = useLocale();
 
   let urlParams = `sort=${ sort }&sortOrder=${ sortOrder }&isLux=${ isLux }`;
@@ -45,7 +45,9 @@ export default async function Products(
     <>
       {/* сделать получение переменной isLux из компонента ProductsWrapper, и сделать*/ }
       {/* вызов c новым значением isLux чтобы получить новый allProducts*/ }
-      <ProductsWrapper data={ allProducts }/>
+      <ProductsWrapper data={ allProducts } onSuccess={async () => {
+        revalidatePath(urlParams);
+      }}/>
       <PaginationControl totalPages={ totalPages }/>
     </>
   );

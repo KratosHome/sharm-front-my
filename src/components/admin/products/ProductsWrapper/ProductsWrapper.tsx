@@ -17,9 +17,10 @@ interface Product {
 
 interface ProductsWrapperProps {
   data: any;
+  onSuccess: any;
 }
 
-const ProductsWrapper: FC<ProductsWrapperProps> = ({ data }) => {
+const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, onSuccess }) => {
   const router = useRouter();
   // const { sendRequest, loading, error } = useApi();
   const [ isLux, setIsLux ] = useState('');
@@ -42,6 +43,8 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ data }) => {
     value ? searchParams.set('isLux', value) : searchParams.delete('isLux');
 
     router.push(`${ newUrl.pathname }?${ searchParams.toString() }`)
+
+    onSuccess(value);
   };
 
   const columns = useMemo(() => [
