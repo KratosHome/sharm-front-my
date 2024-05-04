@@ -1,6 +1,7 @@
 .container {
   position: sticky;
   top: 40px;
+  //background-color: var(--background-color);
 }
 
 .user {
@@ -44,12 +45,3 @@
 .list {
   list-style: none;
 }
-
-
-
-// .link a {
-
-//   display: flex;
-//   align-items: center;
-//   gap: 10px;
-// }

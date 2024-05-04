@@ -1,6 +1,8 @@
 .products-container {
   width: 100%;
-  // padding: 30px;
+  background-color: #a9a9a92e;
+  border-radius: 8px;
+  padding: 20px;
 }
 
 .products-title {
@@ -62,10 +64,20 @@ th {
 }
 
 .status {
-&.enabled {
-color: green; 
+  &.enabled {
+    color: green;
+  }
+  &.disabled {
+    color: red;
+  }
 }
-&.disabled {
-color: red; 
+
+.product-select {
+  margin-right: 10px;
+
+  .product-selectLuxury {
+    padding: 10px;
+    max-width: 400px;
+  }
 }
-}
+
