@@ -1,16 +1,8 @@
-import ProductsWrapper from '@/components/admin/products/ProductsWrapper/ProductsWrapper';
-import { getAction } from '@/actions/getAction';
 import { useLocale } from 'next-intl';
-
-import PaginationControl from '@/components/UI/PaginationControl/PaginationControl';
 import { revalidatePath } from 'next/cache';
-
-interface Product {
-  id: number;
-  image: string;
-  name: string;
-  price: string;
-}
+import { getAction } from '@/actions/getAction';
+import ProductsWrapper from '@/components/admin/products/ProductsWrapper/ProductsWrapper';
+import PaginationControl from '@/components/UI/PaginationControl/PaginationControl';
 
 export default async function Products(
   { searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }
@@ -31,24 +23,20 @@ export default async function Products(
   let urlParams = `sort=${ sort }&sortOrder=${ sortOrder }&isLux=${ isLux }`;
 
   const allProducts = await getAction(`products/${ locale }`, page.toString(), limit.toString(), urlParams)
-  const totalPages = allProducts.totalPages
+  const totalPages = allProducts?.totalPages
+  revalidatePath(urlParams);
 
-  const handleLux = (value: string) => {
-    console.log('handleLux', value);
-  }
-
-  const handleProductId = (value: string) => {
-    console.log('handleProductId', value);
-  }
+  console.log('allProducts', allProducts);
 
   return (
     <>
-      {/* сделать получение переменной isLux из компонента ProductsWrapper, и сделать*/ }
-      {/* вызов c новым значением isLux чтобы получить новый allProducts*/ }
-      <ProductsWrapper data={ allProducts } onSuccess={async () => {
-        revalidatePath(urlParams);
-      }}/>
-      <PaginationControl totalPages={ totalPages }/>
+      <ProductsWrapper data={ allProducts } getData={
+        async () => {
+          'use server'
+          return await allProducts;
+        }
+      }/>
+      <PaginationControl totalPages={ totalPages || 0 }/>
     </>
   );
 };

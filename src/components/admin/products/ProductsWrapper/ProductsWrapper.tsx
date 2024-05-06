@@ -7,6 +7,7 @@ import DataTable from '@/components/UI/DataTable/DataTable';
 import MyBtn from '@/components/UI/MyBtn/MyBtn';
 
 import './ProductsWrapper.scss';
+import { deleteAction } from '@/actions/deleteAction';
 
 interface Product {
   id: number;
@@ -17,23 +18,23 @@ interface Product {
 
 interface ProductsWrapperProps {
   data: any;
-  onSuccess: any;
+  getData?: any;
 }
 
-const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, onSuccess }) => {
+const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, getData }) => {
   const router = useRouter();
   // const { sendRequest, loading, error } = useApi();
   const [ isLux, setIsLux ] = useState('');
 
-  const deleteProduct = (id: string) => {
-    console.log(id);
+  const deleteProduct = async (id: string) => {
+    await deleteAction('products', id);
   };
 
   const editProduct = useCallback((id: string) => {
     router.push(`products/update/${ id }`);
   }, [ router ]);
 
-  const handleSelectChange = (event: any) => {
+  const handleSelectChange = async (event: any) => {
     event.preventDefault();
     const value = event.target.value;
     setIsLux(value);
@@ -44,7 +45,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, onSuccess }) => {
 
     router.push(`${ newUrl.pathname }?${ searchParams.toString() }`)
 
-    onSuccess(value);
+    getData(value)
   };
 
   const columns = useMemo(() => [
@@ -58,7 +59,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, onSuccess }) => {
       id: 'image',
       headerName: 'Image',
       width: 100,
-      render: (item: any) => <Image src={ item.img } alt="Product"/>,
+      render: (item: any) => <Image src={ item.img || ' ' } alt="Product"/>,
     },
     {
       id: 'name',
@@ -114,7 +115,7 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, onSuccess }) => {
         <div className="products-title">
           <div className="product-select">
             <select className="product-selectLuxury" value={ isLux } onChange={ handleSelectChange }>
-              <option value="" selected>All products</option>
+              <option value="">All products</option>
               <option value="true">Luxury</option>
               <option value="false">Not luxury</option>
             </select>
@@ -127,14 +128,14 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, onSuccess }) => {
           </div>
         </div>
         <div className="products-wrapper">
-          { data.data.length === 0 ? (
+          { data?.data.length === 0 ? (
             <p>Немає продуктів для відображення.</p>
           ) : (
             <>
               <DataTable
                 initialSelectedOptions={ columns }
                 columns={ columns }
-                data={ data.data || [] }
+                data={ data?.data || [] }
               />
             </>
           ) }
