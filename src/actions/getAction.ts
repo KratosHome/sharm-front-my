@@ -4,6 +4,8 @@ export const getAction = async (url: string, page?: string, limit?: string, para
   const baseURL = process.env.NEXT_PUBLIC_API_URL;
   const token = cookies().get("token");
 
+  console.log('URL>>>>>', `${ baseURL }/api/${ url }?page=${ page }&limit=${ limit }&${ params }`);
+
   return fetch(`${baseURL}/api/${url}?page=${page}&limit=${limit}&${params}`, {
     method: "GET",
     headers: {
