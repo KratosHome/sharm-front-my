@@ -1,16 +1,13 @@
-"use client";
-import React, { FC, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+'use client';
+import { FC, useCallback, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import Image from "next/image";
-import { useApi } from "@/hooks/useApi";
-import DataTable from "@/components/UI/DataTable/DataTable";
-import MyBtn from "@/components/UI/MyBtn/MyBtn";
+import Image from 'next/image';
+import DataTable from '@/components/UI/DataTable/DataTable';
+import MyBtn from '@/components/UI/MyBtn/MyBtn';
 
-
-import "./ProductsWrapper.scss";
-import { useLocale } from "next-intl";
-import PaginationControl from "@/components/UI/PaginationControl/PaginationControl";
+import './ProductsWrapper.scss';
+import { deleteAction } from '@/actions/deleteAction';
 
 interface Product {
   id: number;
@@ -20,79 +17,67 @@ interface Product {
 }
 
 interface ProductsWrapperProps {
-  page: any;
+  data: any;
+  getData?: any;
 }
 
-const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
+const ProductsWrapper: FC<ProductsWrapperProps> = ({ data, getData }) => {
   const router = useRouter();
-  const locale = useLocale();
-  const {sendRequest, loading, error} = useApi();
-  const [ products, setProducts ] = useState<Product[]>([]);
-  const [ totalPages, setTotalPages ] = useState(0);
-
-  const limit = "10";
-  const isLux = true;
-  const sort = "desc";
-  const sortOrder = "createdAt";
-  const additionalParams = `?page=${ page }&limit=${ limit }&isLux=${ isLux }&sort=${ sort }&sortOrder=${ sortOrder }`;
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const allProducts = await sendRequest(`products/${ locale }/${ additionalParams }`, 'GET');
-      setProducts(allProducts.data.data);
-      setTotalPages(allProducts.data.totalPages || 0);
-    };
-
-    fetchProducts();
-  }, [ locale ]);
+  // const { sendRequest, loading, error } = useApi();
+  const [ isLux, setIsLux ] = useState('');
 
   const deleteProduct = async (id: string) => {
-    try {
-      await sendRequest(`products/${ id }`, 'DELETE');
-      router.refresh();
-    } catch (err) {
-      console.error('Error deleting product:', err);
-    }
+    await deleteAction('products', id);
   };
 
-  if (!products || products?.length === 0) {
-    return <p>Немає продуктів для відображення.</p>;
-  }
-
-  const editProduct = (id: string) => {
+  const editProduct = useCallback((id: string) => {
     router.push(`products/update/${ id }`);
-  }
+  }, [ router ]);
 
-  const columns = [
+  const handleSelectChange = async (event: any) => {
+    event.preventDefault();
+    const value = event.target.value;
+    setIsLux(value);
+
+    const newUrl = new URL(window.location.href);
+    const searchParams = newUrl.searchParams;
+    value ? searchParams.set('isLux', value) : searchParams.delete('isLux');
+
+    router.push(`${ newUrl.pathname }?${ searchParams.toString() }`)
+
+    getData(value)
+  };
+
+  const columns = useMemo(() => [
     {
       id: 'skus',
       headerName: 'SKU',
       width: 85,
-      render: (item: any) => item.items[0]?.sku || "-",
+      render: (item: any) => item.items[0]?.sku || '-',
     },
     {
       id: 'image',
       headerName: 'Image',
       width: 100,
-      render: (item: any) => <Image src={ item.img } alt="Product"/>,
+      render: (item: any) => <Image src={ item.img || ' ' } alt="Product"/>,
     },
     {
       id: 'name',
       headerName: 'Name',
       width: 120,
-      render: (item: any) => item.translations[0]?.title || "No name",
+      render: (item: any) => item.translations[0]?.title || 'No name',
     },
     {
       id: 'price',
       headerName: 'Price',
       width: 85,
-      render: (item: any) => item.items[0]?.prise || "0",
+      render: (item: any) => item.items[0]?.prise || '0',
     },
     {
       id: 'old price',
       headerName: 'Old price',
       width: 85,
-      render: (item: any) => item.items[0]?.oldPrise || "0",
+      render: (item: any) => item.items[0]?.oldPrise || '0',
     },
     {
       id: 'visited',
@@ -110,41 +95,53 @@ const ProductsWrapper: FC<ProductsWrapperProps> = ({page}) => {
       id: 'edit',
       headerName: 'Edit',
       width: 120,
-      render: (item: any) => <MyBtn text={ "Edit" } color={ "attention" } click={ () => editProduct(item.id) }/>,
+      render: (item: any) => <MyBtn text={ 'Edit' } color={ 'attention' } click={ () => editProduct(item.id) }/>,
     },
     {
       id: 'delete',
       headerName: 'Delete',
       width: 120,
-      render: (item: any) => <MyBtn text={ "Delete" } color={ "attention" } click={ () => deleteProduct(item.id) }/>,
+      render: (item: any) => <MyBtn text={ 'Delete' } color={ 'attention' } click={ () => deleteProduct(item.id) }/>,
     },
-  ];
+  ], []);
+
+  // if (loading) {
+  //   return <SpinnerFullScreen2/>;
+  // }
 
   return (
     <>
       <div className="products-container">
         <div className="products-title">
+          <div className="product-select">
+            <select className="product-selectLuxury" value={ isLux } onChange={ handleSelectChange }>
+              <option value="">All products</option>
+              <option value="true">Luxury</option>
+              <option value="false">Not luxury</option>
+            </select>
+          </div>
+
           <div className="product-create">
-            <Link href={ "products/new-product" }>
+            <Link href={ 'products/new-product' }>
               <button className="create-product-btn" type="button">Create product</button>
             </Link>
           </div>
         </div>
-
         <div className="products-wrapper">
-          <DataTable
-            initialSelectedOptions={ columns }
-            columns={ columns }
-            data={ products || [] }
-          />
+          { data?.data.length === 0 ? (
+            <p>Немає продуктів для відображення.</p>
+          ) : (
+            <>
+              <DataTable
+                initialSelectedOptions={ columns }
+                columns={ columns }
+                data={ data?.data || [] }
+              />
+            </>
+          ) }
         </div>
       </div>
-
-      <PaginationControl
-        totalPages={ totalPages }
-      />
     </>
-
   );
 };
 
