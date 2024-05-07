@@ -1,14 +1,12 @@
-import {getAction} from "@/actions/getAction";
 import MenuItem from "@/components/admin/MenuItem/MenuItem";
 import WrapperTreeList from "@/components/admin/Wrapper/WrapperTreeList";
-import {useLocale} from "next-intl";
+import {getData} from "@/actions/getData";
 
 export default async function Home() {
-    const locale = useLocale();
 
-    const allMenus = await getAction(`menu/${locale}`);
-    const allMenus2 = await getAction(`menu/getAll/${locale}`);
-    console.log("allMenus", allMenus2)
+    const allMenus = await getData(`menu/getAll`, {locale: 'en'});
+
+    console.log("allMenus", allMenus);
 
     return (
         <>
