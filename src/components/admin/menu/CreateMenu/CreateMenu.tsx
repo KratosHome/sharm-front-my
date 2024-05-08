@@ -6,10 +6,12 @@ import MyInput from "@/components/general/MyInput/MyInput";
 import st from "./createMenu.module.scss";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import MyModal from "@/components/UI/MyModal/MyModal";
+import ImageUpload from "@/components/UI/ImageUpload/ImageUpload";
 
-type FormData = {
-    [key: string]: string;
-};
+interface FormData {
+    title: string
+    image: FileList
+}
 
 const CreateMenu = () => {
     const locale = useLocale();
@@ -20,13 +22,15 @@ const CreateMenu = () => {
     const {
         handleSubmit,
         register,
+        setError,
+        clearErrors,
         formState: {errors, isValid},
         watch,
         reset,
     } = useForm<FormData>();
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-
+        console.log("data: ", data);
     };
 
 
@@ -42,11 +46,11 @@ const CreateMenu = () => {
                     <h2> {t("create_menu")} </h2>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <MyInput
-                            type={"password"}
-                            placeholder={t('password')}
+                            type={"title"}
+                            placeholder={t('title')}
                             name={"password"}
                             register={{
-                                ...register('password', {
+                                ...register('title', {
                                     required: `${t('This field is required')}`,
                                     minLength: {
                                         value: 4,
@@ -54,11 +58,18 @@ const CreateMenu = () => {
                                     },
                                     maxLength: {
                                         value: 50,
-                                        message: `${t('Maximum number of characters')} 50`,
+                                        message: `${t('Maximum number of characters')} 250`,
                                     }
                                 })
                             }}
-                            error={errors.password?.message}
+                            error={errors.title?.message}
+                        />
+                        <ImageUpload
+                            name="image"
+                            clearErrors={name => clearErrors(name as keyof FormData)}
+                            register={register}
+                            setError={(name, error) => setError(name as keyof FormData, error)}
+                            errors={errors}
                         />
                     </form>
                 </div>
