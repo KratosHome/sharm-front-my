@@ -8,6 +8,10 @@ html {
     scroll-behavior: smooth;
     scrollbar-gutter: stable;
 }
+body > section{
+    width: 100vw - 17px;
+    overflow-x: clip;
+}
 :root {
     --index: calc(1vw + 1vh);
     background-color: #ffffff;
@@ -18,7 +22,8 @@ html {
     --text-color-input: #363636;
     --svg-img: brightness(0);
     --svg-img-hover: brightness(0) invert(1);
-    --nav-dot: #bdbdbd;
+    --nav-dot: #959595;
+    --nav-dot-active: #363636;
 
     --svg-colot-pagination: #e0e0e0;
     --svg-hover-pagintaion: #363636;
@@ -27,7 +32,7 @@ html {
     --primary-red: #e56466;
     --primary-red-hover: #d94a4a;
     --color-stroke: #b8b8b8;
-    --card-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    --card-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.11),  0px 4px 4px 0px rgba(0, 0, 0, 0.11);
     /* ------------------ */
     --text-color-light: white;
     --input-background: transparent;
@@ -44,12 +49,13 @@ html {
     --background-color-dark: #403030;
     --background-modal: rgba(255, 255, 255, 0.2);
     --text-color: #fffefe;
-    --nav-dot:#fffefe;
+    --nav-dot:#959595;
+    --nav-dot-active:#959595;
     --svg-img: brightness(0) invert(1);
     --svg-img-hover: brightness(0);
     --input-background: #f5f5f5;
     --color-stroke: #b8b8b8;
-    --card-shadow: 0 0 10px 0 rgba(255, 255, 255, 0.5);
+    --card-shadow: none;
     --placeholder: #959595;
     
 }

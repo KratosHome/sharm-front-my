@@ -8,22 +8,23 @@
     gap: 38px;
   }
   &-wrapper {
-    // width: 100%;
     display: flex;
-    overflow-x: clip;
   }
 
   &-container {
-    padding: 6px;
     display: flex;
     --slides-gap: 18px;
     gap: var(--slides-gap);
+    will-change: transform;  
 
     & > * {
+      opacity: 0;
+      visibility: hidden;
+
       //cannot use '100%' - parent is too wide, 
       //using 100vw means that we need need to subtract scrollbar width (appr 17px)
       // -12px - padding-inline
-      width: calc((100vw - 12px - var(--slides-gap) - var(--main-container-inline-padding) * 2) / 2);
+      width: calc((100vw - var(--slides-gap) - var(--main-container-inline-padding) * 2) / 2);
     }
   }
 
@@ -78,14 +79,14 @@
         width: 6px;
         height: 6px;
         border-radius: 50%;
-        background-color: var(--text-color-light);
+        background-color: transparent;
         border: 0.5px solid var(--nav-dot);
         cursor: pointer;
         transition: all 0.3s ease-in-out;
        
         &.active {
-          background-color: var(--text-color);
-          border-color: var(--text-color);
+          background-color: var(--nav-dot-active);
+          border-color: var(--nav-dot-active);
         }
       }
     }
@@ -119,7 +120,7 @@
         //cannot use '100%' - parent is too wide, 
         //using 100vw means that we need need to subtract scrollbar width (appr 17px)
         // -12px - padding-inline
-        width: calc((100vw - 17px - 12px - var(--slides-gap) * 2 - var(--main-container-inline-padding) * 2) / 3);
+        width: calc((100vw - var(--slides-gap) * 2 - var(--main-container-inline-padding) * 2) / 3);
       }
     }
   }
@@ -136,7 +137,7 @@
         //cannot use '100%' - parent is too wide, 
         //using 100vw means that we need need to subtract scrollbar width (appr 17px)
         // -12px - padding-inline
-        width: calc((100vw - 17px - 12px - var(--slides-gap) * 3 - var(--main-container-inline-padding) * 2) / 4);
+        width: calc((100vw - 17px - var(--slides-gap) * 3 - var(--main-container-inline-padding) * 2) / 4);
       }
     }
 }
@@ -150,7 +151,7 @@
       //cannot use '100%' - parent is too wide, 
       //using 100vw means that we need need to subtract scrollbar width (appr 17px)
       // -12px - padding-inline
-      width: calc((100vw - 17px - 12px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
+      width: calc((100vw - 17px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
     }
   }
 }
@@ -160,7 +161,7 @@
       //cannot use '100%' - parent is too wide, 
       //using 100vw means that we need need to subtract scrollbar width (appr 17px)
       // -12px - padding-inline
-      width: calc((1440px - 17px - 12px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
+      width: calc((1440px - 17px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
     }
   }
 }

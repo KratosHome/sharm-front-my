@@ -28,30 +28,29 @@ export default function ProductCard({product, type, hasBacklight}: Props) {
     const t = useTranslations("UI");
 
     return (
-        <li className={`product-card${type === 'prod-list' ? ' full' : ''}`}>
-            <div className={`product-card-favorites${type !== "slider-long-img" ? ' square' : ''}`}><HeartSvg /></div>
+        <li className={"product-card"}>
+            <button className={`product-card-favorites${type !== "slider-long-img" ? ' square' : ''}`}><HeartSvg /></button>
             <div className={`product-card-img${type !== "slider-long-img" ? ' square' : ''}`}>
                 <Link href={url}>
                     <Image src={img} alt={title} fill={true}/>
                 </Link>
             </div>
-            <div className="product-card-content">
-                {hasBacklight ? <div className="product-card-back"></div> : null}
+            <div className={`product-card-content${hasBacklight ? ' backlight' : ''}`}>
                 <div className="product-card-content-top">
-                    <div className="product-card-title">
+                    <h5 className="product-card-title">
                         <Link href={url}>
                             {title}
                         </Link>    
-                    </div>
-                    <div className="product-card-subtitle">{subTitle}</div>
+                    </h5>
+                    <p className="product-card-subtitle">{subTitle}</p>
                 </div>
                 <div className="product-card-content-middle">
-                    <div className="product-card-rating">
+                    <span className="product-card-rating">
                         <StarRating rating={rating} />
                         {/* <span>(<Link href="#">{votes}</Link>)</span> */}
                         <span>({votes})</span>
-                    </div>
-                    <div className="product-card-price">₴ {price}{oldPrice ? <span className='product-card-oldprice'>₴ {oldPrice}</span>: null}</div>
+                    </span>
+                    <span className="product-card-price">₴ {price}{oldPrice ? <span className='product-card-oldprice'>₴ {oldPrice}</span>: null}</span>
                 </div>
                 {type === "prod-list" ? <div className="product-card-content-bottom">
                     <MyBtn text={t("add_to_cart")} color='primary'/>

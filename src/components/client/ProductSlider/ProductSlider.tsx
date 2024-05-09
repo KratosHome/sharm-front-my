@@ -1,6 +1,6 @@
 'use client';
 import { useRef, useState } from "react";
-import { gsap, Power3 } from "gsap";
+import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import Draggable from "gsap/Draggable";
 import { useTranslations } from "next-intl";
@@ -29,71 +29,181 @@ export default function ProductSlider({ title, data, type }: Props) {
             size > 768 ? 3 : 2;
 
     const [offset, setOffset] = useState<number>(0);
+    
     const gap = sliderContainer.current && parseFloat(window.getComputedStyle(sliderContainer.current).getPropertyValue("gap"));
     const itemWidth = sliderContainer.current && sliderContainer.current.children[0].getBoundingClientRect().width;
-    const wrapperWidth = sliderWrapper.current && sliderWrapper.current.getBoundingClientRect().width;
-    const l = data.length;
-    const dotsLength =(Math.ceil(l / basicSliderQuantity) >= 5 ? 5 : 4);
     
-    console.log(gap)
+    const dotsLength = Math.ceil(data.length / basicSliderQuantity) >= 5 ? 5 : 4;
 
-    useGSAP(() => {
-        if (!itemWidth || !gap) return;
-        const shift = (itemWidth + gap) * offset;
+    const getResponsiveXValues = (amount: number, i: number) => {
+        switch (amount) {
+            case 2:
+                return i === 0 ? -300 : i === 1 ? 300 : 0;
+            case 3:
+                return i === 0 ? -300 : i === 2 ? 300 : 0;
+            case 4:
+                return i === 0 ? -400 : i === 1 ? -200 : i === 2 ? 200 : i === 3 ? 400 : 0;
+            case 5:
+                return i === 0 ? -300 : i === 1 ? -150 : i === 3 ? 150 : i === 4 ? 300 : 0;
+            default: 
+                return 0
+        }
+    }
 
-        gsap.to(sliderContainer.current, {
-            x: -(shift),
-            ease: Power3.easeOut,
-            duration: 1,
-        });
+    //first animation when slider is in a viewport
+    useGSAP(()=> {
+        const cards = Array.from(sliderContainer.current?.children!);
 
-    }, { dependencies: [offset, size] });
-
-    useGSAP(() => {
-
-        if (size > 1023) return;
-
-        let startX = 0;
-        Draggable.create(sliderContainer.current, {
-            type: "x",
-            onDragStart: function (e) {
-                startX = e.clientX || e.touches[0].clientX;
+        gsap.timeline({
+            defaults: {
+                duration: 2,
+                ease: "power4.out",
             },
-            onDragEnd: function (e) {
-                if (!itemWidth || !gap) return;
+            scrollTrigger: {
+                // id: "product slider",
+                trigger: sliderContainer.current,
+                start: `top${size > 768 ? '-=250' : ''} 95%`,
+                end: "bottom 20%",
+                toggleActions: "play reset play reset",
+                // markers: true,
 
-                const dragDistance =
-                    e.clientX - startX || e.touches[0].clientX - startX;
-
-                if (offset < basicSliderQuantity && dragDistance > 0) {
-                    gsap.to(sliderContainer.current, {
-                        x: 0,
-                        ease: Power3.easeOut,
-                        duration: 1,
-                    });
+                //reset the slider offset for correct animation of the first (basicSliderQuantity) slides using ScrollTrigger
+                onLeave: () => {
                     setOffset(0);
-                } else if (offset + +(dragDistance < 0) * basicSliderQuantity > data.length - basicSliderQuantity) {
-                    gsap.to(sliderContainer.current, {
-                        x: - (data.length - basicSliderQuantity) * (itemWidth + gap),
-                        ease: Power3.easeOut,
-                        duration: 1,
-                    });
-                    setOffset(data.length - basicSliderQuantity);
+                },
+                onLeaveBack: () => {
+                    setOffset(0);
+                },
+            }}
+        )
+        .fromTo(cards, {
+            x: (i) => getResponsiveXValues(basicSliderQuantity, i),
+        }, {
+            x: 0,
+        })
+        .to(sliderContainer.current, {
+            autoAlpha: 1,
+        }, "-=0.5")
+    }, { dependencies: [size] });
 
-                } else {
+    //slider animation on offset change
+    useGSAP(() => {
+
+        const shift = (itemWidth! + gap!) * offset;
+        const cards = Array.from(sliderContainer.current?.children!);
+
+        gsap.timeline()
+            .to(sliderContainer.current, {
+                x: -shift,
+                ease: "power4.out",
+                duration: 1,
+            })
+            .to(cards, {
+                autoAlpha: (i) => i <= offset - 1 || i > offset + basicSliderQuantity - 1 ? 0 : 1,
+                ease: "power4.out",
+                duration: () => size > 1024 ? 0.5 : size > 768 ? 1.5 : 2.5,
+            }, '-=1');
+
+        //scrolling slider for small screens
+        gsap.matchMedia().add("(max-width: 1024px)", () => {
+            let startX = 0;
+
+            //VAR2 "spring" behavior on exceptional cases (swipes on edges); no short swipes
+            /*
+            Draggable.create(sliderContainer.current, {
+                type: "x",
+                edgeResistance: 0,
+                bounds: sliderWrapper.current,
+                onDragStart: function (e) {
+                    startX = e.clientX || e.touches[0].clientX;
+                },
+                onDragEnd: function (e) {
+                    const dragDistance =
+                        e.clientX - startX || e.touches[0].clientX - startX;
                     if (dragDistance > 0) {
                         handleArrowClick(-basicSliderQuantity);
                     } else if (dragDistance < 0) {
                         handleArrowClick(basicSliderQuantity);
                     }
-                }
-            },
-        });
+                },
+            });
+            */
+
+
+            // VAR1 smooth slide scrolling on edges + short swipes ---------------->
+            
+            Draggable.create(sliderContainer.current, {
+                type: "x",
+                onDragStart: function (e) {
+                    startX = e.clientX || e.touches[0].clientX;
+                },
+                onDragEnd: function (e) {
+                    if (!itemWidth || !gap) return;
+    
+                    const dragDistance =
+                        e.clientX - startX || e.touches[0].clientX - startX;
+
+                    //case for short swipes
+                    const absDist = Math.abs(dragDistance);
+                    if(absDist < 50 && absDist > 0) {
+                        gsap.to(sliderContainer.current, {
+                            x: - offset * (itemWidth + gap),
+                            ease: "power4.out",
+                            duration: 1,
+                        });
+                    } 
+
+                    //case of approaching the left edge
+                    if (offset < basicSliderQuantity && dragDistance > 50) {
+                        gsap.to(sliderContainer.current, {
+                            x: 0,
+                            ease: "power4.out",
+                            duration: 1,
+                        });
+                        offset && setOffset(0);
+                    }
+
+                    //case of approaching the right edge
+                    if (offset + +(dragDistance < -50) * basicSliderQuantity > data.length - basicSliderQuantity) {
+                        gsap.to(sliderContainer.current, {
+                            x: - (data.length - basicSliderQuantity) * (itemWidth + gap),
+                            ease: "power4.out",
+                            duration: 1,
+                        });
+                        setOffset(data.length - basicSliderQuantity);
+                    } 
+
+                    //common case
+                    if (dragDistance >= 50) {
+                        handleArrowClick(-basicSliderQuantity);
+                    } else if (dragDistance <= -50) {
+                        handleArrowClick(basicSliderQuantity);
+                    }
+                },
+            });
+
+        })
     }, { dependencies: [offset, size] });
 
     const handleArrowClick = (val: number) => {
+        //VAR2 -------------------->
+        /*
+        if (offset + val < 0) {
+            if(!offset) return;
+            setOffset(0);
+            return
+        } else if(offset + val > data.length - basicSliderQuantity) {
+            setOffset(data.length - val);
+            return
+        }
+        setOffset(offset + val);
+        */
+
+        //VAR1 ------------------------------------------->
+
         if (offset + val < 0 || offset + val > data.length - basicSliderQuantity) return
         setOffset(offset + val);
+
     }
 
     return (
