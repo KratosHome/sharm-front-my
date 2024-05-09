@@ -7,10 +7,11 @@ import st from "./createMenu.module.scss";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import ImageUpload from "@/components/UI/ImageUpload/ImageUpload";
+import {createMenu} from "@/server/menu/createMenu.server";
 
 interface FormData {
     title: string
-    image: FileList
+    icon: FileList
 }
 
 const CreateMenu = () => {
@@ -30,7 +31,17 @@ const CreateMenu = () => {
     } = useForm<FormData>();
 
     const onSubmit: SubmitHandler<FormData> = async (data) => {
-        console.log("data: ", data);
+        const result = {
+            title: data.title,
+            icon: data.icon,
+            locale: locale
+        }
+        console.log("result: ", result)
+       const save = await createMenu(result);
+        console.log("save: ", save)
+
+      //  reset();
+     //   setVisible(!visible)
     };
 
 
@@ -48,7 +59,7 @@ const CreateMenu = () => {
                         <MyInput
                             type={"title"}
                             placeholder={t('title')}
-                            name={"password"}
+                            name={"title"}
                             register={{
                                 ...register('title', {
                                     required: `${t('This field is required')}`,
@@ -65,11 +76,16 @@ const CreateMenu = () => {
                             error={errors.title?.message}
                         />
                         <ImageUpload
-                            name="image"
+                            name="icocn"
                             clearErrors={name => clearErrors(name as keyof FormData)}
                             register={register}
                             setError={(name, error) => setError(name as keyof FormData, error)}
                             errors={errors}
+                        />
+                        <MyBtn
+                            text={`${t(`create_menu_btn`)}`}
+                            color={"primary"}
+                            type={"submit"}
                         />
                     </form>
                 </div>

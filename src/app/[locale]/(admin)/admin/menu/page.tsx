@@ -6,12 +6,17 @@ import CreateMenu from "@/components/admin/menu/CreateMenu/CreateMenu";
 export default async function Home() {
     const allMenus = await getData(`menu/getAll`, {locale: 'en'});
 
+    console.log("allMenus", allMenus);
     return (
         <>
             <CreateMenu />
-            <WrapperTreeList data={allMenus || []} type="menu">
-                <MenuItem parentId={allMenus ? allMenus[0]?.id : []} menu={null}/>
-            </WrapperTreeList>
+
         </>
     );
 }
+
+/*
+            <WrapperTreeList data={allMenus || []} type="menu">
+                <MenuItem parentId={allMenus ? allMenus[0]?.id : []} menu={null}/>
+            </WrapperTreeList>
+ */

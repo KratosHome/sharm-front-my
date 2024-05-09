@@ -12,9 +12,10 @@ const menuSchema = new mongoose.Schema(
         icon: {
             type: String,
         },
-        local: {
+        locale: {
             type: String,
             required: true,
+            enum: ["en", "ru", "ua"]
         },
         categoriesId: {
             type: String,
