@@ -36,12 +36,11 @@ const CreateMenu = () => {
             icon: data.icon,
             locale: locale
         }
-        console.log("result: ", result)
-       const save = await createMenu(result);
-        console.log("save: ", save)
+        const save = await createMenu(result);
+        console.log("save", save);
 
-      //  reset();
-     //   setVisible(!visible)
+        reset();
+        setVisible(!visible)
     };
 
 

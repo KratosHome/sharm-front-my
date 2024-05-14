@@ -24,7 +24,7 @@ export const createMenu = async (data: createMenuData) => {
             locale: locale
         });
         await newMenu.save();
-        console.log("New menu saved successfully:", newMenu);
+
         return {newMenu: newMenu.toObject(), success: true};
     } catch (err) {
         return {error: true};
