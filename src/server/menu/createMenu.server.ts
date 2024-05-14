@@ -13,15 +13,17 @@ export const createMenu = async (data: createMenuData) => {
     "use server"
     const {title, icon, locale} = data;
 
-    console.log("data: ", data);
     try {
         await connectToDb();
         const isMenu = await Menu.findOne({title: title});
-        if (isMenu) return {error: true};
 
         const newMenu = new Menu({
-            title: title,
-            locale: locale
+            translations: [
+                {
+                    title: title,
+                    locale: locale
+                }
+            ],
         });
         await newMenu.save();
 

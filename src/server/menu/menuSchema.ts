@@ -20,9 +20,6 @@ const menuSchema = new mongoose.Schema(
         icon: {
             type: String,
         },
-        categoriesId: {
-            type: String,
-        },
         children: [{type: mongoose.Schema.Types.ObjectId, ref: 'Menu'}]
     },
     {timestamps: true}
