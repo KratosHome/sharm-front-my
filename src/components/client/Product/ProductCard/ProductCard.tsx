@@ -1,3 +1,4 @@
+"use client";
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 
@@ -32,7 +33,7 @@ export default function ProductCard({product, type, hasBacklight}: Props) {
             <button className={`product-card-favorites${type !== "slider-long-img" ? ' square' : ''}`}><HeartSvg /></button>
             <div className={`product-card-img${type !== "slider-long-img" ? ' square' : ''}`}>
                 <Link href={url}>
-                    <Image src={img} alt={title} fill={true}/>
+                    <Image src={img} alt={title} fill={true} sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"/>
                 </Link>
             </div>
             <div className={`product-card-content${hasBacklight ? ' backlight' : ''}`}>

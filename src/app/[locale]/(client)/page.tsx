@@ -1,3 +1,4 @@
+
 import Banner from "@/components/client/Banner/Banner";
 import PopularCategories from "@/components/client/PopularCategories/PopularCategories";
 import ProductSlider from "@/components/client/ProductSlider/ProductSlider";
@@ -20,7 +21,7 @@ export default async function Home() {
     <main className="main-container">
       <Banner data={bannerData} />
       <PopularCategories categories={mockCategories} />
-      <ProductSlider title={'new_arrivals'} data={data} type='long-img' />
+      <ProductSlider />
       <Testimonials data={testimonialsData} />
       <FAQ />
       <Footer />

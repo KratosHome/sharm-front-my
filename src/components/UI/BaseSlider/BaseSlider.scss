@@ -1,0 +1,167 @@
+.product-slider {
+    padding-top: 54px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    gap: 30px;
+    &.square {
+      gap: 38px;
+    }
+    &-wrapper {
+      display: flex;
+    }
+  
+    &-container {
+      display: flex;
+      --slides-gap: 18px;
+      gap: var(--slides-gap);
+      will-change: transform;  
+  
+      & > * {
+        // opacity: 0;
+        // visibility: hidden;
+  
+        //cannot use '100%' - parent is too wide, 
+        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+        // -12px - padding-inline
+        width: calc((100vw - var(--slides-gap) - var(--main-container-inline-padding) * 2) / 2);
+      }
+    }
+  
+    &-header {
+      display: flex;
+      justify-content: space-between;
+    }
+  
+    &-title {
+      font-size: 26px;
+      line-height: 1.3;
+      background-image: linear-gradient(to bottom, transparent 60%, rgba(229, 100, 102, 0.5) 40%);
+      background-repeat: no-repeat;
+      background-size: 100%;
+      background-position: left;
+      color: var(--text-color);
+    }
+  
+    &-navigation {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      width: 90px;
+  
+      .arrow-forward-button,
+      .arrow-back-button {
+        svg path {
+          fill: var(--text-color);
+        }
+        cursor: pointer;
+      }
+  
+      .arrow-back {
+        transform: rotate(-180deg);
+      }
+  
+      .arrow-back-button[disabled],
+      .arrow-forward-button[disabled] {
+        svg path {
+          fill: var(--placeholder);
+        }
+        cursor: unset;
+      }
+      .slider-dots {
+        display: flex;
+        width: 54px;
+        justify-content: space-between;
+        align-items: center;
+        
+    
+        .slider-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: transparent;
+          border: 0.5px solid var(--nav-dot);
+          cursor: pointer;
+          transition: all 0.3s ease-in-out;
+         
+          &.active {
+            background-color: var(--nav-dot-active);
+            border-color: var(--nav-dot-active);
+          }
+        }
+      }
+    }
+  }
+  
+  @media (min-width: 768px) and (max-width: 1023px){
+    .product-slider-navigation {
+      .slider-dots {
+        width: 100%;
+        .slider-dot {
+          width: 8px;
+          height: 8px;
+          border: 0.5px solid var(--placeholder);
+          margin: 0 5px;
+        }
+      }
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .product-slider{
+      padding-top: 89px;
+      &-navigation {
+        justify-content: space-between;
+      }
+      &-container {
+        --slides-gap: 30px;
+  
+        & > * {
+          //cannot use '100%' - parent is too wide, 
+          //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+          // -12px - padding-inline
+          width: calc((100vw - var(--slides-gap) * 2 - var(--main-container-inline-padding) * 2) / 3);
+        }
+      }
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .product-slider {
+      gap: 56px;
+      &.square {
+        gap: 36px;
+      }
+      &-container {
+        & > * {
+          //cannot use '100%' - parent is too wide, 
+          //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+          // -12px - padding-inline
+          width: calc((100vw - 17px - var(--slides-gap) * 3 - var(--main-container-inline-padding) * 2) / 4);
+        }
+      }
+  }
+  }
+  
+  @media (min-width: 1200px) {
+    .product-slider-container {
+      --slides-gap: 40px;
+  
+      & > * {
+        //cannot use '100%' - parent is too wide, 
+        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+        // -12px - padding-inline
+        width: calc((100vw - 17px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
+      }
+    }
+  }
+  @media (min-width: 1440px) {
+    .product-slider-container {
+      & > * {
+        //cannot use '100%' - parent is too wide, 
+        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+        // -12px - padding-inline
+        width: calc((1440px - 17px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
+      }
+    }
+  }

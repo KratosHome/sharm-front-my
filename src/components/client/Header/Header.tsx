@@ -26,7 +26,7 @@ const Header = () => {
       const headerStickyHeight = Number(headerSticky?.current?.getBoundingClientRect().height);
       
       let mm = gsap.matchMedia();
-      mm.add("(min-width: 768px)", () => {
+      mm.add("(min-width: 1024px)", () => {
 
         gsap.timeline(
           {scrollTrigger: {

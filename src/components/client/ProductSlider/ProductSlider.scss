@@ -16,15 +16,15 @@
     --slides-gap: 18px;
     gap: var(--slides-gap);
     will-change: transform;  
-
+    
     & > * {
-      opacity: 0;
-      visibility: hidden;
+      // opacity: 0;
+      // visibility: hidden;
 
-      //cannot use '100%' - parent is too wide, 
-      //using 100vw means that we need need to subtract scrollbar width (appr 17px)
+      //cannot use '100%' - parent is too wide,
+      //using 100vw means that we need need to subtract scrollbar width (appr 17px) 
       // -12px - padding-inline
-      width: calc((100vw - var(--slides-gap) - var(--main-container-inline-padding) * 2) / 2);
+      width: calc((100vw - 17px - var(--slides-gap) - var(--main-container-inline-padding) * 2) / 2);
     }
   }
 
@@ -93,7 +93,7 @@
   }
 }
 
-@media (min-width: 768px) and (max-width: 1024px){
+@media (min-width: 768px) and (max-width: 1023px){
   .product-slider-navigation {
     .slider-dots {
       width: 100%;
@@ -118,7 +118,6 @@
 
       & > * {
         //cannot use '100%' - parent is too wide, 
-        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
         // -12px - padding-inline
         width: calc((100vw - var(--slides-gap) * 2 - var(--main-container-inline-padding) * 2) / 3);
       }
@@ -135,7 +134,6 @@
     &-container {
       & > * {
         //cannot use '100%' - parent is too wide, 
-        //using 100vw means that we need need to subtract scrollbar width (appr 17px)
         // -12px - padding-inline
         width: calc((100vw - 17px - var(--slides-gap) * 3 - var(--main-container-inline-padding) * 2) / 4);
       }
@@ -149,7 +147,6 @@
 
     & > * {
       //cannot use '100%' - parent is too wide, 
-      //using 100vw means that we need need to subtract scrollbar width (appr 17px)
       // -12px - padding-inline
       width: calc((100vw - 17px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
     }
@@ -159,7 +156,6 @@
   .product-slider-container {
     & > * {
       //cannot use '100%' - parent is too wide, 
-      //using 100vw means that we need need to subtract scrollbar width (appr 17px)
       // -12px - padding-inline
       width: calc((1440px - 17px - var(--slides-gap) * 4 - var(--main-container-inline-padding) * 2) / 5);
     }
