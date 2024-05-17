@@ -1,10 +1,11 @@
 import createMiddleware from "next-intl/middleware";
-import {NextRequest, NextResponse} from "next/server";
-import {cookies} from 'next/headers'
+import {NextRequest} from "next/server";
+// export { auth as middleware } from "./server/auth/auth";
 
 const protectedRoutes = ["/admin1"]
 
 export default function middleware(request: NextRequest) {
+
     const responseForLocale = createMiddleware({
         locales: ['ua', 'ru'],
         localeDetection: true,
@@ -13,8 +14,6 @@ export default function middleware(request: NextRequest) {
     })(request);
 
 
-    //  console.log("responseForLocale", responseForLocale)
-
     return responseForLocale;
 }
 
@@ -22,17 +21,3 @@ export const config = {
     matcher: ['/', '/(ua|ru)/:path*']
 };
 
-/*
-    const pathWithoutLocale = request.nextUrl.pathname.replace(/^\/(ua|ru)/, '');
-
-    if(protectedRoutes.includes(pathWithoutLocale)) {
-        if (role?.value === "") {
-            console.log("work")
-            const url = new URL("", request.nextUrl.origin);
-            return NextResponse.redirect(url);
-        }
-    }
-
-    console.log("role", role?.value === "user")
-    console.log("request.nextUrl.pathname", request.nextUrl.pathname)
- */

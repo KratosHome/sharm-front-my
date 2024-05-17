@@ -20,6 +20,7 @@ const LocaleSwitch = () => {
   return (
     <div className={styles.container}>
       <select
+        className={styles.select}
         title="selectLang"
         value={locale}
         onChange={(e) => change(e.target.value)}>
