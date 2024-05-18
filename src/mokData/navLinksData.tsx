@@ -188,10 +188,6 @@ export const localizationList = [
     name: "ua",
   },
   {
-    title: "EN",
-    name: "en",
-  },
-  {
     title: "RU",
     name: "ru",
     icon: <SinkingShipSvg />,

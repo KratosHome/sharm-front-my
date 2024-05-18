@@ -7,7 +7,7 @@ const protectedRoutes = ["/admin1"]
 export default function middleware(request: NextRequest) {
 
     const responseForLocale = createMiddleware({
-        locales: ['en', 'ua', 'ru'],
+        locales: ['ua', 'ru'],
         localeDetection: true,
         localePrefix: "always",
         defaultLocale: 'ua'
@@ -18,6 +18,6 @@ export default function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/', '/(ua|en|ru)/:path*']
+    matcher: ['/', '/(ua|ru)/:path*']
 };
 

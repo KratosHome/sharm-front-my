@@ -10,13 +10,15 @@
 
     border-bottom: 1px solid var(--stoke);
 
-    @media screen and (min-width: 768px) {
-        padding: 0;
-        border-bottom: none;
-        grid-template-columns: 9.375rem 1fr 9.375rem;
-    }
+    // @media screen and (min-width: 768px) {
+    //     padding: 0;
+    //     border-bottom: none;
+    //     grid-template-columns: 9.375rem 1fr 9.375rem;
+    // }
 
     @media screen and (min-width: 1024px) {
+        padding: 0;
+        border-bottom: none;
         grid-template-columns: 19.375rem 1fr 19.375rem;
     }
 
@@ -46,7 +48,7 @@
         width: 80px;
         height: 32px;
 
-        @media screen and (min-width: 768px) {
+        @media screen and (min-width: 1024px) {
             width: 200px;
             height: 98px;
         }

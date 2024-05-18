@@ -4,11 +4,14 @@
     box-sizing: border-box;
     font-family: "Roboto", sans-serif;
 }
-
-a {
-    text-decoration: none;
+html {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable;
 }
-
+body > section{
+    width: 100vw - 17px;
+    overflow-x: clip;
+}
 :root {
     --index: calc(1vw + 1vh);
     background-color: #ffffff;
@@ -19,6 +22,8 @@ a {
     --text-color-input: #363636;
     --svg-img: brightness(0);
     --svg-img-hover: brightness(0) invert(1);
+    --nav-dot: #959595;
+    --nav-dot-active: #363636;
 
     --svg-colot-pagination: #e0e0e0;
     --svg-hover-pagintaion: #363636;
@@ -27,14 +32,14 @@ a {
     --primary-red: #e56466;
     --primary-red-hover: #d94a4a;
     --color-stroke: #b8b8b8;
-
+    --card-shadow: 0px -2px 4px 0px rgba(0, 0, 0, 0.11),  0px 4px 4px 0px rgba(0, 0, 0, 0.11);
+    --input-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
     /* ------------------ */
     --text-color-light: white;
     --input-background: transparent;
     --light-red: #f1b0b1;
     --stoke: #b8b8b8;
-    --placeholder: #828282;
-    --input-shadow: 0 4px 6px 1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+    --placeholder: #A0A0A0;
 }
 
 [data-theme="dark"] {
@@ -43,11 +48,16 @@ a {
     --background-color: #181818;
     --background-color-dark: #403030;
     --background-modal: rgba(255, 255, 255, 0.2);
-    --text-color: #ffffff;
+    --text-color: #fffefe;
+    --nav-dot:#959595;
+    --nav-dot-active:#959595;
     --svg-img: brightness(0) invert(1);
     --svg-img-hover: brightness(0);
     --input-background: #f5f5f5;
     --color-stroke: #b8b8b8;
+    --card-shadow: none;
+    --placeholder: #959595;
+    
 }
 
 /*  font-size: calc(var(--index) * 1); */
@@ -59,12 +69,8 @@ a {
 .main-container {
     max-width: 1440px;
     width: 100%;
-    padding-inline: 70px;
+    padding-inline: var(--main-container-inline-padding);
     margin: 0 auto;
-}
-
-a {
-    color: var(--text-color);
 }
 
 button {
@@ -73,17 +79,28 @@ button {
     background-color: transparent;
 }
 
+a {
+    text-decoration: none;
+    color: var(--text-color);
+}
+
 li {
     list-style: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
+    :root {
+        --main-container-inline-padding: 18px;
+    }
     .desktop-only {
         display: none;
     }
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) {
+    :root {
+        --main-container-inline-padding: 70px;
+    }
     .mobile-only {
         display: none;
     }
