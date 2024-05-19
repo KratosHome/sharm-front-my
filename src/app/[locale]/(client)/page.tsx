@@ -10,18 +10,17 @@ import { bannerData } from "@/mokData/bannerData";
 import { mockCategories } from "@/mokData/mockPopularCategories";
 import {products} from '@/mokData/sliderProducts.js';
 import { testimonialsData } from "@/mokData/testimonialsData";
-
-const getProductForSlider = async () => {
-  return new Promise<IProduct[]>(resolve => setTimeout(() => resolve(products), 1000))
-}
+import PromoBanner from "@/components/client/PromoBanner/PromoBanner";
 
 export default async function Home() {
-  const data = await getProductForSlider();
   return (
     <main className="main-container">
       <Banner data={bannerData} />
       <PopularCategories categories={mockCategories} />
       <ProductSlider />
+      <PromoBanner promoPosition="top"/>
+      <ProductSlider />
+      <PromoBanner promoPosition="top"/>
       <Testimonials data={testimonialsData} />
       <FAQ />
       <Footer />
