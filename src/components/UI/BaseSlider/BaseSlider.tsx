@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState, Children } from "react";
+import { useEffect, useRef, useState } from "react";
 import { gsap, Power4 } from "gsap";
 import { useGSAP } from "@gsap/react";
 import Draggable from "gsap/Draggable";
@@ -7,7 +7,6 @@ import {CSSRulePlugin} from "gsap/CSSRulePlugin";
 import { useTranslations } from "next-intl";
 
 import { ArrowLong } from "@/components/svg/Arrow/Arrow-long";
-import { useWindowWidth } from "@/hooks/useWindowWidth";
 
 import './BaseSlider.scss';
 import {useMatchMedia} from "@/hooks/useMatchMedia";

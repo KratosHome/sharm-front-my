@@ -27,8 +27,10 @@ const useHttp = () => {
             setLoading(false);
             return res.json();
         } catch (e) {
-            setError((e as Error).message);
-            setLoading(false);
+            if(e instanceof Error) {
+                setError(e.message);
+                setLoading(false);
+            }
             throw e;
         }
     };
