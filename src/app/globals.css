@@ -9,7 +9,7 @@ html {
     scrollbar-gutter: stable;
 }
 body > section{
-    width: 100vw - 17px;
+    /* width: 100vw - 17px; */
     overflow-x: clip;
 }
 :root {

@@ -1,14 +1,15 @@
 .promo-banners {
     padding-block: 176px 78px;
+    display: none;
     &-wrapper {
         display: flex;
         justify-content: space-between;
         align-items: stretch;
         gap: 20px;
+        overflow: hidden;
         .promo-banner {
-            flex: 1 0 calc(50% - 20px);
+            flex: 1 0 calc(50% - 10px);
             position: relative;
-            aspect-ratio: 1.94;
             &::after {
                 content: '';
                 position: absolute;
@@ -23,9 +24,9 @@
                 height: 100%;
                 display: flex;
                 flex-direction: column;
-                justify-content: center;
+                justify-content: space-between;
                 align-items: start;
-                padding-inline: 14.375%;
+                padding: 10% 14.5%;
                 color: var(--text-color-input);
             }
             &-title {
@@ -43,14 +44,17 @@
                 width: 72.37%;
                 cursor: pointer;
                 border: none;
-                padding: 10px;
+                padding-inline: 10px;
                 height: 41px;
                 transition: background-color 0.3s ease;
                 background-color: var(--primary-red);
-                text-align: center;
                 text-transform: uppercase;
                 color: var(--background-color);
                 font-weight: 600;
+                font-size: 0.875rem;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 @media (hover: hover) {
                     &:hover {
                         background-color: var(--primary-red-hover);

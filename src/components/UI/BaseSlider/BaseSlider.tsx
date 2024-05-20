@@ -1,17 +1,16 @@
 'use client';
-import { useEffect, useRef, useState } from "react";
+import { useTranslations } from "next-intl";
+import { FC, useEffect, useRef, useState } from "react";
 import { gsap, Power4 } from "gsap";
 import { useGSAP } from "@gsap/react";
 import Draggable from "gsap/Draggable";
-import {CSSRulePlugin} from "gsap/CSSRulePlugin";
-import { useTranslations } from "next-intl";
 
 import { ArrowLong } from "@/components/svg/Arrow/Arrow-long";
-
-import './BaseSlider.scss';
 import {useMatchMedia} from "@/hooks/useMatchMedia";
 
-gsap.registerPlugin(useGSAP, Draggable, CSSRulePlugin);
+import './BaseSlider.scss';
+
+gsap.registerPlugin(useGSAP, Draggable);
 
 type Props = { 
     title: string; 
@@ -39,11 +38,11 @@ const getResponsiveXValues = (amount: number, i: number) => {
     }
 }
 
-export default function BaseSlider({ title, slides, children }: Props) {
+const BaseSlider: FC<Props> = ({ title, slides, children }) => {
     const t = useTranslations('UI');
 
     const sliderContainer = useRef<HTMLUListElement | null>(null);
-
+    const dots = useRef<Array<HTMLDivElement | null>>([]);
     const [offset, setOffset] = useState<number>(0);
 
     const resolutions = useMatchMedia();
@@ -72,12 +71,12 @@ export default function BaseSlider({ title, slides, children }: Props) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    console.log('render')
     //animation when the slider appears in a viewport
     
     useGSAP(()=> {
         const cards = Array.from(sliderContainer.current?.children!);
         const mm = gsap.matchMedia();
+        
         mm.add({
             isMobile: "(max-width: 767px)",
             isTablet: "(min-width: 768px) and (max-width: 1023px)",
@@ -92,13 +91,13 @@ export default function BaseSlider({ title, slides, children }: Props) {
             const tl = gsap.timeline({
                 defaults: {
                     duration: 2,
-                    ease: "power4.out",
+                    ease: Power4.easeOut,
                 },
                 scrollTrigger: {
                     // id: "product slider",
                     trigger: sliderContainer.current,
-                    start: `top 90%`,
-                    end: "bottom 20%",
+                    start: `top bottom`,
+                    end: "bottom 10%",
                     toggleActions: "play reset play reset",
                     // markers: true,
     
@@ -107,9 +106,8 @@ export default function BaseSlider({ title, slides, children }: Props) {
                             //reset the slider offset (screens 1024px+) for correct animation when slider returns to viewport
                             setOffset(0);
                         } else {
-                            console.log('onLeave')
                             // reset the slider dots (up to 1023px screens)
-                            gsap.set('.slider-dot', {
+                            gsap.set(dots.current, {
                                 backgroundColor: '',
                                 borderColor: '',
                             })
@@ -120,9 +118,8 @@ export default function BaseSlider({ title, slides, children }: Props) {
                             //reset the slider offset (screens 1024px+) for correct animation when slider returns to viewport
                             setOffset(0);
                         } else {
-                            console.log('onLeaveBack')
                             // reset the slider dots (up to 1023px screens)
-                            gsap.set('.slider-dot', {
+                            gsap.set(dots.current, {
                                 backgroundColor: '',
                                 borderColor: '',
                             })
@@ -133,8 +130,9 @@ export default function BaseSlider({ title, slides, children }: Props) {
             //!!!!!!!є баг  - при швидкому LeaveBack або Leave GSAP не встигає ссунути sliderContainer.current в позицію х: 0
             // подвійне застосування set(...) для скидання на початкову позицію активної dot спрацьовує, а для sliderContainer.current - ні
             //reset the slider offset (up to 1023px screens) + dots for correct animation when slider returns to viewport
-                .set(sliderContainer.current, {x: 0})
-                .set('.slider-dot', {
+                
+            .set(sliderContainer.current, {x: 0})
+                .set(dots.current, {
                     backgroundColor: (i) => i === 0 ? 'var(--nav-dot-active)': '',
                     borderColor: (i) => i === 0 ? 'var(--nav-dot-active)' : '',
                 })
@@ -145,7 +143,7 @@ export default function BaseSlider({ title, slides, children }: Props) {
                 })
         });
         
-    });
+    }, {scope: sliderContainer.current!});
     
     //slider animation on offset change (for screens 1024px+): using arrow buttons + offset state
     useGSAP(() => {
@@ -159,7 +157,7 @@ export default function BaseSlider({ title, slides, children }: Props) {
             const cards = Array.from(sliderContainer.current?.children!);
     
             gsap.timeline()
-                .set('.slider-dot', {
+                .set(dots.current, {
                     backgroundColor: (i) => i === 0 ? 'var(--nav-dot-active)': '',
                     borderColor: (i) => i === 0 ? 'var(--nav-dot-active)' : '',
                 })
@@ -174,7 +172,10 @@ export default function BaseSlider({ title, slides, children }: Props) {
                     duration: 1,
                 }, '<');
         })
-    }, [offset, fullItemWidth, slidesPerScreen] );
+    }, {
+        dependencies: [offset, fullItemWidth, slidesPerScreen],
+        scope: sliderContainer.current!
+    } );
 
     //slider animation for small screens (up to 1023px+): for dragging elements
     useGSAP(() => {
@@ -231,7 +232,7 @@ export default function BaseSlider({ title, slides, children }: Props) {
                             ease: Power4.easeOut,
                             duration: 1,
                         }, 0)
-                        .to('.slider-dot', {
+                        .to(dots.current, {
                             ease: Power4.easeOut,
                             backgroundColor: (i) => i === activeDot ? 'var(--nav-dot-active)' : '',
                             borderColor: (i) => i === activeDot ? 'var(--nav-dot-active)' : '',
@@ -240,7 +241,10 @@ export default function BaseSlider({ title, slides, children }: Props) {
             });
         })
 
-    }, [slidesPerScreen, fullItemWidth, totalChildren]);
+    }, {
+        dependencies: [slidesPerScreen, fullItemWidth, totalChildren],
+        scope: sliderContainer.current!
+    });
 
     const handleArrowClick = (val: number) => {
         if (offset + val < 0 || offset + val > totalChildren - slidesPerScreen) return
@@ -270,7 +274,7 @@ export default function BaseSlider({ title, slides, children }: Props) {
                     </>)}
                     <div className="slider-dots" style={{display: (isMobile || isTablet) ? '' : 'none'}}>
                         {Array(dotsLength).fill('').map((item, index) => (
-                            <div key={index}
+                            <div key={index} ref={(el) => {dots.current[index] = el}}
                                 className={`slider-dot`}
                             />
                         ))}
@@ -285,3 +289,5 @@ export default function BaseSlider({ title, slides, children }: Props) {
         </section>
     )
 }
+
+export default BaseSlider;
