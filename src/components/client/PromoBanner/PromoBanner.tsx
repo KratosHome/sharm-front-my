@@ -9,11 +9,10 @@ import './PromoBanner.scss';
 import {bannerPromoData} from '@/mokData/promoBanner';
 import { FC } from 'react';
 
-type Props = {position: 'top' | 'bottom'}
+type PromoBannerProps = {position: 'top' | 'bottom'}
 
-const getPromoBanners = async () => {
+const getPromoBanners = async (position: 'top' | 'bottom') => {
     // const res = await fetch('https://api.example.com/...')
- 
  
     // if (!res.ok) {
     //     throw new Error('Failed to fetch data')
@@ -21,15 +20,15 @@ const getPromoBanners = async () => {
     
     // return res.json()
     
-    return new Promise<IBannerPromo[]>(resolve => setTimeout(() => resolve(bannerPromoData), 1000))
+    return new Promise<IBannerPromo[]>(resolve => setTimeout(() => resolve(bannerPromoData.filter(b => b.position === position)), 1000))
 }
 
 
-const PromoBanner: FC<Props> = async () => {
+const PromoBanner: FC<PromoBannerProps> = async ({position}) => {
     const t = await getTranslations('UI');
     const locale = await getLocale();
 
-    const banners = await getPromoBanners();
+    const banners = await getPromoBanners(position);
     return (
         <section className="promo-banners">
             <ClientWrapperForButtonAnimation>
@@ -47,7 +46,7 @@ const PromoBanner: FC<Props> = async () => {
                             src={banner.image} 
                             fill 
                             alt='banner background' 
-                            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+                            sizes='(max-width: 767px) 100vw, (max-width: 1199px) 50vw, 33vw'
                             />
                     </div>
                 ))}

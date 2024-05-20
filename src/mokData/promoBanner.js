@@ -3,6 +3,7 @@ export const bannerPromoData = [
         id: 1,
         image: "/banner/promo1.jpg",
         link: "/info/photo1",
+        position: 'top',
         translations: [
             {
                 lang: "ru",
@@ -20,6 +21,7 @@ export const bannerPromoData = [
         id: 2,
         image: "/banner/promo2.jpg",
         link: "/info/photo2",
+        position: 'top',
         translations: [
             {
                 lang: "ru",
@@ -37,6 +39,7 @@ export const bannerPromoData = [
         id: 3,
         image: "/banner/promo1.jpg",
         link: "/info/photo1",
+        position: 'bottom',
         translations: [
             {
                 lang: "ru",
@@ -54,6 +57,7 @@ export const bannerPromoData = [
         id: 4,
         image: "/banner/promo2.jpg",
         link: "/info/photo2",
+        position: 'bottom',
         translations: [
             {
                 lang: "ru",
