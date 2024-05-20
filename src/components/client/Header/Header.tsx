@@ -2,6 +2,7 @@
 import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+import {ScrollTrigger} from "gsap/ScrollTrigger";
 
 import TopBarHeader from "@/components/client/Header/TopBarHeader/TopBarHeader";
 import MainHeader from "@/components/client/Header/MainHeader/MainHeader";
@@ -36,6 +37,7 @@ const Header = () => {
             end: `+=${headerHeight}`,
             scrub: 3,
             // markers: true,
+            onLeave: () => ScrollTrigger.refresh(),
           }}
         )
         .to(container.current, {maxHeight: headerHeight})
@@ -59,6 +61,7 @@ const Header = () => {
             y: 0
           }
         )
+        
       });
     },
   );

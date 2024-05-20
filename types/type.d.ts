@@ -31,3 +31,18 @@ interface IProductTranslations {
     metaKeywords: string;
     metaDescription: string;
 }
+
+// banners
+
+interface IBannerPromo {
+    id: number;
+    image: string;
+    link: string;
+    translations: IBannerPromoTranslations[];
+};
+
+interface IBannerPromoTranslations {
+    lang: string;
+    title: string;
+    description: string;
+}
