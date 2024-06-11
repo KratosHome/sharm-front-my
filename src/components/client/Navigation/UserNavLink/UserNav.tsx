@@ -1,7 +1,8 @@
 import Link from "next/link";
-
+import { auth } from "@/server/auth/auth";
 import { userNav, userNavOpen } from "@/mokData/navLinksData";
-
+import { useState, useEffect } from "react";
+import { useRouter, usePathname } from 'next/navigation';
 import "./UserNav.scss";
 import { ActiveLink } from "@/components/UI/ActiveLink/ActivLink";
 
@@ -11,6 +12,11 @@ interface UserNavProps {
 }
 
 const UserNav = ({ isMobileMenuOpen, closeMenu }: UserNavProps) => {
+  
+  const router = useRouter();
+  const pathname = usePathname();
+  const locale = pathname.split('/')[1];
+  
   return (
     <ul
       className={isMobileMenuOpen ? "user-nav__list--open" : "user-nav__list"}
@@ -41,7 +47,7 @@ const UserNav = ({ isMobileMenuOpen, closeMenu }: UserNavProps) => {
                   menu.title === "Пошук" && "mobile-only"
                 } ${menu.title === "Мій список бажань" && "desktop-only"}`}
               >
-                <Link href={menu.path}>{menu.icon}</Link>
+                <Link href={`/${locale}${menu.path}`}>{menu.icon}</Link>
               </li>
             );
           })}

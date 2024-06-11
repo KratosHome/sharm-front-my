@@ -7,7 +7,7 @@ import TopBarHeader from "@/components/client/Header/TopBarHeader/TopBarHeader";
 import MainHeader from "@/components/client/Header/MainHeader/MainHeader";
 import NavBar from "@/components/client/Header/NavBar/NavBar";
 
-import "./Header.scss";
+import "./header.scss";
 import Link from "next/link";
 import LogoSvg from "@/components/svg/LogoSvg";
 import UserNav from "../Navigation/UserNavLink/UserNav";
