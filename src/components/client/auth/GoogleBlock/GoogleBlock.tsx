@@ -1,15 +1,15 @@
-import s from "./GoogleBlock.module.scss";
+import "./GoogleBlock.scss";
 import { GoogleIcon } from "@/components/svg/GoogleIcon";
 
 const GoogleBlock = () => {
     return (
        <>
-        <div className={s.lineWrapper}>
-          <p className={s.spanLine}></p>
-          <p className={s.text}>Або</p>
-          <p className={s.spanLine}></p>
+        <div className="lineWrapper">
+          <p className="spanLine"></p>
+          <p className="text">Або</p>
+          <p className="spanLine"></p>
         </div>        
-          <button className={s.btn} type="button">
+          <button className="btn" type="button">
             <GoogleIcon />
             Google
           </button>

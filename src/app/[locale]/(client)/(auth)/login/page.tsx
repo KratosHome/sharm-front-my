@@ -16,7 +16,7 @@ export default async function LoginPage({ params: { locale } }: any) {
 
   return (
     <div className="loginWrapper ">
-      <LoginForm locale={locale} />
+      <LoginForm />
       <Footer />
     </div>
   );
