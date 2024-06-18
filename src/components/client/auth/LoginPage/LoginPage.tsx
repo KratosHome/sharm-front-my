@@ -34,7 +34,8 @@ const LoginForm = () => {
 
   const handleLinkClick = () => {
     setIsFormValid(false);    
-  }; 
+  };
+ 
 
   useEffect(() => {
     if (!initialRender) {
@@ -46,7 +47,9 @@ const LoginForm = () => {
     setInitialRender(false); 
   }, []);
 
-  const onSubmit: SubmitHandler<MyForm> = (data) => {   
+  const onSubmit: SubmitHandler<MyForm> = (data) => {
+    console.log("first", data);
+    console.log("Remember Me:", data);
     reset();
     setRememberMe(false);
   };

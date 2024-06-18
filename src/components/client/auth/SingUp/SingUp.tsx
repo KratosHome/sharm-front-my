@@ -61,6 +61,7 @@ const SingUp = () => {
     };
 
     const result = await registerAction(formData);
+    console.log("Form data submitted:", formData);
     reset();
     if (result.errorMessage) {
       setPasswordMismatchError(result.errorMessage);
