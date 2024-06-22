@@ -11,7 +11,6 @@ import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import FormInput from "../FormInput";
 import { MyForm } from "@/types";
-import { fail } from "assert";
 
 const LoginForm = () => {
   const router = useRouter();
@@ -22,7 +21,7 @@ const LoginForm = () => {
     reset,
     formState: { errors, isValid },
     watch,
-    clearErrors,
+    
   } = useForm<MyForm>({ mode: "onChange" });
 
   const [isFormValid, setIsFormValid] = useState(false);
@@ -73,6 +72,7 @@ const LoginForm = () => {
                 /^[a-zA-Z0-9._%+-]+@(?!.*\.ru)[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
             }}
             isValid={!errors.email && email !== ''}
+            error={errors.email}
             icon={<EmailSvg className="icon" />}/>
           <FormInput
             label="Пароль"
@@ -87,6 +87,7 @@ const LoginForm = () => {
               pattern: /^(?=.*\d)(?=.*[a-z])(?=.*[a-zA-Z]).{5,}$/,
             }}
             isValid={!errors.password && password !== ''}
+            error={errors.password}
             icon={<PadlockSvg className="icon" />}
           />
         </div>
