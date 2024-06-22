@@ -2,7 +2,7 @@
 
 import "./SingUp.scss";
 import Link from "next/link";
-import FormInput from "../FormInput";
+import MyInput from "@/components/general/MyInput";
 import { IRegisterFormValues, MyForm } from "@/types";
 import { EmailSvg } from "@/components/svg/EmailSvg";
 import { PadlockSvg } from "@/components/svg/PadlockSvg";
@@ -90,7 +90,7 @@ const SingUp = () => {
 
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="inputContainer">
-          <FormInput
+          <MyInput
             label="Ім’я"
             name="name"
             type="text"
@@ -106,7 +106,7 @@ const SingUp = () => {
             error={errors.name}
             icon={<NameSvg className="icon" />}
           />
-          <FormInput
+          <MyInput
             label="Email"
             name="email"
             type="email"
@@ -123,7 +123,7 @@ const SingUp = () => {
             error={errors.email}
             icon={<EmailSvg className="icon" />}
           />
-          <FormInput
+          <MyInput
             label="Пароль"
             name="password"
             type="password"
@@ -139,7 +139,7 @@ const SingUp = () => {
             error={errors.password}
             icon={<PadlockSvg className="icon" />}
           />
-          <FormInput
+          <MyInput
             label="Повторити пароль"
             name="passwordRepeat"
             type="password"

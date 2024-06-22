@@ -46,7 +46,7 @@
   line-height: 1.5;
   @media (min-width: 1024px) {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 4px;
     margin-bottom: 0;
   }
@@ -72,7 +72,6 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  //  padding: 0;
   @media (min-width: 1024px) {
     padding-right: 30px;
     margin-bottom: 48px;
@@ -93,7 +92,7 @@
   line-height: 1.5;
   color: #a0a0a0;
   @media (min-width: 1024px) {
-    width: 400px;
+    width: 380px;
   }
   &.input_valid {
     color: var(--text-color);

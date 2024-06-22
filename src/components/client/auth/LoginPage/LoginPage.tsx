@@ -9,8 +9,9 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import FormInput from "../FormInput";
 import { MyForm } from "@/types";
+import MyInput from "@/components/general/MyInput";
+
 
 const LoginForm = () => {
   const router = useRouter();
@@ -58,7 +59,7 @@ const LoginForm = () => {
       <h2 className="title">Увійти в аккаунт</h2>
       <form className="form" onSubmit={handleSubmit(onSubmit)}>
         <div className="inputContainer">
-          <FormInput
+          <MyInput
             label="Email"
             name="email"
             type="email"
@@ -74,7 +75,7 @@ const LoginForm = () => {
             isValid={!errors.email && email !== ''}
             error={errors.email}
             icon={<EmailSvg className="icon" />}/>
-          <FormInput
+          <MyInput
             label="Пароль"
             name="password"
             type="password"
