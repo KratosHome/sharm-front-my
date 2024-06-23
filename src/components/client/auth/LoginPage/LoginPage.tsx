@@ -97,15 +97,16 @@ const LoginForm = () => {
           <Link className="btn_link" href={`/${locale}/forgot-password`}>
             Забули пароль?
           </Link>
-          <div className="radioBtnWrapper">
+          <div className="radioBtnWrapper" onChange={() => setRememberMe(!rememberMe)}>
+          
             <input
               className="radioBtn"
               type="radio"
               id="rememberMe"
               checked={rememberMe}
-              onChange={() => setRememberMe(!rememberMe)}
+              readOnly
             />
-            <label>Запам’ятати мене</label>
+           <label > Запам’ятати мене</label>
           </div>
         </div>
         <div className="radioBtnWrapper mobile-only">
