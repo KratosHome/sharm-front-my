@@ -10,7 +10,7 @@ interface registerFormValues {
     name: string
     email: string;
     password: string;
-    passwordRepeat: string
+    passwordRepeat?: string
 }
 
 interface RegisterResult {

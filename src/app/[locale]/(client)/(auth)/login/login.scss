@@ -1,0 +1,11 @@
+.loginWrapper {
+  
+  margin-right: auto;
+  margin-left: auto;
+  padding: 24px 17px;
+  @media (min-width: 1024px) {
+    margin: 0;
+    padding: 0 70px;
+    max-width: 1440px;
+  }
+}

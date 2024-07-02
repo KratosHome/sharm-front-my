@@ -173,7 +173,7 @@ export const userNav = [
   {
     title: "Мій акаунт",
     icon: <UserSvg />,
-    path: "#",
+    path: "/login",
   },
   {
     title: "Моя корзина",

@@ -10,9 +10,11 @@ export default async function Home() {
 
   return (
     <>
+     {allCategories && allCategories.length > 0 && (
       <WrapperTreeList data={allCategories} type="category">
         <CategoryItem parentId={allCategories[0]?.id} category={null} />
       </WrapperTreeList>
+    )}
     </>
   );
 }

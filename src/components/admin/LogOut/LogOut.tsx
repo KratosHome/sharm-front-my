@@ -1,6 +1,6 @@
 import React from 'react';
 import Image from "next/image";
-import logOut from "./logOut.svg"
+import logOut from "./logout.svg"
 import {cookies} from "next/headers";
 import {signOut} from "@/server/auth/auth";
 

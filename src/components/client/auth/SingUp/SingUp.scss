@@ -1,0 +1,61 @@
+@import"../LoginPage/loginPage.scss";
+
+.title {
+  margin-bottom: 16px;
+ 
+}
+
+.text {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.labelWrapper {
+  @media (min-width: 1024px) {   
+    gap: 35px;
+  }
+}
+
+.inputContainer {
+ 
+  @media (min-width: 1024px) {
+    margin-bottom: 48px;
+  }
+}
+
+.btnSubmit {
+  width: 100%;
+ 
+  @media (min-width: 1024px) {
+    width: 50%;
+    flex-grow: 1;
+  }
+}
+
+.btnWrapper {
+  @media (min-width: 1024px) {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 32px;
+  }
+}
+.btn_link {
+  
+  @media (min-width: 1024px) {
+    flex-grow: 1;
+  }
+}
+
+.loginBtnWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  margin-top: 15px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+}

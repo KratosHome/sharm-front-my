@@ -8,7 +8,7 @@ import useHttp from "@/actions/useHttp";
 import MyInput from "@/components/general/MyInput/MyInput";
 import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import MyModal from "@/components/UI/MyModal/MyModal";
-import { inputFields } from "@/components/admin/menu/CreateMenu/CreateMenu";
+import {inputFields}  from "@/components/admin/CreateCategory/CreateCategory";
 import { InputField } from "../CreateCategory/CreateCategory";
 import SpinnerFullScreen2 from "@/components/UI/Spinner/SpinnerFullScreen2";
 

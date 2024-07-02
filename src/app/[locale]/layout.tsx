@@ -1,6 +1,7 @@
 import "../globals.css";
 import MyThemeProvider from "@/components/general/MyThemeProvider/MyThemeProvider";
 import { NextIntlClientProvider, useMessages } from "next-intl";
+import Header from "@/components/client/Header/Header";
 
 export default function RootLayout({
   children,
@@ -21,16 +22,17 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      {/* "extra attributes from the server" error fix https://www.reddit.com/r/nextjs/comments/138smpm/how_to_fix_extra_attributes_from_the_server_error/?rdt=36192 */}
+      {/* "extra attributes from the server" error fix */}
       <body suppressHydrationWarning>
         <NextIntlClientProvider messages={messages}>
-          <MyThemeProvider>{children}</MyThemeProvider>
+          <MyThemeProvider>
+            {children}
+          </MyThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
   );
 }
-
 export function generateStaticParams() {
   return [
     { params: { locale: "en" } },

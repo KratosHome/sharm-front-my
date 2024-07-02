@@ -8,11 +8,39 @@ import MyBtn from "@/components/UI/MyBtn/MyBtn";
 import MyModal from "@/components/UI/MyModal/MyModal";
 import ImageUpload from "@/components/UI/ImageUpload/ImageUpload";
 import {createMenu} from "@/server/menu/createMenu.server";
-
 interface FormData {
     title: string
     icon: FileList
 }
+
+export const inputFields = [
+    {
+        name: "title",
+        type: "text",
+        placeholder: {
+            en: "Title",
+            ru: "Название",
+            ua: "ua"
+        },
+        validation: {
+            required: "This field is required",
+            minLength: { value: 4, message: "Minimum number of characters 4" },
+            maxLength: { value: 50, message: "Maximum number of characters 50" },
+        }
+    },
+    {
+        name: "icon",
+        type: "file",
+        placeholder: {
+            en: "Icon",
+            ru: "Иконка",
+            ua: "ua"
+        },
+        validation: {
+            required: "This field is required",
+        }
+    }
+];
 
 const CreateMenu = () => {
     const locale = useLocale();

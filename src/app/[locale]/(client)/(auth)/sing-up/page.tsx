@@ -1,9 +1,10 @@
 import {auth, signIn, signOut} from "@/server/auth/auth";
 import {redirect} from "next/navigation";
-import MyInput from "@/components/general/MyInput/MyInput";
+import '../login/login.scss'
 import SingUp from "@/components/client/auth/SingUp/SingUp";
+import { Footer } from "@/components/client/Footer/Footer";
 
-export default async function LoginPage({params: {locale}}: any) {
+export default async function LoginPage({ params: { locale } }: any) {
     const session = await auth();
 
      console.log("session", session)
@@ -12,8 +13,9 @@ export default async function LoginPage({params: {locale}}: any) {
         //  redirect(`/${locale}/profile`);
     }
     return (
-        <>
-            <SingUp/>
-        </>
+        <div className="loginWrapper">
+            <SingUp />
+            <Footer/>
+        </div>
     );
 }
